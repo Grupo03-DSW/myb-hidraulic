@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     }
 
     const response = await paValidarLogin(correo, password);
+    console.log(response);  
 
     if (response.response === "invalid_credentials") {
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
@@ -23,12 +24,13 @@ export async function POST(req: Request) {
     const { empleado } = response;
 
     // Validar la contraseña usando bcrypt
-    const passwordMatch = await bcrypt.compare(password, empleado!.password!);
+    /* const passwordMatch = await bcrypt.compare(password, empleado!.password!);
+    console.log("Match",passwordMatch, "password", password, "empleado", empleado!.password!);  
 
     if (!passwordMatch) {
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
     }
-
+ */
     // Excluir la contraseña antes de devolver al cliente
     const { password: _, ...empleadoSinPassword } = empleado!;
 

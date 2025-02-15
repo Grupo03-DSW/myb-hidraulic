@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
-import { supabaseAuth } from "@/lib/auth";
+import { authOptions } from "@/lib/auth";
 
-const auth = NextAuth(supabaseAuth);
+const auth = NextAuth(authOptions);
 
 export { auth as GET, auth as POST };

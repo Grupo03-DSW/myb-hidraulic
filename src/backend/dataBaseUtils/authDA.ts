@@ -15,6 +15,7 @@ export async function paValidarLogin(correo: string, password: string): Promise<
     }
 
     const empleadoData = res.rows[0].empleado;
+    console.log(empleadoData);  
 
     return {
       response: 'success',
