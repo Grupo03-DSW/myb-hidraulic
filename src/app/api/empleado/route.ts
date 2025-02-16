@@ -4,12 +4,9 @@ import {
 } from "@/backend/dataBaseUtils/empleadoDA";
 import { NextRequest, NextResponse } from "next/server";
 import { Empleado } from "@/models/empleado";
-import {
-  base64ToBlob,
-  uploadImage,
-} from "@/backend/firebaseUtils/firebaseStorage";
+import { uploadImage } from "@/lib/supabase";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function GET(): Promise<NextResponse<Empleado[]>> {
   const empleados: Empleado[] = await paObtenerEmpleados();
@@ -28,13 +25,14 @@ export async function POST(req: NextRequest) {
       console.error("La imagen en formato base64 no está disponible.");
       return NextResponse.json({ message: "Error al insertar repuesto" });
     }
-    const contentType = "image/png";
-    const blob = base64ToBlob(base64String, contentType);
 
     // Aqui se hace la subida a firebase y se obtiene el url
-    const result = await uploadImage(blob);
+    const downloadURL = await uploadImage(
+      base64String,
+      `empleados/profile/${jsonData.nombre}`,
+    );
     // Debe enviar el repuesto con la imagen como un url
-    jsonData.linkImg = result?.downloadURL || "";
+    jsonData.linkImg = downloadURL || "";
     // console.log(repuesto);
 
     // Llamar a la función para registrar empleado

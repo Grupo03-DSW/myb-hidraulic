@@ -9,6 +9,7 @@ const nextConfig = {
       "firebasestorage.googleapis.com",
       "avatar.iran.liara.run",
       "placehold.co",
+      "sjtcdpqlesvqtgjwhtny.supabase.co"
     ],
   },
 };

@@ -1,7 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import MyBError from "@/lib/mybError";
-import { MyBSupabaseAdapter } from "./supabase-adapter";
 
 export const authOptions: NextAuthOptions = {
   providers: [
