@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     // Aqui se hace la subida a firebase y se obtiene el url
     const downloadURL = await uploadImage(
       base64String,
-      `empleados/profile/${jsonData.nombre}`,
+      `empleados/profile/${jsonData.nombre}`
     );
     // Debe enviar el repuesto con la imagen como un url
     jsonData.linkImg = downloadURL || "";
@@ -44,6 +44,20 @@ export async function POST(req: NextRequest) {
       idEmpleado,
     });
   } catch (err) {
+    if (err instanceof Error) {
+      if (err.stack?.includes("empleado_documento_identidad_key")) {
+        return NextResponse.json(
+          { message: "empleado_documento_identidad_key" },
+          { status: 400 }
+        );
+      } else if (err.stack?.includes("empleado_correo_key")) {
+        return NextResponse.json(
+          { message: "empleado_correo_key" },
+          { status: 400 }
+        );
+      }
+    }
+
     console.error("Error en el endpoint al registrar empleado:", err);
     return NextResponse.json(
       { message: "Error al registrar empleado", error: err },

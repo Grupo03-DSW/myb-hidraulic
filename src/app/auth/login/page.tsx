@@ -5,21 +5,21 @@ import MyBError from "@/lib/mybError";
 import { NoiceType } from "@/models/noice";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Droplets } from "lucide-react";
+import { InputField } from "@/components/InputField";
 
 const loginSchema = z.object({
-  correo: z.string().email({ message: "Debe ser un correo válido" }).min(1, { message: "El correo es requerido" }),
-  password: z.string().min(8, { message: "La contraseña debe tener al menos 8 caracteres" }).min(1, { message: "La contraseña es requerida" }),
+  correo: z
+    .string()
+    .email({ message: "Debe ser un correo válido" })
+    .min(1, { message: "El correo es requerido" }),
+  password: z
+    .string()
+    .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
+    .min(1, { message: "La contraseña es requerida" }),
 });
 
 type LoginData = z.infer<typeof loginSchema>;
@@ -27,7 +27,11 @@ type LoginData = z.infer<typeof loginSchema>;
 export default function Page() {
   const [noice, setNoice] = useState<NoiceType | null>(null);
 
-  const form = useForm<LoginData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       correo: "",
@@ -38,14 +42,15 @@ export default function Page() {
   const onSubmit = async (data: LoginData) => {
     try {
       const { correo, password } = data;
-  
+
       // Intentar iniciar sesión con credenciales
-      signIn("credentials", {
+      const res = await signIn("credentials", {
         correo,
         password,
         redirect: true,
       });
 
+      if (res?.error) console.error(res.error);
     } catch (error) {
       if (error instanceof MyBError) {
         setNoice({
@@ -63,46 +68,71 @@ export default function Page() {
 
   return (
     <div className="w-full h-lvh flex flex-1 items-center justify-center">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          {noice && <Noice noice={noice} />}
-          <div className="w-full md:w-1/2 flex flex-col items-center gap-y-4 mx-auto p-10">
-            <h1 className="flex flex-row h-20 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r to-zinc-700 from-slate-900 mr-2">
-                MyB
-              </span>
-              Hidraulic
-            </h1>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full mx-4 md:w-1/2 bg-white rounded-lg shadow-lg"
+      >
+        {noice && <Noice noice={noice} />}
+        <div className="w-full flex flex-col items-center gap-y-4 mx-auto p-10">
+          <h1 className="flex flex-row h-20 justify-end items-end font-bold text-2xl md:text-4xl lg:text-5xl">
+            <Droplets className="w-full h-10 md:h-14 lg:h-16 text-primary-foreground" />
+            <span className="font-extrabold text-primary-foreground text-3xl md:text-5xl lg:text-6xl">
+              MyB
+            </span>
+            Hidraulic
+          </h1>
 
-            <h1 className="text-2xl font-bold text-center">Iniciar Sesión</h1>
-            <FormField
+          <div className="w-full flex flex-col items-center gap-2">
+            <h2 className="font-medium text-lg">Iniciar Sesión</h2>
+            <Controller
               name="correo"
-              control={form.control}
+              control={control}
               render={({ field }) => (
-                <FormItem className="w-1/2 md:w-2/3">
-                  <FormLabel>Correo</FormLabel>
-                  <Input {...field} />
-                  <FormMessage />
-                </FormItem>
+                <div className="w-full md:w-1/2">
+                  <InputField
+                    inputLabel="Correo"
+                    labelClassName={
+                      errors.correo &&
+                      "text-destructive peer-focus:text-destructive"
+                    }
+                    {...field}
+                  />
+                  {errors.correo && (
+                    <span className="message-error">
+                      {errors.correo.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
-            <FormField
+            <Controller
               name="password"
-              control={form.control}
+              control={control}
               render={({ field }) => (
-                <FormItem className="w-1/2 md:w-2/3">
-                  <FormLabel>Contraseña</FormLabel>
-                  <Input type="password" {...field} />
-                  <FormMessage />
-                </FormItem>
+                <div className="w-full md:w-1/2 mt-2">
+                  <InputField
+                    inputLabel="Contraseña"
+                    type="password"
+                    labelClassName={
+                      errors.password &&
+                      "text-destructive peer-focus:text-destructive"
+                    }
+                    {...field}
+                  />
+                  {errors.password && (
+                    <span className="message-error">
+                      {errors.password.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
-            <Button type="submit" className="w-1/2 md:w-2/3 mt-4">
-              Login
-            </Button>
           </div>
-        </form>
-      </Form>
+          <Button type="submit" className="w-full md:w-1/3 mt-4">
+            Login
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

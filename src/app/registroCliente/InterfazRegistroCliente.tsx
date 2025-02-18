@@ -1,16 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NoiceType } from "@/models/noice";
 import { Noice } from "@/components/Noice";
 import MyBError from "@/lib/mybError";
 import { useRouter } from "next/navigation";
+import { InputField } from "@/components/InputField";
 
 // Definir el esquema de validación con zod
 const clienteSchema = z.object({
@@ -32,12 +31,19 @@ export function InterfazRegistroCliente() {
 
   // Configuración de react-hook-form con zod
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<ClienteFormData>({
     resolver: zodResolver(clienteSchema),
+    defaultValues: {
+      nombre: "",
+      ruc: "",
+      direccion: "",
+      telefono: "",
+      correo: "",
+    },
   });
 
   // Función para manejar el envío del formulario
@@ -82,72 +88,129 @@ export function InterfazRegistroCliente() {
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto">
+    <div className="p-4 max-w-lg mx-auto">
       {noice && <Noice noice={noice} />}
-      <h2 className="text-lg font-semibold mb-4">Registro de Cliente</h2>
+      <h1 className="mb-4">Registro de Cliente</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
-          <Label htmlFor="nombre">Nombre</Label>
-          <Input
-            id="nombre"
-            type="text"
-            placeholder="Nombre completo"
-            {...register("nombre")}
-          />
-          {errors.nombre && (
-            <p className="text-red-500">{errors.nombre.message}</p>
-          )}
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col">
+        <h3 className="text-base font-medium mb-2 w-full">Datos Personales</h3>
+        <div className="w-full grid md:grid-cols-2 gap-4">
+          <div className="mb-4">
+            <Controller
+              name="nombre"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputField
+                    inputLabel="Nombre"
+                    labelClassName={
+                      errors.nombre &&
+                      "text-destructive peer-focus:text-destructive"
+                    }
+                    {...field}
+                  />
+                  {errors.nombre && (
+                    <p className="message-error">{errors.nombre.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+          <div className="mb-4">
+            <Controller
+              name="ruc"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputField
+                    inputLabel="RUC"
+                    labelClassName={
+                      errors.ruc &&
+                      "text-destructive peer-focus:text-destructive"
+                    }
+                    type="text"
+                    {...field}
+                  />
+                  {errors.ruc && (
+                    <p className="message-error">{errors.ruc.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </div>
         </div>
 
-        <div className="mb-4">
-          <Label htmlFor="ruc">RUC</Label>
-          <Input
-            id="ruc"
-            type="text"
-            placeholder="Número de RUC"
-            {...register("ruc")}
-          />
-          {errors.ruc && <p className="text-red-500">{errors.ruc.message}</p>}
-        </div>
+        <h3 className="text-base font-medium mb-2 mt-2">Datos de Contacto</h3>
+        <div className="w-full grid md:grid-cols-2 gap-4">
+          <div className="mb-4">
+            <Controller
+              name="direccion"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputField
+                    inputLabel="Dirección"
+                    labelClassName={
+                      errors.direccion &&
+                      "text-destructive peer-focus:text-destructive"
+                    }
+                    type="text"
+                    {...field}
+                  />
+                  {errors.direccion && (
+                    <p className="message-error">{errors.direccion.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </div>
 
-        <div className="mb-4">
-          <Label htmlFor="direccion">Dirección</Label>
-          <Input
-            id="direccion"
-            type="text"
-            placeholder="Dirección"
-            {...register("direccion")}
-          />
-          {errors.direccion && (
-            <p className="text-red-500">{errors.direccion.message}</p>
-          )}
-        </div>
+          <div className="mb-4">
+            <Controller
+              name="telefono"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputField
+                    inputLabel="Teléfono"
+                    labelClassName={
+                      errors.telefono &&
+                      "text-destructive peer-focus:text-destructive"
+                    }
+                    type="text"
+                    {...field}
+                  />
+                  {errors.telefono && (
+                    <p className="message-error">{errors.telefono.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </div>
 
-        <div className="mb-4">
-          <Label htmlFor="telefono">Teléfono</Label>
-          <Input
-            id="telefono"
-            type="tel"
-            placeholder="Número de teléfono"
-            {...register("telefono")}
-          />
-          {errors.telefono && (
-            <p className="text-red-500">{errors.telefono.message}</p>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <Label htmlFor="correo">Correo</Label>
-          <Input
-            id="correo"
-            type="email"
-            placeholder="Correo electrónico"
-            {...register("correo")}
-          />
-          {errors.correo && (
-            <p className="text-red-500">{errors.correo.message}</p>
-          )}
+          <div className="mb-4">
+            <Controller
+              name="correo"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputField
+                    inputLabel="Correo"
+                    labelClassName={
+                      errors.correo &&
+                      "text-destructive peer-focus:text-destructive"
+                    }
+                    type="email"
+                    {...field}
+                  />
+                  {errors.correo && (
+                    <p className="message-error">{errors.correo.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </div>
         </div>
 
         <Button type="submit" className="w-full mt-4">

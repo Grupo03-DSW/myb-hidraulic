@@ -18,11 +18,14 @@ export const authOptions: NextAuthOptions = {
         };
 
         try {
-          const response = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ correo, password }),
-          });
+          const response = await fetch(
+            `${process.env.NEXTAUTH_URL}/api/login`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ correo, password }),
+            }
+          );
 
           if (!response.ok) {
             const errorResponse = await response.json();
@@ -37,7 +40,12 @@ export const authOptions: NextAuthOptions = {
             id: empleado.idEmpleado!,
             correo: empleado.correo!,
             created_at: new Date().toISOString(),
-            rol: empleado.rol! as "admin" | "jefe" | "supervisor" | "tecnico" | "logistica",
+            rol: empleado.rol! as
+              | "admin"
+              | "jefe"
+              | "supervisor"
+              | "tecnico"
+              | "logistica",
             nombre: empleado.nombre!,
             apellido: empleado.apellido!,
             telefono: empleado.telefono!,
@@ -45,6 +53,7 @@ export const authOptions: NextAuthOptions = {
             linkImg: empleado.linkImg!,
           };
         } catch (error) {
+          console.error("Error in credentials provider:", error);
           throw error;
         }
       },

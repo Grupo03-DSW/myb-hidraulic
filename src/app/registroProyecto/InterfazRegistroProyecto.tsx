@@ -9,15 +9,7 @@ import { Repuesto, RepuestoForm } from "@/models/repuesto";
 
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Combobox } from "@/components/Combobox";
-import { Input } from "@/components/ui/input";
 import { RepuestosList } from "@components/RepuestosList";
 import { Counter } from "@/components/Counter";
 import { TipoPrueba, TipoPruebaForms } from "@/models/tipoprueba";
@@ -29,6 +21,8 @@ import { NoiceType } from "@/models/noice";
 import MyBError from "@/lib/mybError";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { InputField } from "@/components/InputField";
+import { cn } from "@/lib/utils";
 
 const repuestoSchema = z
   .object({
@@ -169,7 +163,14 @@ export type RegistroProyecto = z.infer<typeof proyectoSchema>;
 export function InterfazRegistroProyecto() {
   const router = useRouter();
 
-  const form = useForm<RegistroProyecto>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<RegistroProyecto>({
     resolver: zodResolver(proyectoSchema),
     defaultValues: {
       titulo: "",
@@ -186,12 +187,12 @@ export function InterfazRegistroProyecto() {
   });
 
   const repuestoField = useFieldArray({
-    control: form.control,
+    control: control,
     name: "repuestos",
   });
 
   const pruebaField = useFieldArray({
-    control: form.control,
+    control: control,
     name: "pruebas",
   });
 
@@ -369,8 +370,8 @@ export function InterfazRegistroProyecto() {
   };
 
   useEffect(() => {
-    console.log(form.formState.errors);
-  }, [form.formState.errors]);
+    console.log(errors);
+  }, [errors]);
 
   const onSubmit = async (proy: RegistroProyecto) => {
     setNoice({
@@ -414,6 +415,15 @@ export function InterfazRegistroProyecto() {
         ),
       };
 
+      console.log(formatedData);
+
+      await new Promise<void>((resolve) => {
+        setTimeout(() => {
+          setNoice(null);
+          resolve();
+        }, 2000);
+      });
+
       const res = await fetch("/api/proyecto", {
         method: "POST",
         headers: {
@@ -426,7 +436,7 @@ export function InterfazRegistroProyecto() {
         throw new Error("Error al registrar el proyecto");
       }
 
-      form.reset();
+      reset();
 
       setNoice({
         type: "success",
@@ -454,375 +464,400 @@ export function InterfazRegistroProyecto() {
     <div className="p-4 max-w-lg mx-auto">
       {noice && <Noice noice={noice} />}
       <h2 className="text-lg font-semibold mb-4">Registro de Proyecto</h2>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          {/* Campos de entrada */}
-          <div className="mb-4">
-            <FormField
-              control={form.control}
-              name="titulo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="titulo">Titulo</FormLabel>
-                  <Input
-                    type="text"
-                    id="titulo"
-                    {...field}
-                    className="border rounded p-1 w-full"
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="mb-4">
-            <FormField
-              control={form.control}
-              name="descripcion"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="descripcion">Descripción</FormLabel>
-                  <Input
-                    type="text"
-                    id="descripcion"
-                    {...field}
-                    className="border rounded p-1 w-full"
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="flex flex-row justify-between">
-            <div className="mb-4 w-1/2">
-              <FormField
-                control={form.control}
-                name="fechaInicio"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel htmlFor="fechaInicio">Fecha de Inicio</FormLabel>
-                    <Input
-                      type="date"
-                      id="fechaInicio"
-                      min={new Date().toISOString().split("T")[0]}
-                      value={
-                        field.value instanceof Date
-                          ? field.value.toISOString().split("T")[0]
-                          : ""
-                      }
-                      onChange={(e) => {
-                        const date = e.target.value
-                          ? new Date(e.target.value)
-                          : new Date();
-                        field.onChange(e.target.value ? date : new Date());
-                        if (form.watch("fechaFin") < date) {
-                          form.setValue("fechaFin", date);
-                        }
-                      }}
-                      className="border rounded w-10/12"
-                    />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="mb-4 w-1/2">
-              <FormField
-                control={form.control}
-                name="fechaFin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="fechaFin">Fecha de Fin</FormLabel>
-                    <Input
-                      type="date"
-                      id="fechaFin"
-                      min={
-                        form.watch("fechaInicio").toISOString().split("T")[0]
-                      }
-                      value={
-                        field.value instanceof Date
-                          ? field.value.toISOString().split("T")[0]
-                          : ""
-                      }
-                      onChange={(e) => {
-                        field.onChange(
-                          e.target.value ? new Date(e.target.value) : new Date()
-                        );
-                      }}
-                      className="border rounded w-10/12"
-                    />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-y-3 mb-2">
-            {/* Select para Cliente */}
-            <FormField
-              control={form.control}
-              name="idCliente"
-              render={({ field }) => (
-                <FormItem className="flex flex-col w-full">
-                  <FormLabel htmlFor="idCliente">Cliente</FormLabel>
-                  <div className="px-2">
-                    <Combobox<Cliente>
-                      items={clientes}
-                      getValue={(r) => {
-                        if (r && typeof r !== "string" && "idCliente" in r) {
-                          return r.idCliente.toString();
-                        }
-                      }}
-                      getLabel={(r) => r.nombre}
-                      getRealValue={(r) => r}
-                      onSelection={(r) => {
-                        field.onChange(r.idCliente);
-                      }}
-                      itemName={"Cliente"}
-                    />
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Select para Supervisor */}
-            <FormField
-              control={form.control}
-              name="idSupervisor"
-              render={({ field }) => (
-                <FormItem className="flex flex-col w-full">
-                  <FormLabel htmlFor="idSupervisor">Supervisor</FormLabel>
-                  <div className="px-2">
-                    <Combobox<Empleado>
-                      items={supervisores}
-                      getValue={(r) => {
-                        if (r && typeof r !== "string" && "idEmpleado" in r) {
-                          return r.idEmpleado!.toString();
-                        }
-                      }}
-                      getLabel={(r) => r.nombre + " " + r.apellido}
-                      getRealValue={(r) => r}
-                      onSelection={(r) => {
-                        field.onChange(r.idEmpleado);
-                      }}
-                      itemName={"Supervisor"}
-                    />
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Costo de Mano de Obra */}
-          <div className="mb-4">
-            <FormField
-              control={form.control}
-              name="costoManoObra"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="costoManoObra">
-                    Costo de Mano de Obra (S/.)
-                  </FormLabel>
-                  <div className="flex items-center mt-2">
-                    <span className="px-3 py-2 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
-                      S/.
-                    </span>
-                    <Input
-                      type="number"
-                      id="costoManoObra"
-                      {...field}
-                      className="border rounded p-1 w-full"
-                      min={1}
-                    />
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Repuestos */}
-          <FormField
-            control={form.control}
-            name="repuestos"
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Campos de entrada */}
+        <div className="mb-4">
+          <Controller
+            name="titulo"
+            control={control}
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center my-4">
-                <FormLabel htmlFor="repuestos">
-                  Repuestos seleccionados
-                </FormLabel>
-                <RepuestosList
-                  repuestos={field.value || []}
-                  className="w-full"
-                  messageNothingAdded="No hay repuestos seleccionados"
-                  counter={(index) => (
-                    <Controller
-                      name={`repuestos.${index}.quantity`}
-                      control={form.control}
-                      render={({ field }) => (
-                        <div className="flex h-full items-center gap-2">
-                          <Counter
-                            {...field}
-                            className={`w-16 ${
-                              form.formState.errors.repuestos?.[index]?.quantity
-                                ? "border-red-500"
-                                : ""
-                            }`}
-                            min={1}
-                            disabled={!form.watch(`repuestos.${index}.checked`)}
-                          />
-                        </div>
-                      )}
-                    />
-                  )}
-                  remover={(index, item) => (
-                    <Button
-                      className="absolute right-0 top-0 z-50"
-                      onClick={() => {
-                        handleUnselectRepuesto(item);
-                      }}
-                      type="button"
-                    >
-                      &times;
-                    </Button>
-                  )}
-                  error={(index) =>
-                    form.formState.errors.repuestos?.[index]?.root && (
-                      <span className="text-red-500 font-sans text-sm">
-                        {
-                          form.formState.errors.repuestos?.[index]?.root
-                            ?.message
-                        }
-                      </span>
-                    )
+              <>
+                <InputField
+                  inputLabel="Titulo"
+                  labelClassName={
+                    errors.titulo &&
+                    "text-destructive peer-focus:text-destructive"
                   }
+                  {...field}
                 />
-                <Button type="button" onClick={() => setOpenRepuestos(true)}>
-                  Añadir repuestos
-                </Button>
-                {form.formState.errors.repuestos?.root && (
-                  <span className="text-red-500 font-sans text-sm">
-                    {form.formState.errors.repuestos?.root?.message}
+                {errors.titulo && (
+                  <p className="message-error">{errors.titulo.message}</p>
+                )}
+              </>
+            )}
+          />
+        </div>
+
+        <div className="mb-4">
+          <Controller
+            name="descripcion"
+            control={control}
+            render={({ field }) => (
+              <>
+                <InputField
+                  inputLabel="Descripción"
+                  labelClassName={
+                    errors.descripcion &&
+                    "text-destructive peer-focus:text-destructive"
+                  }
+                  {...field}
+                />
+                {errors.descripcion && (
+                  <p className="message-error">{errors.descripcion.message}</p>
+                )}
+              </>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-row justify-between">
+          <div className="mb-4 w-1/2">
+            <Controller
+              name="fechaInicio"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputField
+                    type="date"
+                    id="fechaInicio"
+                    min={new Date().toISOString().split("T")[0]}
+                    value={
+                      field.value instanceof Date
+                        ? field.value.toISOString().split("T")[0]
+                        : ""
+                    }
+                    onChange={(e) => {
+                      const date = e.target.value
+                        ? new Date(e.target.value)
+                        : new Date();
+                      field.onChange(e.target.value ? date : new Date());
+                      if (watch("fechaFin") < date) {
+                        setValue("fechaFin", date);
+                      }
+                    }}
+                  />
+                  {errors.fechaInicio && (
+                    <p className="message-error">
+                      {errors.fechaInicio.message}
+                    </p>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+          <div className="mb-4 w-1/2">
+            <Controller
+              name="fechaFin"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputField
+                    type="date"
+                    id="fechaFin"
+                    min={watch("fechaInicio").toISOString().split("T")[0]}
+                    value={
+                      field.value instanceof Date
+                        ? field.value.toISOString().split("T")[0]
+                        : ""
+                    }
+                    onChange={(e) => {
+                      field.onChange(
+                        e.target.value ? new Date(e.target.value) : new Date()
+                      );
+                    }}
+                  />
+                  {errors.fechaFin && (
+                    <p className="message-error">{errors.fechaFin.message}</p>
+                  )}
+                </>
+              )}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-y-3 mb-2">
+          {/* Select para Cliente */}
+          <Controller
+            name="idCliente"
+            control={control}
+            render={({ field }) => (
+              <div className="flex flex-col w-full">
+                <label
+                  htmlFor="idCliente"
+                  className={cn(
+                    "text-sm text-primary",
+                    errors.idCliente && "text-destructive"
+                  )}
+                >
+                  Descripción
+                </label>
+                <Combobox<Cliente>
+                  items={clientes}
+                  getValue={(r) => {
+                    if (r && typeof r !== "string" && "idCliente" in r) {
+                      return r.idCliente.toString();
+                    }
+                  }}
+                  getLabel={(r) => r.nombre}
+                  getRealValue={(r) => r}
+                  onSelection={(r) => {
+                    field.onChange(r.idCliente);
+                  }}
+                  itemName={"Cliente"}
+                />
+                {errors?.idCliente && (
+                  <span className="message-error">
+                    {errors.idCliente.message}
                   </span>
                 )}
-              </FormItem>
+              </div>
             )}
           />
 
-          <RepuestosStock
-            open={openRepuestos}
-            setOpen={setOpenRepuestos}
-            repuestos={repuestos}
-            handleSelectRepuesto={handleSelectRepuesto}
-            handleUnselectRepuesto={handleUnselectRepuesto}
-          />
-
-          {/* Pruebas */}
-          <FormField
-            control={form.control}
-            name="pruebas"
+          {/* Select para Supervisor */}
+          <Controller
+            name="idSupervisor"
+            control={control}
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center my-2">
-                <FormLabel htmlFor="pruebas">Pruebas seleccionadas</FormLabel>
-                <PruebasList
-                  className="w-full"
-                  pruebas={field.value}
-                  messageNothingAdded="No hay pruebas seleccionadas"
-                  counterMin={(prueba_index, param_index) => (
-                    <FormField
-                      name={`pruebas.${prueba_index}.parametros.${param_index}.valorMinimo`}
-                      control={form.control}
-                      render={({ field }) => (
+              <div className="flex flex-col w-full">
+                <label
+                  htmlFor="idSupervisor"
+                  className={cn(
+                    "text-sm text-primary",
+                    errors.idSupervisor && "text-destructive"
+                  )}
+                >
+                  Supervisor
+                </label>
+                <Combobox<Empleado>
+                  items={supervisores}
+                  getValue={(r) => {
+                    if (r && typeof r !== "string" && "idEmpleado" in r) {
+                      return r.idEmpleado!.toString();
+                    }
+                  }}
+                  getLabel={(r) => r.nombre + " " + r.apellido}
+                  getRealValue={(r) => r}
+                  onSelection={(r) => {
+                    field.onChange(r.idEmpleado);
+                  }}
+                  itemName={"Supervisor"}
+                />
+                {errors?.idSupervisor && (
+                  <span className="message-error">
+                    {errors.idSupervisor.message}
+                  </span>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Costo de Mano de Obra */}
+        <div className="mb-4">
+          <Controller
+            name="costoManoObra"
+            control={control}
+            render={({ field }) => (
+              <>
+                <InputField
+                  inputLabel="Costo de Mano de Obra"
+                  type="number"
+                  labelClassName={
+                    errors.costoManoObra &&
+                    "text-destructive peer-focus:text-destructive"
+                  }
+                  {...field}
+                />
+                {errors?.costoManoObra && (
+                  <p className="message-error">
+                    {errors.costoManoObra.message}
+                  </p>
+                )}
+              </>
+            )}
+          />
+        </div>
+
+        {/* Repuestos */}
+        <Controller
+          name="repuestos"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col items-center my-4">
+              <label
+                htmlFor="repuestos"
+                className={cn(
+                  "text-sm text-primary",
+                  errors.repuestos && "text-destructive"
+                )}
+              >
+                Repuestos seleccionados
+              </label>
+              <RepuestosList
+                repuestos={field.value || []}
+                className="w-full"
+                messageNothingAdded="No hay repuestos seleccionados"
+                counter={(index) => (
+                  <Controller
+                    name={`repuestos.${index}.quantity`}
+                    control={control}
+                    render={({ field }) => (
+                      <div className="flex h-full items-center gap-2">
                         <Counter
                           {...field}
-                          className={`w-20 ${
-                            form.formState.errors.pruebas?.[prueba_index]
-                              ?.parametros?.[param_index]?.valorMinimo
+                          className={`w-16 ${
+                            errors.repuestos?.[index]?.quantity
                               ? "border-red-500"
                               : ""
                           }`}
-                          disabled={
-                            !form.watch(`pruebas.${prueba_index}.checked`)
-                          }
+                          min={1}
+                          disabled={!watch(`repuestos.${index}.checked`)}
                         />
-                      )}
-                    />
-                  )}
-                  counterMax={(prueba_index, param_index) => (
-                    <FormField
-                      name={`pruebas.${prueba_index}.parametros.${param_index}.valorMaximo`}
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <Counter
-                            {...field}
-                            className={`w-20 ${
-                              form.formState.errors.pruebas?.[prueba_index]
-                                ?.parametros?.[param_index]?.valorMaximo
-                                ? "border-red-500"
-                                : ""
-                            }`}
-                            disabled={
-                              !form.watch(`pruebas.${prueba_index}.checked`)
-                            }
-                          />
-                        </FormItem>
-                      )}
-                    />
-                  )}
-                  remover={(index, item) => (
-                    <Button
-                      className="absolute right-0 top-0 z-10"
-                      onClick={() => {
-                        handleUnselectPrueba(item, index);
-                      }}
-                      type="button"
-                    >
-                      &times;
-                    </Button>
-                  )}
-                  error={(index) =>
-                    form.formState.errors.pruebas?.[index]?.parametros
-                      ?.root && (
-                      <span className="text-red-500 font-sans text-sm">
-                        {
-                          form.formState.errors.pruebas?.[index]?.parametros
-                            ?.root?.message
-                        }
-                      </span>
-                    )
-                  }
-                />
-                <Button type="button" onClick={() => setOpenPruebas(true)}>
-                  Añadir pruebas
-                </Button>
-                {form.formState.errors.pruebas && (
-                  <span className="text-red-500 font-sans text-sm">
-                    {form.formState.errors.pruebas?.message}
-                  </span>
+                      </div>
+                    )}
+                  />
                 )}
-              </FormItem>
-            )}
-          />
+                remover={(index, item) => (
+                  <Button
+                    className="absolute right-0 top-0 z-50"
+                    onClick={() => {
+                      handleUnselectRepuesto(item);
+                    }}
+                    type="button"
+                  >
+                    &times;
+                  </Button>
+                )}
+                error={(index) =>
+                  errors.repuestos?.[index]?.root && (
+                    <span className="text-red-500 font-sans text-sm">
+                      {errors.repuestos?.[index]?.root?.message}
+                    </span>
+                  )
+                }
+              />
+              <Button type="button" onClick={() => setOpenRepuestos(true)}>
+                Añadir repuestos
+              </Button>
+              {errors.repuestos?.root && (
+                <span className="text-red-500 font-sans text-sm">
+                  {errors.repuestos?.root?.message}
+                </span>
+              )}
+            </div>
+          )}
+        />
 
-          <PruebasStock
-            open={openPruebas}
-            setOpen={setOpenPruebas}
-            pruebas={pruebas}
-            handleSelectPrueba={handleSelectPrueba}
-            handleUnselectPrueba={handleUnselectPrueba}
-          />
+        <RepuestosStock
+          open={openRepuestos}
+          setOpen={setOpenRepuestos}
+          repuestos={repuestos}
+          handleSelectRepuesto={handleSelectRepuesto}
+          handleUnselectRepuesto={handleUnselectRepuesto}
+        />
 
-          <Button type="submit" className="w-full mt-4">
-            Registrar Proyecto
-          </Button>
-        </form>
-      </Form>
+        {/* Pruebas */}
+        <Controller
+          control={control}
+          name="pruebas"
+          render={({ field }) => (
+            <div className="flex flex-col items-center my-2">
+              <label
+                htmlFor="pruebas"
+                className={cn(
+                  "text-sm text-primary",
+                  errors.pruebas && "text-destructive"
+                )}
+              >
+                Pruebas seleccionadas
+              </label>
+              <PruebasList
+                className="w-full"
+                pruebas={field.value}
+                messageNothingAdded="No hay pruebas seleccionadas"
+                counterMin={(prueba_index, param_index) => (
+                  <Controller
+                    name={`pruebas.${prueba_index}.parametros.${param_index}.valorMinimo`}
+                    control={control}
+                    render={({ field }) => (
+                      <Counter
+                        {...field}
+                        className={`w-20 ${
+                          errors.pruebas?.[prueba_index]?.parametros?.[
+                            param_index
+                          ]?.valorMinimo
+                            ? "border-red-500"
+                            : ""
+                        }`}
+                        disabled={!watch(`pruebas.${prueba_index}.checked`)}
+                      />
+                    )}
+                  />
+                )}
+                counterMax={(prueba_index, param_index) => (
+                  <Controller
+                    name={`pruebas.${prueba_index}.parametros.${param_index}.valorMaximo`}
+                    control={control}
+                    render={({ field }) => (
+                      <Counter
+                        {...field}
+                        className={`w-20 ${
+                          errors.pruebas?.[prueba_index]?.parametros?.[
+                            param_index
+                          ]?.valorMaximo
+                            ? "border-red-500"
+                            : ""
+                        }`}
+                        disabled={!watch(`pruebas.${prueba_index}.checked`)}
+                      />
+                    )}
+                  />
+                )}
+                remover={(index, item) => (
+                  <Button
+                    className="absolute right-0 top-0 z-10"
+                    onClick={() => {
+                      handleUnselectPrueba(item, index);
+                    }}
+                    type="button"
+                  >
+                    &times;
+                  </Button>
+                )}
+                error={(index) =>
+                  errors.pruebas?.[index]?.parametros?.root && (
+                    <span className="text-red-500 font-sans text-sm">
+                      {errors.pruebas?.[index]?.parametros?.root?.message}
+                    </span>
+                  )
+                }
+              />
+              <Button type="button" onClick={() => setOpenPruebas(true)}>
+                Añadir pruebas
+              </Button>
+              {errors.pruebas && (
+                <span className="text-red-500 font-sans text-sm">
+                  {errors.pruebas?.message}
+                </span>
+              )}
+            </div>
+          )}
+        />
+
+        <PruebasStock
+          open={openPruebas}
+          setOpen={setOpenPruebas}
+          pruebas={pruebas}
+          handleSelectPrueba={handleSelectPrueba}
+          handleUnselectPrueba={handleUnselectPrueba}
+        />
+
+        <Button type="submit" className="w-full mt-4">
+          Registrar Proyecto
+        </Button>
+      </form>
     </div>
   );
 }

@@ -24,7 +24,8 @@ export const uploadImage = async (
   const blob = base64ToBlob(base64String, contentType);
 
   // Listar los buckets disponibles
-  const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+  const { data: buckets, error: bucketsError } =
+    await supabase.storage.listBuckets();
   if (bucketsError) {
     console.error("Error al listar los buckets:", bucketsError);
     throw bucketsError;
@@ -34,16 +35,16 @@ export const uploadImage = async (
   const { data, error } = await supabase.storage
     .from("myb_hidraulic")
     .upload(`${filePath}.png`, blob, {
-        contentType,
-        cacheControl: "3600",
-        upsert: true,
+      contentType,
+      cacheControl: "3600",
+      upsert: true,
     });
   if (error) {
     console.error("Error al subir la imagen:", error);
     throw error;
   }
-  const { data: { publicUrl } } = supabase.storage
-    .from("myb_hidraulic")
-    .getPublicUrl(`${filePath}.png`);
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("myb_hidraulic").getPublicUrl(`${filePath}.png`);
   return publicUrl;
 };

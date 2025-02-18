@@ -94,7 +94,7 @@ export function ImageLoader({
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
-      <div className="bg-gradient-to-r to-slate-700 from-slate-800 p-3 rounded-lg w-full">
+      <div className="bg-gradient-to-r to-primary/90 from-primary-foreground/95 p-3 rounded-lg w-full">
         <div
           {...getRootProps()}
           className="flex flex-col items-center justify-center pt-5 pb-6 w-full px-4 h-28 border-2 border-white border-dashed rounded-lg cursor-pointer bg-gray-300 bg-opacity-25 border-opacity-25 text-opacity-100 hover:bg-opacity-25 hover:bg-bray-800 hover:bg-gray-600 hover:border-white"
@@ -107,7 +107,9 @@ export function ImageLoader({
           {errorsMessage ? (
             <p className="text-red-500">{errorsMessage}</p>
           ) : fileName ? (
-            <span className="font-semibold text-sm mt-2 text-white">{fileName}</span>
+            <span className="font-semibold text-sm mt-2 text-white">
+              {fileName}
+            </span>
           ) : (
             <p
               className={`text-sm ${
