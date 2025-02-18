@@ -461,223 +461,261 @@ export function InterfazRegistroProyecto() {
   };
 
   return (
-    <div className="p-4 max-w-lg mx-auto">
+    <div className="p-4 w-lg mx-auto">
       {noice && <Noice noice={noice} />}
-      <h2 className="text-lg font-semibold mb-4">Registro de Proyecto</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="mb-4">Registro de Proyecto</h1>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 grid lg:grid-cols-2 gap-4"
+      >
         {/* Campos de entrada */}
-        <div className="mb-4">
-          <Controller
-            name="titulo"
-            control={control}
-            render={({ field }) => (
-              <>
-                <InputField
-                  inputLabel="Titulo"
-                  labelClassName={
-                    errors.titulo &&
-                    "text-destructive peer-focus:text-destructive"
-                  }
-                  {...field}
-                />
-                {errors.titulo && (
-                  <p className="message-error">{errors.titulo.message}</p>
+        <div className="w-full flex flex-col">
+          <h3 className="text-base font-medium mb-2 w-full">
+            Datos del Proyecto
+          </h3>
+          <div className="w-full grid md:grid-cols-2 md:gap-x-6">
+            <div className="mb-4">
+              <Controller
+                name="titulo"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="Titulo"
+                      labelClassName={
+                        errors.titulo &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      {...field}
+                    />
+                    {errors.titulo && (
+                      <p className="message-error">{errors.titulo.message}</p>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-          />
+              />
+            </div>
+
+            <div className="mb-4">
+              <Controller
+                name="descripcion"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="Descripción"
+                      labelClassName={
+                        errors.descripcion &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      {...field}
+                    />
+                    {errors.descripcion && (
+                      <p className="message-error">
+                        {errors.descripcion.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="w-full grid md:grid-cols-2 md:gap-x-6">
+            <div className="mb-4 w-full">
+              <Controller
+                name="fechaInicio"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <label
+                      htmlFor="fechaInicio"
+                      className={cn(
+                        "text-sm text-primary",
+                        errors.fechaInicio && "text-destructive"
+                      )}
+                    >
+                      Fecha de Inicio
+                    </label>
+                    <InputField
+                      type="date"
+                      id="fechaInicio"
+                      min={new Date().toISOString().split("T")[0]}
+                      value={
+                        field.value instanceof Date
+                          ? field.value.toISOString().split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) => {
+                        const date = e.target.value
+                          ? new Date(e.target.value)
+                          : new Date();
+                        field.onChange(e.target.value ? date : new Date());
+                        if (watch("fechaFin") < date) {
+                          setValue("fechaFin", date);
+                        }
+                      }}
+                    />
+                    {errors.fechaInicio && (
+                      <p className="message-error">
+                        {errors.fechaInicio.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+
+            <div className="mb-4 w-full">
+              <Controller
+                name="fechaFin"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <label
+                      htmlFor="fechaFin"
+                      className={cn(
+                        "text-sm text-primary",
+                        errors.fechaFin && "text-destructive"
+                      )}
+                    >
+                      Fecha de Fin
+                    </label>
+                    <InputField
+                      type="date"
+                      id="fechaFin"
+                      min={watch("fechaInicio").toISOString().split("T")[0]}
+                      value={
+                        field.value instanceof Date
+                          ? field.value.toISOString().split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) => {
+                        field.onChange(
+                          e.target.value ? new Date(e.target.value) : new Date()
+                        );
+                      }}
+                    />
+                    {errors.fechaFin && (
+                      <p className="message-error">{errors.fechaFin.message}</p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </div>
+          {/* Costo de Mano de Obra */}
+          <div className="w-full grid md:grid-cols-2 md:gap-x-6">
+            <div className="mb-4 w-full">
+              <Controller
+                name="costoManoObra"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="Costo de Mano de Obra"
+                      type="number"
+                      labelClassName={
+                        errors.costoManoObra &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      {...field}
+                    />
+                    {errors?.costoManoObra && (
+                      <p className="message-error">
+                        {errors.costoManoObra.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="mb-4">
-          <Controller
-            name="descripcion"
-            control={control}
-            render={({ field }) => (
-              <>
-                <InputField
-                  inputLabel="Descripción"
-                  labelClassName={
-                    errors.descripcion &&
-                    "text-destructive peer-focus:text-destructive"
-                  }
-                  {...field}
-                />
-                {errors.descripcion && (
-                  <p className="message-error">{errors.descripcion.message}</p>
-                )}
-              </>
-            )}
-          />
-        </div>
+        <div className="w-full flex flex-col">
+          <h3 className="text-base font-medium mb-2 w-full">
+            Personal Asignado
+          </h3>
 
-        <div className="flex flex-row justify-between">
-          <div className="mb-4 w-1/2">
+          <div className="grid md:grid-cols-2 md:gap-x-10 gap-y-3 mb-2">
+            {/* Select para Cliente */}
             <Controller
-              name="fechaInicio"
+              name="idCliente"
               control={control}
               render={({ field }) => (
-                <>
-                  <InputField
-                    type="date"
-                    id="fechaInicio"
-                    min={new Date().toISOString().split("T")[0]}
-                    value={
-                      field.value instanceof Date
-                        ? field.value.toISOString().split("T")[0]
-                        : ""
-                    }
-                    onChange={(e) => {
-                      const date = e.target.value
-                        ? new Date(e.target.value)
-                        : new Date();
-                      field.onChange(e.target.value ? date : new Date());
-                      if (watch("fechaFin") < date) {
-                        setValue("fechaFin", date);
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="idCliente"
+                    className={cn(
+                      "text-sm text-primary",
+                      errors.idCliente && "text-destructive"
+                    )}
+                  >
+                    Descripción
+                  </label>
+                  <Combobox<Cliente>
+                    items={clientes}
+                    getValue={(r) => {
+                      if (r && typeof r !== "string" && "idCliente" in r) {
+                        return r.idCliente.toString();
                       }
                     }}
+                    getLabel={(r) => r.nombre}
+                    getRealValue={(r) => r}
+                    onSelection={(r) => {
+                      field.onChange(r.idCliente);
+                    }}
+                    itemName={"Cliente"}
                   />
-                  {errors.fechaInicio && (
-                    <p className="message-error">
-                      {errors.fechaInicio.message}
-                    </p>
+                  {errors?.idCliente && (
+                    <span className="message-error">
+                      {errors.idCliente.message}
+                    </span>
                   )}
-                </>
+                </div>
               )}
             />
-          </div>
 
-          <div className="mb-4 w-1/2">
+            {/* Select para Supervisor */}
             <Controller
-              name="fechaFin"
+              name="idSupervisor"
               control={control}
               render={({ field }) => (
-                <>
-                  <InputField
-                    type="date"
-                    id="fechaFin"
-                    min={watch("fechaInicio").toISOString().split("T")[0]}
-                    value={
-                      field.value instanceof Date
-                        ? field.value.toISOString().split("T")[0]
-                        : ""
-                    }
-                    onChange={(e) => {
-                      field.onChange(
-                        e.target.value ? new Date(e.target.value) : new Date()
-                      );
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="idSupervisor"
+                    className={cn(
+                      "text-sm text-primary",
+                      errors.idSupervisor && "text-destructive"
+                    )}
+                  >
+                    Supervisor
+                  </label>
+                  <Combobox<Empleado>
+                    items={supervisores}
+                    getValue={(r) => {
+                      if (r && typeof r !== "string" && "idEmpleado" in r) {
+                        return r.idEmpleado!.toString();
+                      }
                     }}
+                    getLabel={(r) => r.nombre + " " + r.apellido}
+                    getRealValue={(r) => r}
+                    onSelection={(r) => {
+                      field.onChange(r.idEmpleado);
+                    }}
+                    itemName={"Supervisor"}
                   />
-                  {errors.fechaFin && (
-                    <p className="message-error">{errors.fechaFin.message}</p>
+                  {errors?.idSupervisor && (
+                    <span className="message-error">
+                      {errors.idSupervisor.message}
+                    </span>
                   )}
-                </>
+                </div>
               )}
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-y-3 mb-2">
-          {/* Select para Cliente */}
-          <Controller
-            name="idCliente"
-            control={control}
-            render={({ field }) => (
-              <div className="flex flex-col w-full">
-                <label
-                  htmlFor="idCliente"
-                  className={cn(
-                    "text-sm text-primary",
-                    errors.idCliente && "text-destructive"
-                  )}
-                >
-                  Descripción
-                </label>
-                <Combobox<Cliente>
-                  items={clientes}
-                  getValue={(r) => {
-                    if (r && typeof r !== "string" && "idCliente" in r) {
-                      return r.idCliente.toString();
-                    }
-                  }}
-                  getLabel={(r) => r.nombre}
-                  getRealValue={(r) => r}
-                  onSelection={(r) => {
-                    field.onChange(r.idCliente);
-                  }}
-                  itemName={"Cliente"}
-                />
-                {errors?.idCliente && (
-                  <span className="message-error">
-                    {errors.idCliente.message}
-                  </span>
-                )}
-              </div>
-            )}
-          />
-
-          {/* Select para Supervisor */}
-          <Controller
-            name="idSupervisor"
-            control={control}
-            render={({ field }) => (
-              <div className="flex flex-col w-full">
-                <label
-                  htmlFor="idSupervisor"
-                  className={cn(
-                    "text-sm text-primary",
-                    errors.idSupervisor && "text-destructive"
-                  )}
-                >
-                  Supervisor
-                </label>
-                <Combobox<Empleado>
-                  items={supervisores}
-                  getValue={(r) => {
-                    if (r && typeof r !== "string" && "idEmpleado" in r) {
-                      return r.idEmpleado!.toString();
-                    }
-                  }}
-                  getLabel={(r) => r.nombre + " " + r.apellido}
-                  getRealValue={(r) => r}
-                  onSelection={(r) => {
-                    field.onChange(r.idEmpleado);
-                  }}
-                  itemName={"Supervisor"}
-                />
-                {errors?.idSupervisor && (
-                  <span className="message-error">
-                    {errors.idSupervisor.message}
-                  </span>
-                )}
-              </div>
-            )}
-          />
-        </div>
-
-        {/* Costo de Mano de Obra */}
-        <div className="mb-4">
-          <Controller
-            name="costoManoObra"
-            control={control}
-            render={({ field }) => (
-              <>
-                <InputField
-                  inputLabel="Costo de Mano de Obra"
-                  type="number"
-                  labelClassName={
-                    errors.costoManoObra &&
-                    "text-destructive peer-focus:text-destructive"
-                  }
-                  {...field}
-                />
-                {errors?.costoManoObra && (
-                  <p className="message-error">
-                    {errors.costoManoObra.message}
-                  </p>
-                )}
-              </>
-            )}
-          />
         </div>
 
         {/* Repuestos */}
@@ -685,7 +723,7 @@ export function InterfazRegistroProyecto() {
           name="repuestos"
           control={control}
           render={({ field }) => (
-            <div className="flex flex-col items-center my-4">
+            <div className="flex flex-col items-center my-4 lg:w-1/2 lg:mx-auto">
               <label
                 htmlFor="repuestos"
                 className={cn(
@@ -763,7 +801,7 @@ export function InterfazRegistroProyecto() {
           control={control}
           name="pruebas"
           render={({ field }) => (
-            <div className="flex flex-col items-center my-2">
+            <div className="flex flex-col items-center my-2 lg:w-1/2 lg:mx-auto">
               <label
                 htmlFor="pruebas"
                 className={cn(
@@ -853,10 +891,11 @@ export function InterfazRegistroProyecto() {
           handleSelectPrueba={handleSelectPrueba}
           handleUnselectPrueba={handleUnselectPrueba}
         />
-
-        <Button type="submit" className="w-full mt-4">
-          Registrar Proyecto
-        </Button>
+        <div className="lg:col-span-2 flex justify-center">
+          <Button type="submit" className="w-full md:w-1/2 lg:w-1/3 mt-4">
+            Registrar Proyecto
+          </Button>
+        </div>
       </form>
     </div>
   );
