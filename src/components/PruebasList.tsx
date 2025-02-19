@@ -29,7 +29,9 @@ export function PruebasList<T extends TipoPruebaForms>({
   return (
     <div className="mx-3 overflow-y-auto" style={{ height: "40h" }}>
       {pruebas.length === 0 ? (
-        <p className="w-full text-center">{messageNothingAdded}</p>
+        <p className="w-full text-lg text-center min-h-10">
+          {messageNothingAdded}
+        </p>
       ) : (
         <div className={`${className && className} mb-2`}>
           {pruebas.map((item, prueba_index) => (
@@ -78,9 +80,11 @@ export function PruebasList<T extends TipoPruebaForms>({
                             <>
                               <th
                                 scope="row"
-                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap w-2/5"
                               >
-                                {`${param.nombre}( ${param.unidades} )`}
+                                <span className="text-wrap">
+                                  {`${param.nombre} (${param.unidades})`}
+                                </span>
                               </th>
                               <td className="px-2 min-w-16 py-4">
                                 {counterMin(prueba_index, param_index, item)}
@@ -93,7 +97,7 @@ export function PruebasList<T extends TipoPruebaForms>({
                             <>
                               <th
                                 scope="row"
-                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                                className="px-6 py-4 font-medium text-gray-900"
                               >
                                 {param.nombre}
                               </th>

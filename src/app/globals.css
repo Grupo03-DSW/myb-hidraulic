@@ -125,6 +125,18 @@ body {
   @apply text-sm font-light text-destructive;
 }
 
+.content-form-group {
+  @apply w-full flex flex-col border-2 rounded-lg px-3 pb-3 pt-4 bg-white/35 relative max-h-min;
+}
+
+.content-form-group-label {
+  @apply absolute -top-3 left-4 min-w-min bg-gradient-to-t from-white/35 to-background;
+}
+
+.form-group-label {
+  @apply text-base font-medium mb-2 ml-2 mr-4;
+}
+
 /* Estilo general del scrollbar */
 ::-webkit-scrollbar {
   width: 12px; /* Ancho del scrollbar vertical */

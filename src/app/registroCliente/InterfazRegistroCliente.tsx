@@ -92,124 +92,134 @@ export function InterfazRegistroCliente() {
       {noice && <Noice noice={noice} />}
       <h1 className="mb-4">Registro de Cliente</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col">
-        <h3 className="text-base font-medium mb-2 w-full">Datos Personales</h3>
-        <div className="w-full grid md:grid-cols-2 gap-4">
-          <div className="mb-4">
-            <Controller
-              name="nombre"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <InputField
-                    inputLabel="Nombre"
-                    labelClassName={
-                      errors.nombre &&
-                      "text-destructive peer-focus:text-destructive"
-                    }
-                    {...field}
-                  />
-                  {errors.nombre && (
-                    <p className="message-error">{errors.nombre.message}</p>
-                  )}
-                </>
-              )}
-            />
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col space-y-5">
+        <div className="content-form-group">
+          <div className="content-form-group-label">
+            <h3 className="form-group-label">Datos Personales</h3>
           </div>
+          <div className="w-full grid md:grid-cols-2 gap-4">
+            <div className="mb-4">
+              <Controller
+                name="nombre"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="Nombre"
+                      labelClassName={
+                        errors.nombre &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      {...field}
+                    />
+                    {errors.nombre && (
+                      <p className="message-error">{errors.nombre.message}</p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
 
-          <div className="mb-4">
-            <Controller
-              name="ruc"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <InputField
-                    inputLabel="RUC"
-                    labelClassName={
-                      errors.ruc &&
-                      "text-destructive peer-focus:text-destructive"
-                    }
-                    type="text"
-                    {...field}
-                  />
-                  {errors.ruc && (
-                    <p className="message-error">{errors.ruc.message}</p>
-                  )}
-                </>
-              )}
-            />
+            <div className="mb-4">
+              <Controller
+                name="ruc"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="RUC"
+                      labelClassName={
+                        errors.ruc &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      type="text"
+                      {...field}
+                    />
+                    {errors.ruc && (
+                      <p className="message-error">{errors.ruc.message}</p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
           </div>
         </div>
 
-        <h3 className="text-base font-medium mb-2 mt-2">Datos de Contacto</h3>
-        <div className="w-full grid md:grid-cols-2 gap-4">
-          <div className="mb-4">
-            <Controller
-              name="direccion"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <InputField
-                    inputLabel="Dirección"
-                    labelClassName={
-                      errors.direccion &&
-                      "text-destructive peer-focus:text-destructive"
-                    }
-                    type="text"
-                    {...field}
-                  />
-                  {errors.direccion && (
-                    <p className="message-error">{errors.direccion.message}</p>
-                  )}
-                </>
-              )}
-            />
+        <div className="content-form-group">
+          <div className="content-form-group-label">
+            <h3 className="form-group-label">Datos de Contacto</h3>
           </div>
+          <div className="w-full grid md:grid-cols-2 gap-x-4">
+            <div className="mb-4">
+              <Controller
+                name="direccion"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="Dirección"
+                      labelClassName={
+                        errors.direccion &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      type="text"
+                      {...field}
+                    />
+                    {errors.direccion && (
+                      <p className="message-error">
+                        {errors.direccion.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
 
-          <div className="mb-4">
-            <Controller
-              name="telefono"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <InputField
-                    inputLabel="Teléfono"
-                    labelClassName={
-                      errors.telefono &&
-                      "text-destructive peer-focus:text-destructive"
-                    }
-                    type="text"
-                    {...field}
-                  />
-                  {errors.telefono && (
-                    <p className="message-error">{errors.telefono.message}</p>
-                  )}
-                </>
-              )}
-            />
-          </div>
+            <div className="mb-4">
+              <Controller
+                name="telefono"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="Teléfono"
+                      labelClassName={
+                        errors.telefono &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      type="text"
+                      {...field}
+                    />
+                    {errors.telefono && (
+                      <p className="message-error">{errors.telefono.message}</p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
 
-          <div className="mb-4">
-            <Controller
-              name="correo"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <InputField
-                    inputLabel="Correo"
-                    labelClassName={
-                      errors.correo &&
-                      "text-destructive peer-focus:text-destructive"
-                    }
-                    type="email"
-                    {...field}
-                  />
-                  {errors.correo && (
-                    <p className="message-error">{errors.correo.message}</p>
-                  )}
-                </>
-              )}
-            />
+            <div className="mb-4">
+              <Controller
+                name="correo"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <InputField
+                      inputLabel="Correo"
+                      labelClassName={
+                        errors.correo &&
+                        "text-destructive peer-focus:text-destructive"
+                      }
+                      type="email"
+                      {...field}
+                    />
+                    {errors.correo && (
+                      <p className="message-error">{errors.correo.message}</p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
           </div>
         </div>
 

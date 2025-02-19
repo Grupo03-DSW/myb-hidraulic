@@ -15,23 +15,34 @@ export function InterfazListaProyectos() {
   });
 
   const [etapasSeleccionadas, setEtapasSeleccionadas] = useState<number[]>([]);
-  const [clientesSeleccionados, setClientesSeleccionados] = useState<string[]>([]);
+  const [clientesSeleccionados, setClientesSeleccionados] = useState<string[]>(
+    []
+  );
   const [showEtapas, setShowEtapas] = useState(false);
   const [showClientes, setShowClientes] = useState(false);
   const { data: session, status } = useSession();
 
   useEffect(() => {
     if (status === "loading") return;
-    const APIEndPoint = session!.user.rol === "jefe" ? `/api/proyecto/por-jefe/${session!.user.id}` : session!.user.rol === "supervisor" ? `/api/proyecto/por-supervisor/${session!.user.id}` : ""
+    const APIEndPoint =
+      session!.user.rol === "jefe"
+        ? `/api/proyecto/por-jefe/${session!.user.id}`
+        : session!.user.rol === "supervisor"
+        ? `/api/proyecto/por-supervisor/${session!.user.id}`
+        : "";
     const fetchProyectos = async () => {
       try {
         const response = await fetch(APIEndPoint);
         if (!response.ok) throw new Error("Error al cargar proyectos");
-        const data: Proyecto[] = await response.json();
+        console.log(response);
+        const data = await response.json();
+
+        console.log(data);
         setProyectos(data ? data : []);
         setFilteredProyectos(data ? data : []);
         setNoice(null);
-      } catch {
+      } catch (error) {
+        console.error("Error al cargar proyectos:", error);
         setNoice({ type: "error", message: "Error al cargar sus proyectos" });
       }
     };
@@ -44,11 +55,15 @@ export function InterfazListaProyectos() {
       let filtrados = proyectos;
 
       if (etapasSeleccionadas.length > 0) {
-        filtrados = filtrados.filter((p) => etapasSeleccionadas.includes(p.idEtapaActual!));
+        filtrados = filtrados.filter((p) =>
+          etapasSeleccionadas.includes(p.idEtapaActual!)
+        );
       }
 
       if (clientesSeleccionados.length > 0) {
-        filtrados = filtrados.filter((p) => clientesSeleccionados.includes(p.cliente!.nombre));
+        filtrados = filtrados.filter((p) =>
+          clientesSeleccionados.includes(p.cliente!.nombre)
+        );
       }
 
       setFilteredProyectos(filtrados);
@@ -59,23 +74,32 @@ export function InterfazListaProyectos() {
 
   const manejarCambioEtapa = (idEtapa: number) => {
     setEtapasSeleccionadas((prev) =>
-      prev.includes(idEtapa) ? prev.filter((id) => id !== idEtapa) : [...prev, idEtapa]
+      prev.includes(idEtapa)
+        ? prev.filter((id) => id !== idEtapa)
+        : [...prev, idEtapa]
     );
   };
 
   const manejarCambioCliente = (cliente: string) => {
     setClientesSeleccionados((prev) =>
-      prev.includes(cliente) ? prev.filter((c) => c !== cliente) : [...prev, cliente]
+      prev.includes(cliente)
+        ? prev.filter((c) => c !== cliente)
+        : [...prev, cliente]
     );
   };
 
   const etapasDisponibles = Array.from(
     new Map(
-      proyectos.map((p) => [p.idEtapaActual!, { id: p.idEtapaActual!, nombre: p.etapaActual }])
+      proyectos.map((p) => [
+        p.idEtapaActual!,
+        { id: p.idEtapaActual!, nombre: p.etapaActual },
+      ])
     ).values()
   ).sort((a, b) => a.id - b.id);
 
-  const clientesDisponibles = Array.from(new Set(proyectos.map((p) => p.cliente!.nombre)));
+  const clientesDisponibles = Array.from(
+    new Set(proyectos.map((p) => p.cliente!.nombre))
+  );
 
   return (
     <div className="p-4 h-dvh">
@@ -133,7 +157,7 @@ export function InterfazListaProyectos() {
                 </div>
               </div>
             )}
-          </div>  
+          </div>
           <div className="flex flex-wrap gap-2">
             {etapasSeleccionadas.map((id) => {
               const etapa = etapasDisponibles.find((e) => e.id === id);

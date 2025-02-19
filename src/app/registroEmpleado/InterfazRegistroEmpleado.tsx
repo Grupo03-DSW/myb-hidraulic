@@ -150,7 +150,7 @@ export function InterfazRegistroEmpleado() {
   };
 
   return (
-    <div className="p-10 w-full mx-auto">
+    <div className="p-10 max-w-screen-lg mx-auto">
       {noice && <Noice noice={noice} />}
       <h1 className="mb-4">Registro de Empleado</h1>
 

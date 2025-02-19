@@ -60,7 +60,7 @@ export function InterfazProyeccionRepuestos() {
 
   useEffect(() => {
     async function fetchRepuestos() {
-      if (status === "loading") return
+      if (status === "loading") return;
       try {
         const response = await fetch(
           `/api/repuesto/faltantes/por-jefe/${session?.user?.id}`,
@@ -150,16 +150,14 @@ export function InterfazProyeccionRepuestos() {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="p-4 flex-1 justify-center"
+      className="p-4 flex-1 justify-center max-w-screen-lg mx-auto"
     >
       {noice && <Noice noice={noice} />}
-      <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
-        Proyeccion de Repuestos
-      </h1>
+      <h1>Proyeccion de Repuestos</h1>
       <RepuestosList
         repuestos={repuestosField.fields}
         className="grid lg:grid-cols-2 gap-4"
-        messageNothingAdded="No hay repuestos por asignados a sus proyectos"
+        messageNothingAdded="No hay repuestos faltantes en sus proyectos"
         counter={(index, item) => (
           <Controller
             name={`repuestos.${index}.quantity`}
@@ -170,7 +168,7 @@ export function InterfazProyeccionRepuestos() {
                 onChange={(e) => {
                   field.onChange(e);
                 }}
-                className={`min-w-32 ${
+                className={`${
                   form.formState.errors.repuestos?.[index]?.quantity
                     ? "border-red-500"
                     : ""

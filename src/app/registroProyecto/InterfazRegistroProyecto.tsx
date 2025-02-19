@@ -461,20 +461,20 @@ export function InterfazRegistroProyecto() {
   };
 
   return (
-    <div className="p-4 w-lg mx-auto">
+    <div className="p-4 max-w-screen-lg mx-auto">
       {noice && <Noice noice={noice} />}
       <h1 className="mb-4">Registro de Proyecto</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 grid lg:grid-cols-2 gap-4"
+        className="space-y-4 lg:space-y-0 grid lg:grid-cols-2 gap-4"
       >
         {/* Campos de entrada */}
-        <div className="w-full flex flex-col">
-          <h3 className="text-base font-medium mb-2 w-full">
-            Datos del Proyecto
-          </h3>
-          <div className="w-full grid md:grid-cols-2 md:gap-x-6">
+        <div className="content-form-group">
+          <div className="content-form-group-label">
+            <h3 className="form-group-label">Datos del Proyecto</h3>
+          </div>
+          <div className="w-full grid md:grid-cols-2 md:gap-x-6 mt-1">
             <div className="mb-4">
               <Controller
                 name="titulo"
@@ -634,10 +634,10 @@ export function InterfazRegistroProyecto() {
           </div>
         </div>
 
-        <div className="w-full flex flex-col">
-          <h3 className="text-base font-medium mb-2 w-full">
-            Personal Asignado
-          </h3>
+        <div className="content-form-group">
+          <div className="content-form-group-label">
+            <h3 className="form-group-label">Personal Asignado</h3>
+          </div>
 
           <div className="grid md:grid-cols-2 md:gap-x-10 gap-y-3 mb-2">
             {/* Select para Cliente */}
@@ -723,67 +723,72 @@ export function InterfazRegistroProyecto() {
           name="repuestos"
           control={control}
           render={({ field }) => (
-            <div className="flex flex-col items-center my-4 lg:w-1/2 lg:mx-auto">
-              <label
-                htmlFor="repuestos"
-                className={cn(
-                  "text-sm text-primary",
-                  errors.repuestos && "text-destructive"
+            <div className="content-form-group">
+              <div className="content-form-group-label">
+                <label
+                  htmlFor="repuestos"
+                  className={cn(
+                    "form-group-label text-sm text-primary",
+                    errors.repuestos && "text-destructive"
+                  )}
+                >
+                  Repuestos
+                </label>
+              </div>
+
+              <div className="flex flex-col items-center my-4 lg:w-5/6 lg:mx-auto">
+                <RepuestosList
+                  repuestos={field.value || []}
+                  className="w-full"
+                  messageNothingAdded="No hay repuestos seleccionados"
+                  counter={(index) => (
+                    <Controller
+                      name={`repuestos.${index}.quantity`}
+                      control={control}
+                      render={({ field }) => (
+                        <div className="flex h-full items-center gap-2">
+                          <Counter
+                            {...field}
+                            className={`w-16 ${
+                              errors.repuestos?.[index]?.quantity
+                                ? "border-red-500"
+                                : ""
+                            }`}
+                            min={1}
+                            disabled={!watch(`repuestos.${index}.checked`)}
+                          />
+                        </div>
+                      )}
+                    />
+                  )}
+                  remover={(index, item) => (
+                    <Button
+                      className="absolute right-0 top-0 z-50"
+                      onClick={() => {
+                        handleUnselectRepuesto(item);
+                      }}
+                      type="button"
+                    >
+                      &times;
+                    </Button>
+                  )}
+                  error={(index) =>
+                    errors.repuestos?.[index]?.root && (
+                      <span className="text-red-500 font-sans text-sm">
+                        {errors.repuestos?.[index]?.root?.message}
+                      </span>
+                    )
+                  }
+                />
+                <Button type="button" onClick={() => setOpenRepuestos(true)}>
+                  Añadir repuestos
+                </Button>
+                {errors.repuestos?.root && (
+                  <span className="text-red-500 font-sans text-sm">
+                    {errors.repuestos?.root?.message}
+                  </span>
                 )}
-              >
-                Repuestos seleccionados
-              </label>
-              <RepuestosList
-                repuestos={field.value || []}
-                className="w-full"
-                messageNothingAdded="No hay repuestos seleccionados"
-                counter={(index) => (
-                  <Controller
-                    name={`repuestos.${index}.quantity`}
-                    control={control}
-                    render={({ field }) => (
-                      <div className="flex h-full items-center gap-2">
-                        <Counter
-                          {...field}
-                          className={`w-16 ${
-                            errors.repuestos?.[index]?.quantity
-                              ? "border-red-500"
-                              : ""
-                          }`}
-                          min={1}
-                          disabled={!watch(`repuestos.${index}.checked`)}
-                        />
-                      </div>
-                    )}
-                  />
-                )}
-                remover={(index, item) => (
-                  <Button
-                    className="absolute right-0 top-0 z-50"
-                    onClick={() => {
-                      handleUnselectRepuesto(item);
-                    }}
-                    type="button"
-                  >
-                    &times;
-                  </Button>
-                )}
-                error={(index) =>
-                  errors.repuestos?.[index]?.root && (
-                    <span className="text-red-500 font-sans text-sm">
-                      {errors.repuestos?.[index]?.root?.message}
-                    </span>
-                  )
-                }
-              />
-              <Button type="button" onClick={() => setOpenRepuestos(true)}>
-                Añadir repuestos
-              </Button>
-              {errors.repuestos?.root && (
-                <span className="text-red-500 font-sans text-sm">
-                  {errors.repuestos?.root?.message}
-                </span>
-              )}
+              </div>
             </div>
           )}
         />
@@ -801,85 +806,89 @@ export function InterfazRegistroProyecto() {
           control={control}
           name="pruebas"
           render={({ field }) => (
-            <div className="flex flex-col items-center my-2 lg:w-1/2 lg:mx-auto">
-              <label
-                htmlFor="pruebas"
-                className={cn(
-                  "text-sm text-primary",
-                  errors.pruebas && "text-destructive"
+            <div className="content-form-group">
+              <div className="content-form-group-label">
+                <label
+                  htmlFor="pruebas"
+                  className={cn(
+                    "form-group-label text-sm text-primary",
+                    errors.pruebas && "text-destructive"
+                  )}
+                >
+                  Pruebas
+                </label>
+              </div>
+              <div className="flex flex-col items-center my-2 lg:w-5/6 lg:mx-auto">
+                <PruebasList
+                  className="w-full"
+                  pruebas={field.value}
+                  messageNothingAdded="No hay pruebas seleccionadas"
+                  counterMin={(prueba_index, param_index) => (
+                    <Controller
+                      name={`pruebas.${prueba_index}.parametros.${param_index}.valorMinimo`}
+                      control={control}
+                      render={({ field }) => (
+                        <Counter
+                          {...field}
+                          className={`w-20 ${
+                            errors.pruebas?.[prueba_index]?.parametros?.[
+                              param_index
+                            ]?.valorMinimo
+                              ? "border-red-500"
+                              : ""
+                          }`}
+                          disabled={!watch(`pruebas.${prueba_index}.checked`)}
+                        />
+                      )}
+                    />
+                  )}
+                  counterMax={(prueba_index, param_index) => (
+                    <Controller
+                      name={`pruebas.${prueba_index}.parametros.${param_index}.valorMaximo`}
+                      control={control}
+                      render={({ field }) => (
+                        <Counter
+                          {...field}
+                          className={`w-20 ${
+                            errors.pruebas?.[prueba_index]?.parametros?.[
+                              param_index
+                            ]?.valorMaximo
+                              ? "border-red-500"
+                              : ""
+                          }`}
+                          disabled={!watch(`pruebas.${prueba_index}.checked`)}
+                        />
+                      )}
+                    />
+                  )}
+                  remover={(index, item) => (
+                    <Button
+                      className="absolute right-0 top-0 z-10"
+                      onClick={() => {
+                        handleUnselectPrueba(item, index);
+                      }}
+                      type="button"
+                    >
+                      &times;
+                    </Button>
+                  )}
+                  error={(index) =>
+                    errors.pruebas?.[index]?.parametros?.root && (
+                      <span className="text-red-500 font-sans text-sm">
+                        {errors.pruebas?.[index]?.parametros?.root?.message}
+                      </span>
+                    )
+                  }
+                />
+                <Button type="button" onClick={() => setOpenPruebas(true)}>
+                  Añadir pruebas
+                </Button>
+                {errors.pruebas && (
+                  <span className="text-red-500 font-sans text-sm">
+                    {errors.pruebas?.message}
+                  </span>
                 )}
-              >
-                Pruebas seleccionadas
-              </label>
-              <PruebasList
-                className="w-full"
-                pruebas={field.value}
-                messageNothingAdded="No hay pruebas seleccionadas"
-                counterMin={(prueba_index, param_index) => (
-                  <Controller
-                    name={`pruebas.${prueba_index}.parametros.${param_index}.valorMinimo`}
-                    control={control}
-                    render={({ field }) => (
-                      <Counter
-                        {...field}
-                        className={`w-20 ${
-                          errors.pruebas?.[prueba_index]?.parametros?.[
-                            param_index
-                          ]?.valorMinimo
-                            ? "border-red-500"
-                            : ""
-                        }`}
-                        disabled={!watch(`pruebas.${prueba_index}.checked`)}
-                      />
-                    )}
-                  />
-                )}
-                counterMax={(prueba_index, param_index) => (
-                  <Controller
-                    name={`pruebas.${prueba_index}.parametros.${param_index}.valorMaximo`}
-                    control={control}
-                    render={({ field }) => (
-                      <Counter
-                        {...field}
-                        className={`w-20 ${
-                          errors.pruebas?.[prueba_index]?.parametros?.[
-                            param_index
-                          ]?.valorMaximo
-                            ? "border-red-500"
-                            : ""
-                        }`}
-                        disabled={!watch(`pruebas.${prueba_index}.checked`)}
-                      />
-                    )}
-                  />
-                )}
-                remover={(index, item) => (
-                  <Button
-                    className="absolute right-0 top-0 z-10"
-                    onClick={() => {
-                      handleUnselectPrueba(item, index);
-                    }}
-                    type="button"
-                  >
-                    &times;
-                  </Button>
-                )}
-                error={(index) =>
-                  errors.pruebas?.[index]?.parametros?.root && (
-                    <span className="text-red-500 font-sans text-sm">
-                      {errors.pruebas?.[index]?.parametros?.root?.message}
-                    </span>
-                  )
-                }
-              />
-              <Button type="button" onClick={() => setOpenPruebas(true)}>
-                Añadir pruebas
-              </Button>
-              {errors.pruebas && (
-                <span className="text-red-500 font-sans text-sm">
-                  {errors.pruebas?.message}
-                </span>
-              )}
+              </div>
             </div>
           )}
         />
