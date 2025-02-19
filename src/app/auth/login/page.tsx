@@ -10,6 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Droplets } from "lucide-react";
 import { InputField } from "@/components/InputField";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   correo: z
@@ -26,10 +27,12 @@ type LoginData = z.infer<typeof loginSchema>;
 
 export default function Page() {
   const [noice, setNoice] = useState<NoiceType | null>(null);
+  const router = useRouter();
 
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -47,11 +50,24 @@ export default function Page() {
       const res = await signIn("credentials", {
         correo,
         password,
-        redirect: true,
+        redirect: false,
+        callbackUrl: `${window.location.origin}`,
       });
 
-      if (res?.error) console.error(res.error);
+      console.log("res - ", res);
+      if (res?.error) {
+        if (res.error === "invalid_credentials") {
+          setError("root", {
+            type: "manual",
+            message: "Correo o contraseña incorrectos",
+          });
+        } else {
+          throw new MyBError("Ocurrió un error inesperado. Intenta de nuevo.");
+        }
+      }
+      router.replace("/");
     } catch (error) {
+      console.error("Error in login page:", error);
       if (error instanceof MyBError) {
         setNoice({
           type: "error",
@@ -128,6 +144,9 @@ export default function Page() {
               )}
             />
           </div>
+          {errors.root && (
+            <span className="message-error">{errors.root.message}</span>
+          )}
           <Button type="submit" className="w-full md:w-1/3 mt-4">
             Login
           </Button>

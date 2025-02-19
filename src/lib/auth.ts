@@ -27,9 +27,10 @@ export const authOptions: NextAuthOptions = {
             }
           );
 
+          console.log("response", response);
           if (!response.ok) {
             const errorResponse = await response.json();
-            throw new MyBError(errorResponse.message || "auth_error");
+            throw new Error(errorResponse.message);
           }
 
           const { empleado } = await response.json();
@@ -80,8 +81,9 @@ export const authOptions: NextAuthOptions = {
       session.user = token.user;
       return session;
     },
-    redirect() {
-      return "/";
+    async redirect({ url, baseUrl }) {
+      // 📝 Si la URL no es válida, redirige al home por defecto
+      return url.startsWith(baseUrl) ? url : baseUrl;
     },
   },
   pages: {

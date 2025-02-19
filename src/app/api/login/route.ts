@@ -7,14 +7,21 @@ export async function POST(req: Request) {
     const { correo, password } = await req.json();
 
     if (!correo || !password) {
-      return NextResponse.json({ message: "Missing credentials" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Missing credentials" },
+        { status: 400 }
+      );
     }
 
     const response = await paValidarLogin(correo, password);
-    console.log(response);  
+    console.log(response);
 
     if (response.response === "invalid_credentials") {
-      return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
+      console.log("Invalid credentials");
+      return NextResponse.json(
+        { message: "invalid_credentials" },
+        { status: 401 }
+      );
     }
 
     if (response.response === "db_error") {
@@ -25,18 +32,34 @@ export async function POST(req: Request) {
 
     // Validar la contraseña usando bcrypt
     const passwordMatch = await bcrypt.compare(password, empleado!.password!);
-    console.log("Match",passwordMatch, "password", password, "empleado", empleado!.password!);  
+    console.log(
+      "Match",
+      passwordMatch,
+      "password",
+      password,
+      "empleado",
+      empleado!.password!
+    );
 
     if (!passwordMatch) {
-      return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json(
+        { message: "invalid_credentials" },
+        { status: 401 }
+      );
     }
 
     // Excluir la contraseña antes de devolver al cliente
     const { password: _, ...empleadoSinPassword } = empleado!;
 
-    return NextResponse.json({ empleado: empleadoSinPassword }, { status: 200 });
+    return NextResponse.json(
+      { empleado: empleadoSinPassword },
+      { status: 200 }
+    );
   } catch (err) {
     console.error("Error in login API:", err);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
