@@ -107,6 +107,7 @@ export function InterfazRegistroRepuesto() {
             render={({ field }) => (
               <>
                 <InputField
+                  id="nombre"
                   inputLabel="Nombre"
                   type="text"
                   labelClassName={
@@ -130,6 +131,7 @@ export function InterfazRegistroRepuesto() {
             render={({ field }) => (
               <>
                 <InputField
+                  id="precio"
                   inputLabel="Precio"
                   type="number"
                   labelClassName={
@@ -190,6 +192,7 @@ export function InterfazRegistroRepuesto() {
             render={({ field }) => (
               <>
                 <InputField
+                  id="stockActual"
                   inputLabel="Stock Actual"
                   type="number"
                   labelClassName={

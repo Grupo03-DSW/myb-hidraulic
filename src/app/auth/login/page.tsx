@@ -106,6 +106,7 @@ export default function Page() {
               render={({ field }) => (
                 <div className="w-full md:w-1/2">
                   <InputField
+                    id="correo"
                     inputLabel="Correo"
                     labelClassName={
                       errors.correo &&
@@ -127,6 +128,7 @@ export default function Page() {
               render={({ field }) => (
                 <div className="w-full md:w-1/2 mt-2">
                   <InputField
+                    id="password"
                     inputLabel="Contraseña"
                     type="password"
                     labelClassName={

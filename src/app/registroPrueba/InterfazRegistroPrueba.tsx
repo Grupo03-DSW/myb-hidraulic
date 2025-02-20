@@ -127,6 +127,7 @@ export function InterfazRegistroPrueba() {
             render={({ field }) => (
               <>
                 <InputField
+                  id="nombre"
                   inputLabel="Nombre"
                   labelClassName={
                     errors.nombre &&
@@ -165,6 +166,7 @@ export function InterfazRegistroPrueba() {
                     render={({ field }) => (
                       <>
                         <InputField
+                          id="nombre"
                           inputLabel="Nombre del parámetro"
                           labelClassName={
                             errors.parametros?.[index]?.nombre &&
@@ -189,6 +191,7 @@ export function InterfazRegistroPrueba() {
                     render={({ field }) => (
                       <>
                         <InputField
+                          id="unidades"
                           inputLabel="Unidades"
                           labelClassName={
                             errors.parametros?.[index]?.unidades &&

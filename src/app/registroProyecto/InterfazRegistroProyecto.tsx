@@ -482,6 +482,7 @@ export function InterfazRegistroProyecto() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="titulo"
                       inputLabel="Titulo"
                       labelClassName={
                         errors.titulo &&
@@ -504,6 +505,7 @@ export function InterfazRegistroProyecto() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="descripcion"
                       inputLabel="Descripción"
                       labelClassName={
                         errors.descripcion &&
@@ -614,6 +616,7 @@ export function InterfazRegistroProyecto() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="costoManoObra"
                       inputLabel="Costo de Mano de Obra"
                       type="number"
                       labelClassName={

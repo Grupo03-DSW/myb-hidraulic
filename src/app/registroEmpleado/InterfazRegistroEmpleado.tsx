@@ -168,6 +168,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="nombre"
                       inputLabel="Nombre"
                       labelClassName={
                         errors.nombre &&
@@ -190,6 +191,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="apellido"
                       inputLabel="Apellido"
                       labelClassName={
                         errors.apellido &&
@@ -214,6 +216,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="telefono"
                       inputLabel="Teléfono"
                       labelClassName={
                         errors.telefono &&
@@ -236,6 +239,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="direccion"
                       inputLabel="Dirección"
                       labelClassName={
                         errors.direccion &&
@@ -261,6 +265,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="tipoDocumento"
                       inputLabel="Tipo de Documento"
                       labelClassName={
                         errors.tipoDocumento &&
@@ -285,6 +290,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="documentoIdentidad"
                       inputLabel="Documento de Identidad"
                       labelClassName={
                         errors.documentoIdentidad &&
@@ -314,6 +320,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="correo"
                       inputLabel="Correo"
                       labelClassName={
                         errors.correo &&
@@ -336,6 +343,7 @@ export function InterfazRegistroEmpleado() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="password"
                       inputLabel="Contraseña"
                       labelClassName={
                         errors.password &&

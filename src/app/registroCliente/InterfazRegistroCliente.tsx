@@ -92,7 +92,10 @@ export function InterfazRegistroCliente() {
       {noice && <Noice noice={noice} />}
       <h1 className="mb-4">Registro de Cliente</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col space-y-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full flex flex-col space-y-5"
+      >
         <div className="content-form-group">
           <div className="content-form-group-label">
             <h3 className="form-group-label">Datos Personales</h3>
@@ -105,6 +108,7 @@ export function InterfazRegistroCliente() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="nombre"
                       inputLabel="Nombre"
                       labelClassName={
                         errors.nombre &&
@@ -127,6 +131,7 @@ export function InterfazRegistroCliente() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="ruc"
                       inputLabel="RUC"
                       labelClassName={
                         errors.ruc &&
@@ -157,6 +162,7 @@ export function InterfazRegistroCliente() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="direccion"
                       inputLabel="Dirección"
                       labelClassName={
                         errors.direccion &&
@@ -182,6 +188,7 @@ export function InterfazRegistroCliente() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="telefono"
                       inputLabel="Teléfono"
                       labelClassName={
                         errors.telefono &&
@@ -205,6 +212,7 @@ export function InterfazRegistroCliente() {
                 render={({ field }) => (
                   <>
                     <InputField
+                      id="correo"
                       inputLabel="Correo"
                       labelClassName={
                         errors.correo &&
