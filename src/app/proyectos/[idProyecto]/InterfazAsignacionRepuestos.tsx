@@ -144,11 +144,13 @@ export function InterfazAsignacionRepuestos({
         >
           <div className="sm:max-w-[800px] sm:max-h-[800px] grid grid-rows-[auto_1fr_auto]">
             <h2>Repuestos Asignados</h2>
-            <RepuestosList
-              messageNothingAdded="No hay repuestos"
-              repuestos={repuestos}
-              className="w-full overflow-y-auto px-2"
-            />
+            <div className="flex flex-col items-center my-2 lg:w-5/6 lg:mx-auto">
+              <RepuestosList
+                messageNothingAdded="No hay repuestos"
+                repuestos={repuestos}
+                className="w-full"
+              />
+            </div>
             {available === "No disponibles" && (
               <div className="w-full flex justify-center gap-4 mt-3">
                 <Button
