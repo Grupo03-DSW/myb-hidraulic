@@ -152,13 +152,13 @@ export function InterfazRegistroEmpleado() {
   return (
     <div className="p-10 max-w-screen-lg mx-auto">
       {noice && <Noice noice={noice} />}
-      <h1 className="mb-4">Registro de Empleado</h1>
+      <h1 className="mb-10 text-center">Registro de Empleado</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10"
+        className="w-full grid grid-cols-1 lg:grid-cols-2 "
       >
-        <div className="w-full flex flex-col">
+        <div className="flex flex-col lg:col-span-1 items-center justify-center mx-auto p-4 bg-yellow-40/70 shadow-2xl rounded-2xl ">
           <h3 className="text-base font-medium mb-2">Datos Personales</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="mb-4">
@@ -169,6 +169,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Nombre"
+                      id="nombre"
                       labelClassName={
                         errors.nombre &&
                         "text-destructive peer-focus:text-destructive"
@@ -191,6 +192,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Apellido"
+                      id="apellido"
                       labelClassName={
                         errors.apellido &&
                         "text-destructive peer-focus:text-destructive"
@@ -215,6 +217,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Teléfono"
+                      id="telefono"
                       labelClassName={
                         errors.telefono &&
                         "text-destructive peer-focus:text-destructive"
@@ -237,6 +240,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Dirección"
+                      id="direccion"
                       labelClassName={
                         errors.direccion &&
                         "text-destructive peer-focus:text-destructive"
@@ -262,6 +266,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Tipo de Documento"
+                      id="tipoDocumento"
                       labelClassName={
                         errors.tipoDocumento &&
                         "text-destructive peer-focus:text-destructive"
@@ -286,6 +291,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Documento de Identidad"
+                      id="documentoIdentidad"
                       labelClassName={
                         errors.documentoIdentidad &&
                         "text-destructive peer-focus:text-destructive"
@@ -302,11 +308,9 @@ export function InterfazRegistroEmpleado() {
               />
             </div>
           </div>
-        </div>
 
-        <div className="w-full flex flex-col">
           <h3 className="text-base font-medium mb-2">Datos de Usuario</h3>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="mb-4 lg:mb-1">
               <Controller
                 name="correo"
@@ -315,6 +319,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Correo"
+                      id="correo"
                       labelClassName={
                         errors.correo &&
                         "text-destructive peer-focus:text-destructive"
@@ -337,6 +342,7 @@ export function InterfazRegistroEmpleado() {
                   <>
                     <InputField
                       inputLabel="Contraseña"
+                      id="password"
                       labelClassName={
                         errors.password &&
                         "text-destructive peer-focus:text-destructive"
@@ -353,7 +359,7 @@ export function InterfazRegistroEmpleado() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1  gap-4">
             <div className="mb-4">
               <Controller
                 name="rol"
@@ -393,7 +399,7 @@ export function InterfazRegistroEmpleado() {
           </div>
         </div>
 
-        <div className="lg:col-span-2 flex flex-col items-center justify-center">
+        <div className="w-full flex flex-col lg:col-span-1 items-center justify-center">
           <div className="max-w-md">
             <div className="mb-4">
               <Label>Foto del Empleado</Label>

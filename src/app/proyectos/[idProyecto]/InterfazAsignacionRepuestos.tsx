@@ -120,11 +120,10 @@ export function InterfazAsignacionRepuestos({
       {noice && <Noice noice={noice} />}
       <div className="flex justify-center items-center gap-4 w-full">
         <p
-          className={`font-bold ${
-            available === "Disponibles" || available === "Pedidos"
-              ? "text-green-500"
-              : "text-red-600"
-          }`}
+          className={`font-bold ${available === "Disponibles" || available === "Pedidos"
+            ? "text-green-500"
+            : "text-red-600"
+            }`}
         >
           {available === "Disponibles" && "Repuestos disponibles"}
           {available === "Pedidos" && "Esperando repuestos"}
@@ -154,8 +153,8 @@ export function InterfazAsignacionRepuestos({
                   setIsDialogOpen(false);
                 }}
               >
-              Pedir repuestos
-            </Button>
+                Pedir repuestos
+              </Button>
             )}
           </div>
         </Modal>

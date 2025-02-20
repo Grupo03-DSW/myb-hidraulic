@@ -483,6 +483,7 @@ export function InterfazRegistroProyecto() {
                   <>
                     <InputField
                       inputLabel="Titulo"
+                      id="titulo"
                       labelClassName={
                         errors.titulo &&
                         "text-destructive peer-focus:text-destructive"
@@ -505,6 +506,7 @@ export function InterfazRegistroProyecto() {
                   <>
                     <InputField
                       inputLabel="Descripción"
+                      id="descripcion"
                       labelClassName={
                         errors.descripcion &&
                         "text-destructive peer-focus:text-destructive"
@@ -615,6 +617,7 @@ export function InterfazRegistroProyecto() {
                   <>
                     <InputField
                       inputLabel="Costo de Mano de Obra"
+                      id="costoManoObra"
                       type="number"
                       labelClassName={
                         errors.costoManoObra &&
@@ -749,11 +752,10 @@ export function InterfazRegistroProyecto() {
                         <div className="flex h-full items-center gap-2">
                           <Counter
                             {...field}
-                            className={`w-16 ${
-                              errors.repuestos?.[index]?.quantity
+                            className={`w-16 ${errors.repuestos?.[index]?.quantity
                                 ? "border-red-500"
                                 : ""
-                            }`}
+                              }`}
                             min={1}
                             disabled={!watch(`repuestos.${index}.checked`)}
                           />
@@ -830,13 +832,12 @@ export function InterfazRegistroProyecto() {
                       render={({ field }) => (
                         <Counter
                           {...field}
-                          className={`w-20 ${
-                            errors.pruebas?.[prueba_index]?.parametros?.[
+                          className={`w-20 ${errors.pruebas?.[prueba_index]?.parametros?.[
                               param_index
                             ]?.valorMinimo
                               ? "border-red-500"
                               : ""
-                          }`}
+                            }`}
                           disabled={!watch(`pruebas.${prueba_index}.checked`)}
                         />
                       )}
@@ -849,13 +850,12 @@ export function InterfazRegistroProyecto() {
                       render={({ field }) => (
                         <Counter
                           {...field}
-                          className={`w-20 ${
-                            errors.pruebas?.[prueba_index]?.parametros?.[
+                          className={`w-20 ${errors.pruebas?.[prueba_index]?.parametros?.[
                               param_index
                             ]?.valorMaximo
                               ? "border-red-500"
                               : ""
-                          }`}
+                            }`}
                           disabled={!watch(`pruebas.${prueba_index}.checked`)}
                         />
                       )}

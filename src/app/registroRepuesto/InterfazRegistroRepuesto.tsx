@@ -108,6 +108,7 @@ export function InterfazRegistroRepuesto() {
               <>
                 <InputField
                   inputLabel="Nombre"
+                  id="nombre"
                   type="text"
                   labelClassName={
                     errors.nombre &&
@@ -131,6 +132,7 @@ export function InterfazRegistroRepuesto() {
               <>
                 <InputField
                   inputLabel="Precio"
+                  id="precio"
                   type="number"
                   labelClassName={
                     errors.precio &&
@@ -191,6 +193,7 @@ export function InterfazRegistroRepuesto() {
               <>
                 <InputField
                   inputLabel="Stock Actual"
+                  id="stockActual"
                   type="number"
                   labelClassName={
                     errors.stockActual &&

@@ -128,6 +128,7 @@ export function InterfazRegistroPrueba() {
               <>
                 <InputField
                   inputLabel="Nombre"
+                  id="nombre"
                   labelClassName={
                     errors.nombre &&
                     "text-destructive peer-focus:text-destructive"
@@ -166,6 +167,7 @@ export function InterfazRegistroPrueba() {
                       <>
                         <InputField
                           inputLabel="Nombre del parámetro"
+                          id={`parametros.${index}.nombre`}
                           labelClassName={
                             errors.parametros?.[index]?.nombre &&
                             "text-destructive peer-focus:text-destructive"
@@ -190,6 +192,7 @@ export function InterfazRegistroPrueba() {
                       <>
                         <InputField
                           inputLabel="Unidades"
+                          id={`parametros.${index}.unidades`}
                           labelClassName={
                             errors.parametros?.[index]?.unidades &&
                             "text-destructive peer-focus:text-destructive"

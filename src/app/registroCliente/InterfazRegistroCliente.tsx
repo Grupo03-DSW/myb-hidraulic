@@ -106,6 +106,7 @@ export function InterfazRegistroCliente() {
                   <>
                     <InputField
                       inputLabel="Nombre"
+                      id="nombre"
                       labelClassName={
                         errors.nombre &&
                         "text-destructive peer-focus:text-destructive"
@@ -128,6 +129,7 @@ export function InterfazRegistroCliente() {
                   <>
                     <InputField
                       inputLabel="RUC"
+                      id="ruc"
                       labelClassName={
                         errors.ruc &&
                         "text-destructive peer-focus:text-destructive"
@@ -158,6 +160,7 @@ export function InterfazRegistroCliente() {
                   <>
                     <InputField
                       inputLabel="Dirección"
+                      id="direccion"
                       labelClassName={
                         errors.direccion &&
                         "text-destructive peer-focus:text-destructive"
@@ -183,6 +186,7 @@ export function InterfazRegistroCliente() {
                   <>
                     <InputField
                       inputLabel="Teléfono"
+                      id="telefono"
                       labelClassName={
                         errors.telefono &&
                         "text-destructive peer-focus:text-destructive"
@@ -206,6 +210,7 @@ export function InterfazRegistroCliente() {
                   <>
                     <InputField
                       inputLabel="Correo"
+                      id="correo"
                       labelClassName={
                         errors.correo &&
                         "text-destructive peer-focus:text-destructive"
