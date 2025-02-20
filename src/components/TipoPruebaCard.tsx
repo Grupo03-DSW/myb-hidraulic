@@ -7,7 +7,11 @@ interface TipoPruebaCardProps {
   isSelected: boolean;
   valoresMaximos: number[];
   valoresMinimos: number[];
-  onValorChange: (parametroId: number, valor: number, tipo: "max" | "min") => void;
+  onValorChange: (
+    parametroId: number,
+    valor: number,
+    tipo: "max" | "min"
+  ) => void;
 }
 
 export function TipoPruebaCard({
@@ -25,7 +29,9 @@ export function TipoPruebaCard({
         <button
           type="button"
           onClick={onToggle}
-          className={`p-1 px-4 rounded ${isSelected ? "bg-red-500 text-white" : "bg-blue-500 text-white"}`}
+          className={`p-1 px-4 rounded ${
+            isSelected ? "bg-red-500 text-white" : "bg-blue-500 text-white"
+          }`}
         >
           {isSelected ? "Quitar" : "Añadir"}
         </button>
@@ -33,14 +39,25 @@ export function TipoPruebaCard({
       {isSelected && (
         <div className="space-y-2">
           {prueba.parametros?.map((parametro, index) => (
-            <div key={parametro.idParametro} className="flex items-center space-x-4">
-              <Label>{parametro.nombre} ({parametro.unidades})</Label>
+            <div
+              key={parametro.idParametro}
+              className="flex items-center space-x-4"
+            >
+              <Label>
+                {parametro.nombre} ({parametro.unidades})
+              </Label>
               <input
                 type="number"
                 placeholder="Mín"
                 min="0"
                 value={valoresMinimos[index] || 0}
-                onChange={(e) => onValorChange(parametro.idParametro!, Number(e.target.value), "min")}
+                onChange={(e) =>
+                  onValorChange(
+                    parametro.idParametro!,
+                    Number(e.target.value),
+                    "min"
+                  )
+                }
                 className="border rounded p-1 w-16"
               />
               <input
@@ -48,7 +65,13 @@ export function TipoPruebaCard({
                 placeholder="Máx"
                 min="0"
                 value={valoresMaximos[index] || 0}
-                onChange={(e) => onValorChange(parametro.idParametro!, Number(e.target.value), "max")}
+                onChange={(e) =>
+                  onValorChange(
+                    parametro.idParametro!,
+                    Number(e.target.value),
+                    "max"
+                  )
+                }
                 className="border rounded p-1 w-16"
               />
             </div>

@@ -1,3 +1,5 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import { GeneratePDF } from "@/components/GeneratePDF";
 import { InformeCC } from "@/components/InformeCC";
 import { InformeSection } from "@/components/InformeSection";
@@ -7,18 +9,20 @@ import MyBError from "@/lib/mybError";
 import { NoiceType } from "@/models/noice";
 import { Proyecto, HistorialProyecto } from "@/models/proyecto";
 import { PDFViewer } from "@react-pdf/renderer";
-import { useEffect, useState } from "react";
 
 export function InterfazTerminado({ proyecto }: { proyecto: Proyecto }) {
-  const [ noice, setNoice ] = useState<NoiceType | null>(null);
-  const [ historial, setHistorial ] = useState<HistorialProyecto | null>(null);
+  const [noice, setNoice] = useState<NoiceType | null>(null);
+  const [historial, setHistorial] = useState<HistorialProyecto | null>(null);
 
   useEffect(() => {
     const fetchProjectHistory = async () => {
       try {
-        const response = await fetch(`/api/proyecto/historial/${proyecto.idProyecto}`);
-        if (!response.ok) throw new MyBError("Error al obtener historial del proyecto");
-  
+        const response = await fetch(
+          `/api/proyecto/historial/${proyecto.idProyecto}`
+        );
+        if (!response.ok)
+          throw new MyBError("Error al obtener historial del proyecto");
+
         const historial = await response.json();
         setHistorial(historial);
         setNoice(null);
@@ -31,7 +35,7 @@ export function InterfazTerminado({ proyecto }: { proyecto: Proyecto }) {
             message: "Error al obtener historial del proyecto",
           });
       }
-    }
+    };
 
     fetchProjectHistory();
   }, [proyecto]);
@@ -66,7 +70,9 @@ export function InterfazTerminado({ proyecto }: { proyecto: Proyecto }) {
             <InformeVentas proyecto={proyecto} historial={historial!} />
           </PDFViewer>
           <GeneratePDF
-            Documento={() => <InformeVentas proyecto={proyecto} historial={historial!} />}
+            Documento={() => (
+              <InformeVentas proyecto={proyecto} historial={historial!} />
+            )}
             pdfName={`Informe de Ventas - ${proyecto.titulo}.pdf`}
           />
         </>

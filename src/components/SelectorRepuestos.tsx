@@ -1,4 +1,5 @@
 // SelectorRepuestos.tsx
+"use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Proyecto } from "@/models/proyecto";
 import { RepuestoCard } from "@/components/RepuestoCard";
@@ -38,7 +39,7 @@ export function SelectorRepuestos({
       precio: Number(repuesto.precio),
     }));
 
-    const parsedData = z.array(repuestoSchema).safeParse(formattedData); 
+    const parsedData = z.array(repuestoSchema).safeParse(formattedData);
     if (parsedData.success) {
       setRepuestos(parsedData.data);
     } else {
@@ -57,7 +58,9 @@ export function SelectorRepuestos({
         ? prev.idRepuestos!.filter((id) => id !== repuestoId)
         : [...prev.idRepuestos!, repuestoId];
       const newCantidadesRepuestos = isSelected
-        ? prev.cantidadesRepuestos!.filter((_, index) => prev.idRepuestos![index] !== repuestoId)
+        ? prev.cantidadesRepuestos!.filter(
+            (_, index) => prev.idRepuestos![index] !== repuestoId
+          )
         : [...prev.cantidadesRepuestos!, 1];
       return {
         ...prev,
@@ -84,7 +87,9 @@ export function SelectorRepuestos({
       <h3 className="font-semibold">Seleccionar Repuestos</h3>
       <div className="flex flex-col space-y-2">
         {repuestos.map((repuesto) => {
-          const isSelected = proyecto.idRepuestos!.includes(repuesto.idRepuesto);
+          const isSelected = proyecto.idRepuestos!.includes(
+            repuesto.idRepuesto
+          );
           return (
             <RepuestoCard
               key={repuesto.idRepuesto}

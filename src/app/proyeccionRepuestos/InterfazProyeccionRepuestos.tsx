@@ -1,8 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useState } from "react";
 import { RepuestosList } from "@/components/RepuestosList";
 import { Button } from "@/components/ui/button";
 import { Counter } from "@/components/Counter";
@@ -158,7 +158,7 @@ export function InterfazProyeccionRepuestos() {
       </div>
       <RepuestosList
         repuestos={repuestosField.fields}
-        className="container grid lg:grid-cols-2 gap-4 p-2 overflow-scroll"
+        className="flex flex-col lg:grid lg:grid-cols-2 gap-4 p-2 overflow-scroll"
         messageNothingAdded="No hay repuestos faltantes en sus proyectos"
         counter={(index, item) => (
           <Controller

@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import { EmpleadosList } from "@/components/EmpleadosList";
 import { Modal } from "@/components/Modal";
 import { Noice } from "@/components/Noice";
@@ -10,7 +11,6 @@ import { Empleado } from "@/models/empleado";
 import { NoiceType } from "@/models/noice";
 import { Proyecto } from "@/models/proyecto";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 

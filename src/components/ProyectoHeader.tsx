@@ -1,6 +1,6 @@
 "use client";
-import { Proyecto } from "@/models/proyecto";
 import { useState } from "react";
+import { Proyecto } from "@/models/proyecto";
 import ProjectDetailsModal from "./ProyectDetailsModal";
 import { Button } from "./ui/button";
 import { EmpleadoPictureCard } from "./EmpleadoPictureCard";

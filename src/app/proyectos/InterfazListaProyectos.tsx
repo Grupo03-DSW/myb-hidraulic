@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Proyecto } from "@/models/proyecto";
 import { ProyectosList } from "@/components/ProyectosList";
 import { Noice } from "@/components/Noice";

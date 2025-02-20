@@ -1,3 +1,4 @@
+import React from "react";
 import { EmpleadoForm } from "@/models/empleado";
 import { EmpleadoPictureCard } from "./EmpleadoPictureCard";
 

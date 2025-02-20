@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 

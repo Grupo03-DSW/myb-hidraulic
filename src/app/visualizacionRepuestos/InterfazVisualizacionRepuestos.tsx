@@ -1,8 +1,8 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, set, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useState } from "react";
 import { RepuestosList } from "@/components/RepuestosList";
 import { Button } from "@/components/ui/button";
 import { Repuesto } from "@/models/repuesto";
@@ -146,7 +146,7 @@ export function InterfazVisualizacionRepuestos() {
       <h1>Visualización de repuestos requeridos</h1>
       <RepuestosList
         repuestos={repuestoField.fields}
-        className="container grid lg:grid-cols-2 gap-4 p-2 overflow-scroll"
+        className="flex flex-col lg:grid lg:grid-cols-2 gap-4 p-2 overflow-scroll"
         messageNothingAdded="No se han solicitado repuestos."
         counter={(index) => (
           <Controller

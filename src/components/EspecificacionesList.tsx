@@ -1,5 +1,5 @@
-import { EspecificacionPrueba } from "@/models/especificacion";
 import React from "react";
+import { EspecificacionPrueba } from "@/models/especificacion";
 import { PruebasTable } from "./PruebasTable";
 
 type ResultadosForm = {

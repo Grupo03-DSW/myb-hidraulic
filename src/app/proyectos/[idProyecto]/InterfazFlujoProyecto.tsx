@@ -1,8 +1,8 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import { ProjectFlow } from "@/components/ProjectFlow/ProjectFlow";
-import { useEffect, useState } from "react";
 import { ProyectoHeader } from "@/components/ProyectoHeader";
-import { InterfazAsignacionTareas } from "./InterfazAsignacionTareas";
+import { InterfazAsignacionTareas } from "@/app/proyectos/[idProyecto]/InterfazAsignacionTareas";
 import { Proyecto } from "@/models/proyecto";
 import { InterfazVerificacionReparacion } from "./InterfazVerificacionReparacion";
 import { InterfazGenerarCC } from "./InterfazGenerarCC";

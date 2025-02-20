@@ -1,5 +1,6 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import { Repuesto } from "@/models/repuesto";
 import { Proyecto } from "@/models/proyecto";
 import { Modal } from "@/components/Modal";

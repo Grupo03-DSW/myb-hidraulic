@@ -1,5 +1,7 @@
-import { Empleado } from "@/models/empleado";
+"use client"
+import React from "react";
 import Image from "next/image";
+import { Empleado } from "@/models/empleado";
 
 export function EmpleadoPictureCard({
   empleado,

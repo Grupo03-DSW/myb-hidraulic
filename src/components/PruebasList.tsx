@@ -1,5 +1,5 @@
-import { TipoPruebaForms } from "@/models/tipoprueba";
 import React from "react";
+import { TipoPruebaForms } from "@/models/tipoprueba";
 
 interface PruebasListProps<T extends TipoPruebaForms> {
   pruebas: T[];

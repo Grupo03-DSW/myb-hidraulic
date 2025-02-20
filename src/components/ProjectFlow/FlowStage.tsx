@@ -1,12 +1,15 @@
 "use client";
+import React from "react";
 import { cn } from "@/lib/utils";
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
+import {
+  TimelineConnector,
+  TimelineContent,
+  TimelineItem,
+  TimelineSeparator,
+} from "@mui/lab";
 import { Bookmark, CircleCheck, Clock } from "lucide-react";
 
-export function FlowStage({
+export const FlowStage = ({
   isCurrent,
   isCompleted,
   label,
@@ -14,7 +17,7 @@ export function FlowStage({
   isCurrent: boolean;
   isCompleted: boolean;
   label: string;
-}) {
+}) => {
   return (
     <TimelineItem>
       <TimelineSeparator>
@@ -34,4 +37,4 @@ export function FlowStage({
       </TimelineContent>
     </TimelineItem>
   );
-}
+};

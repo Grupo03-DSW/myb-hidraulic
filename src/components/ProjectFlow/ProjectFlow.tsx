@@ -1,8 +1,8 @@
 "use client";
+import React, { useState } from "react";
 import { FlowStage } from "@/components/ProjectFlow/FlowStage";
-import Timeline from "@mui/lab/Timeline";
+import { Timeline } from "@mui/lab";
 import { stageLabels } from "@/lib/utils";
-import { useState } from "react";
 import { useMediaQuery } from "@mui/material";
 import { ChevronDown } from "lucide-react";
 

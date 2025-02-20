@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Repuesto } from "@/models/repuesto";
 import { PictureCard } from "./PictureCard";
 import { cn } from "@/lib/utils";
@@ -34,7 +34,11 @@ export function RepuestosList<T extends Repuesto>({
         </div>
       ) : (
         repuestos.map((item, index) => (
-          <div key={index} className={`pt-2 w-full relative`}>
+          <RepCardWrapper
+            key={item.idRepuesto}
+            repuesto={item}
+            infoOpen={infoOpen}
+          >
             <div
               className={cn(
                 "flex flex-row items-center justify-center space-x-4 p-4 h-32 w-full border rounded-xl overflow-hidden bg-white/35",
@@ -49,7 +53,7 @@ export function RepuestosList<T extends Repuesto>({
                 />
               )}
               <div
-                className="flex-1 space-y-1 overflow-x-auto w-2/5 min-h-min cursor-default"
+                className="flex-1 space-y-1 w-2/5 h-full py-2 my-2 cursor-default"
                 onMouseEnter={() => {
                   setInfoOpen(item.idRepuesto);
                 }}
@@ -60,10 +64,12 @@ export function RepuestosList<T extends Repuesto>({
                 <p className="text-sm font-medium leading-none">
                   {item.nombre}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {item.descripcion.length > 100
-                    ? `${item.descripcion.substring(0, 80)}...`
-                    : item.descripcion}
+                {/* <p className="text-sm text-muted-foreground overflow-hidden text-ellipsis whitespace-nowrap"> */}
+                <p className="w-full h-1/2 text-sm text-muted-foreground overflow-hidden line-clamp-3 text-ellipsis">
+                  {/* {item.descripcion.length > (isMd ? 80 : 20)
+                    ? `${item.descripcion.substring(0, (isMd ? 80 : 20))}...`
+                    : item.descripcion} */}
+                  {item.descripcion}
                 </p>
               </div>
               {/* Form mode */}
@@ -99,22 +105,84 @@ export function RepuestosList<T extends Repuesto>({
             </div>
             {remover && remover(index, item as T)}
             {error && error(index)}
-
-            {infoOpen === item.idRepuesto && (
-              <div className="absolute z-[1000] bottom-4 left-1/4 w-1/2 flex items-center justify-center transition-opacity duration-200 ease-in opacity-0 animate-fadeIn">
-                <div className="absolute top-0 left-1/4 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-secondary-foreground"></div>
-
-                <div className="absolute top-2 w-full bg-secondary-foreground rounded-lg p-4">
-                  <span className="text-white text-sm font-medium">
-                    {item.nombre}
-                  </span>
-                  <p className="text-white text-xs">{item.descripcion}</p>
-                </div>
-              </div>
-            )}
-          </div>
+          </RepCardWrapper>
         ))
       )}
     </div>
   );
 }
+
+const RepCardWrapper = ({
+  repuesto,
+  infoOpen,
+  children,
+}: {
+  repuesto: Repuesto;
+  infoOpen?: number;
+  children?: React.ReactNode;
+}) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<"top" | "bottom">(
+    "bottom"
+  );
+
+  useEffect(() => {
+    const updateTooltipPosition = () => {
+      if (!cardRef.current) return;
+
+      const cardRect = cardRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const spaceBelow = windowHeight - cardRect.bottom;
+      const spaceAbove = cardRect.top;
+      console.log(
+        "position - ",
+        repuesto.idRepuesto,
+        " - ",
+        spaceBelow < 100 && spaceAbove > 100 ? "top" : "bottom"
+      );
+      // If there's more space above than below, show tooltip on top
+      setTooltipPosition(
+        spaceBelow < 100 && spaceAbove > 100 ? "top" : "bottom"
+      );
+    };
+
+    updateTooltipPosition();
+    window.addEventListener("scroll", updateTooltipPosition);
+    window.addEventListener("resize", updateTooltipPosition);
+
+    return () => {
+      window.removeEventListener("scroll", updateTooltipPosition);
+      window.removeEventListener("resize", updateTooltipPosition);
+    };
+  }, []);
+
+  return (
+    <div className={`pt-2 h-min w-full relative`} ref={cardRef}>
+      {children}
+      {infoOpen === repuesto.idRepuesto &&
+        (tooltipPosition === "bottom" ? (
+          <div className="absolute z-[10000] bottom-4 left-1/4 w-1/2 flex items-center justify-center transition-opacity duration-200 ease-in opacity-0 animate-fadeIn">
+            <div className="absolute top-0 left-1/4 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-secondary-foreground"></div>
+
+            <div className="absolute top-2 w-full bg-secondary-foreground rounded-lg p-4">
+              <span className="text-white text-sm font-medium">
+                {repuesto.nombre}
+              </span>
+              <p className="text-white text-xs">{repuesto.descripcion}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="absolute z-[10000] bottom-full left-1/4 w-1/2 flex items-center justify-center transition-opacity duration-200 ease-in opacity-0 animate-fadeIn">
+            <div className="absolute -bottom-2 left-1/4 w-0 h-0 border-r-8 border-r-transparent border-l-8 border-l-transparent border-t-8 border-t-secondary-foreground"></div>
+
+            <div className="absolute -bottom-0 w-full bg-secondary-foreground rounded-lg p-4">
+              <span className="text-white text-sm font-medium">
+                {repuesto.nombre}
+              </span>
+              <p className="text-white text-xs">{repuesto.descripcion}</p>
+            </div>
+          </div>
+        ))}
+    </div>
+  );
+};

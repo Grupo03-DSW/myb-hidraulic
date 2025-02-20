@@ -1,8 +1,9 @@
+"use client";
+import React, { useState } from "react";
 import { InformeSection } from "@/components/InformeSection";
 import { Noice } from "@/components/Noice";
 import { NoiceType } from "@/models/noice";
 import { Proyecto } from "@/models/proyecto";
-import { useState } from "react";
 import { PDFViewer } from "@react-pdf/renderer";
 import { InformeCC } from "@/components/InformeCC";
 import { GeneratePDF } from "@/components/GeneratePDF";
