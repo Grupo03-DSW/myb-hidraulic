@@ -141,21 +141,25 @@ export function InterfazAsignacionRepuestos({
             setIsDialogOpen(false);
           }}
         >
-          <div className="sm:max-w-[800px] sm:max-h-[800px]">
+          <div className="sm:max-w-[800px] sm:max-h-[800px] grid grid-rows-[auto_1fr_auto]">
+            <h2>Repuestos Asignados</h2>
             <RepuestosList
               messageNothingAdded="No hay repuestos"
               repuestos={repuestos}
-              className="w-full"
+              className="w-full overflow-y-auto px-2"
             />
             {available === "No disponibles" && (
-              <Button
-                onClick={() => {
-                  pedirRepuestos();
-                  setIsDialogOpen(false);
-                }}
-              >
-              Pedir repuestos
-            </Button>
+              <div className="w-full flex justify-center gap-4 mt-3">
+                <Button
+                  className="w-full md:w-1/2"
+                  onClick={() => {
+                    pedirRepuestos();
+                    setIsDialogOpen(false);
+                  }}
+                >
+                  Pedir repuestos
+                </Button>
+              </div>
             )}
           </div>
         </Modal>

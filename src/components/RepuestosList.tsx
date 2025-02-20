@@ -29,12 +29,12 @@ export function RepuestosList<T extends Repuesto>({
   return (
     <div className={`mx-3 ${className}`} style={{ height: "40h" }}>
       {repuestos.length === 0 ? (
-        <p className="w-full text-lg text-center min-h-10">
-          {messageNothingAdded}
-        </p>
+        <div className="flex items-center justify-center h-40 lg:col-span-2">
+          <p className="text-lg text-center">{messageNothingAdded}</p>
+        </div>
       ) : (
         repuestos.map((item, index) => (
-          <div key={item.idRepuesto} className={`pt-2 w-full relative`}>
+          <div key={index} className={`pt-2 w-full relative`}>
             <div
               className={cn(
                 "flex flex-row items-center justify-center space-x-4 p-4 h-32 w-full border rounded-xl overflow-hidden bg-white/35",

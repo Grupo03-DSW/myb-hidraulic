@@ -150,13 +150,15 @@ export function InterfazProyeccionRepuestos() {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="p-4 flex-1 justify-center max-w-screen-lg mx-auto"
+      className="p-4 h-screen max-w-screen-lg grid grid-rows-[auto_1fr_auto] mx-auto"
     >
       {noice && <Noice noice={noice} />}
-      <h1>Proyeccion de Repuestos</h1>
+      <div className="w-full flex justify-center mb-2">
+        <h1>Proyeccion de Repuestos</h1>
+      </div>
       <RepuestosList
         repuestos={repuestosField.fields}
-        className="grid lg:grid-cols-2 gap-4"
+        className="container grid lg:grid-cols-2 gap-4 p-2 overflow-scroll"
         messageNothingAdded="No hay repuestos faltantes en sus proyectos"
         counter={(index, item) => (
           <Controller

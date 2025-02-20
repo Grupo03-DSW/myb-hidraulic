@@ -2,7 +2,6 @@
 import { ProjectFlow } from "@/components/ProjectFlow/ProjectFlow";
 import { useEffect, useState } from "react";
 import { ProyectoHeader } from "@/components/ProyectoHeader";
-import { InterfazAsignacionRepuestos } from "./InterfazAsignacionRepuestos";
 import { InterfazAsignacionTareas } from "./InterfazAsignacionTareas";
 import { Proyecto } from "@/models/proyecto";
 import { InterfazVerificacionReparacion } from "./InterfazVerificacionReparacion";
@@ -17,6 +16,8 @@ import { InterfazReparando } from "./InterfazReparando";
 import { InterfazPintadoYEmbalado } from "./InterfazPintadoYEmbalado";
 import { InterfazTerminado } from "./InterfazTerminado";
 import { useSession } from "next-auth/react";
+import { stageLabels } from "@/lib/utils";
+import { InterfazAsignacionRepuestos } from "./InterfazAsignacionRepuestos";
 
 export function InterfazFlujoProyecto({ idProyecto }: { idProyecto: string }) {
   const [proyecto, setProyecto] = useState<Proyecto>();
@@ -62,7 +63,6 @@ export function InterfazFlujoProyecto({ idProyecto }: { idProyecto: string }) {
 
   return (
     <div className="flex flex-col items-center pt-10 px-20 gap-3">
-
       {noice && <Noice noice={noice} />}
       <div className="w-full">
         <Button
@@ -76,42 +76,55 @@ export function InterfazFlujoProyecto({ idProyecto }: { idProyecto: string }) {
       </div>
 
       <ProyectoHeader proyecto={proyecto} showSeeDetailsBtn={true} />
-      <ProjectFlow etapa={Number(proyecto.idEtapaActual) - 1} />
-      <div className="w-full">
-        {session?.user.rol == "jefe" ? (
-          proyecto.idEtapaActual == 1 ? (
-            <InterfazAsignacionRepuestos proyecto={proyecto} />
-          ) : proyecto.idEtapaActual == 2 ? (
-            <InterfazAsignacionTareas
-              etapaLabel="Reparación"
-              proyecto={proyecto}
-            />
-          ) : proyecto.idEtapaActual == 6 ? (
-            <InterfazAsignacionTareas
-              etapaLabel="Pintado y Embalado"
-              proyecto={proyecto}
-            />
-          ) : proyecto.idEtapaActual == 8 ? (
-            <InterfazGenerarVentas proyecto={proyecto} />
-          ) : proyecto.idEtapaActual == 9 ? (
-            <InterfazTerminado proyecto={proyecto} />
-          ) : null
-        ) : (
-          session?.user.rol === "supervisor" &&
-          (proyecto.idEtapaActual == 4 ? (
-            <InterfazVerificacionReparacion
-              proyecto={proyecto}
-              idEmpleado={1}
-            />
-          ) : proyecto.idEtapaActual == 5 ? (
-            <InterfazGenerarCC proyecto={proyecto} />
-          ) : null)
-        )}
-        {proyecto.idEtapaActual == 3 ? (
-          <InterfazReparando proyecto={proyecto}/>
-        ) : proyecto.idEtapaActual == 7 ? (
-          <InterfazPintadoYEmbalado proyecto={proyecto}/>
-        ) : null}
+
+      <div className="flex flex-col items-center gap-5 md:grid md:grid-cols-2 md:gap-5 w-full">
+        <div className="w-full">
+          <ProjectFlow etapa={Number(proyecto.idEtapaActual) - 1} />
+        </div>
+
+        <div className="w-full h-full flex flex-col border-2 rounded-lg px-3 pb-3 pt-4 bg-white/35 relative">
+          <div className="content-form-group-label">
+            <label className="form-group-label">
+              {stageLabels[Number(proyecto.idEtapaActual) - 1]}
+            </label>
+          </div>
+          <div className="h-full flex items-center justify-center p-3">
+            {session?.user.rol == "jefe" ? (
+              proyecto.idEtapaActual == 1 ? (
+                <InterfazAsignacionRepuestos proyecto={proyecto} />
+              ) : proyecto.idEtapaActual == 2 ? (
+                <InterfazAsignacionTareas
+                  etapaLabel="Reparación"
+                  proyecto={proyecto}
+                />
+              ) : proyecto.idEtapaActual == 6 ? (
+                <InterfazAsignacionTareas
+                  etapaLabel="Pintado y Embalado"
+                  proyecto={proyecto}
+                />
+              ) : proyecto.idEtapaActual == 8 ? (
+                <InterfazGenerarVentas proyecto={proyecto} />
+              ) : proyecto.idEtapaActual == 9 ? (
+                <InterfazTerminado proyecto={proyecto} />
+              ) : null
+            ) : (
+              session?.user.rol === "supervisor" &&
+              (proyecto.idEtapaActual == 4 ? (
+                <InterfazVerificacionReparacion
+                  proyecto={proyecto}
+                  idEmpleado={1}
+                />
+              ) : proyecto.idEtapaActual == 5 ? (
+                <InterfazGenerarCC proyecto={proyecto} />
+              ) : null)
+            )}
+            {proyecto.idEtapaActual == 3 ? (
+              <InterfazReparando proyecto={proyecto} />
+            ) : proyecto.idEtapaActual == 7 ? (
+              <InterfazPintadoYEmbalado proyecto={proyecto} />
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   );

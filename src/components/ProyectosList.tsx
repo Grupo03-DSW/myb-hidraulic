@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Card, CardDescription } from "@components/ui/card";
-import { ProyectoHeader } from "@components/ProyectoHeader";
+import { Card, CardDescription } from "@/components/ui/card";
+import { ProyectoHeader } from "@/components/ProyectoHeader";
 import { Proyecto } from "@/models/proyecto";
 
 export function ProyectosList({

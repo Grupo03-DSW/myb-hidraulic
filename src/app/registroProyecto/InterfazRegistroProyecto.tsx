@@ -10,7 +10,7 @@ import { Repuesto, RepuestoForm } from "@/models/repuesto";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Combobox } from "@/components/Combobox";
-import { RepuestosList } from "@components/RepuestosList";
+import { RepuestosList } from "@/components/RepuestosList";
 import { Counter } from "@/components/Counter";
 import { TipoPrueba, TipoPruebaForms } from "@/models/tipoprueba";
 import { PruebasList } from "@/components/PruebasList";

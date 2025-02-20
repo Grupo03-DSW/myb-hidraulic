@@ -1,9 +1,9 @@
 "use client";
 import { TipoPruebaForms } from "@/models/tipoprueba";
-import { Modal } from "@components/Modal";
-import { PruebasList } from "@components/PruebasList";
-import { Button } from "@components/ui/button";
-import { Switch } from "@components/ui/switch";
+import { Modal } from "@/components/Modal";
+import { PruebasList } from "@/components/PruebasList";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 interface PruebasStockProps {
   open: boolean;

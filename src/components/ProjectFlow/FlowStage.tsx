@@ -1,41 +1,37 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
-import { Circle } from "@components/ProjectFlow/Circle";
+import { cn } from "@/lib/utils";
+import TimelineItem from '@mui/lab/TimelineItem';
+import TimelineSeparator from '@mui/lab/TimelineSeparator';
+import TimelineConnector from '@mui/lab/TimelineConnector';
+import TimelineContent from '@mui/lab/TimelineContent';
+import { Bookmark, CircleCheck, Clock } from "lucide-react";
 
 export function FlowStage({
-  etapa,
+  isCurrent,
+  isCompleted,
   label,
-  labelPosition = "top",
 }: {
-  etapa: number;
+  isCurrent: boolean;
+  isCompleted: boolean;
   label: string;
-  labelPosition?: "top" | "bottom";
 }) {
-  const [labelHeight, setLabelHeight] = useState(0);
-  const labelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (labelRef.current) {
-      setLabelHeight(labelRef.current.clientHeight);
-    }
-  }, [label]);
-
   return (
-    <div
-      className={`flex ${
-        labelPosition === "top" ? "flex-col" : "flex-col-reverse"
-      } items-center gap-2`}
-    >
-      <div style={{ height: `${labelHeight}px` }}></div>
-      <Circle
-        color={etapa == 1 ? "black" : etapa == 0 ? "white" : "lightgray"}
-      />
-      <div
-        ref={labelRef}
-        className={`text-center text-base  ${etapa ? "font-semibold" : ""}`}
-      >
-        {label}
-      </div>
-    </div>
+    <TimelineItem>
+      <TimelineSeparator>
+        {isCompleted ? (
+          <CircleCheck size={24} className="my-1" />
+        ) : isCurrent ? (
+          <Bookmark size={24} className="my-1" />
+        ) : (
+          <Clock size={24} className="my-1" />
+        )}
+        <TimelineConnector />
+      </TimelineSeparator>
+      <TimelineContent>
+        <p className={cn((isCompleted || isCurrent) && "font-semibold")}>
+          {label}
+        </p>
+      </TimelineContent>
+    </TimelineItem>
   );
 }

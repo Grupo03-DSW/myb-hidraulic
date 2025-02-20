@@ -1,9 +1,9 @@
 "use client";
 import { RepuestoForm } from "@/models/repuesto";
-import { Modal } from "@components/Modal";
-import { RepuestosList } from "@components/RepuestosList";
-import { Button } from "@components/ui/button";
-import { Switch } from "@components/ui/switch";
+import { Modal } from "@/components/Modal";
+import { RepuestosList } from "@/components/RepuestosList";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 interface RepuestosStockProps {
   open: boolean;

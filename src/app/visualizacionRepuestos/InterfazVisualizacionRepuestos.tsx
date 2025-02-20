@@ -140,16 +140,14 @@ export function InterfazVisualizacionRepuestos() {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="p-4 flex-1 justify-center"
+      className="p-4 h-screen max-w-screen-lg grid grid-rows-[auto_1fr_auto] mx-auto"
     >
       {noice && <Noice noice={noice} />}
-      <h1 className="mb-4 text-center text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
-        Visualización de repuestos requeridos
-      </h1>
+      <h1>Visualización de repuestos requeridos</h1>
       <RepuestosList
         repuestos={repuestoField.fields}
-        className="grid lg:grid-cols-2 gap-4"
-        messageNothingAdded="No hay repuestos solicitados"
+        className="container grid lg:grid-cols-2 gap-4 p-2 overflow-scroll"
+        messageNothingAdded="No se han solicitado repuestos."
         counter={(index) => (
           <Controller
             name={`repuestos.${index}.quantity`}
@@ -186,7 +184,9 @@ export function InterfazVisualizacionRepuestos() {
       />
       {repuestoField.fields.length > 0 && (
         <div className="w-full flex justify-center my-5">
-          <Button type="submit">Marcar como obtenidos</Button>
+          <Button type="submit" className="w-1/2 lg:w-1/4">
+            Marcar como obtenidos
+          </Button>
         </div>
       )}
     </form>

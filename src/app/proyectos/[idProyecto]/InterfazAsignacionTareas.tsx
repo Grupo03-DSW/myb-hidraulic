@@ -151,7 +151,7 @@ export function InterfazAsignacionTareas({
         <div className="flex justify-center items-center gap-4 w-full">
           <Button
             onClick={() => setOpen(true)}
-            className="w-2/3 mt-4 text-lg font-bold"
+            className="w-full mt-4 text-lg font-bold"
             variant="outline"
             type="button"
           >
