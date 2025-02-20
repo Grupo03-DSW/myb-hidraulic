@@ -24,7 +24,7 @@ export function RepuestosList<T extends Repuesto>({
   error?: (index: number) => React.ReactNode;
   children?: React.ReactNode;
 }) {
-  const [infoOpen, setInfoOpen] = useState<boolean>(false);
+  const [infoOpen, setInfoOpen] = useState<number>();
 
   return (
     <div className={`mx-3 ${className}`} style={{ height: "40h" }}>
@@ -51,10 +51,10 @@ export function RepuestosList<T extends Repuesto>({
               <div
                 className="flex-1 space-y-1 overflow-x-auto w-2/5 min-h-min cursor-default"
                 onMouseEnter={() => {
-                  setInfoOpen(true);
+                  setInfoOpen(item.idRepuesto);
                 }}
                 onMouseLeave={() => {
-                  setInfoOpen(false);
+                  setInfoOpen(undefined);
                 }}
               >
                 <p className="text-sm font-medium leading-none">
@@ -100,8 +100,8 @@ export function RepuestosList<T extends Repuesto>({
             {remover && remover(index, item as T)}
             {error && error(index)}
 
-            {infoOpen && (
-              <div className="absolute bottom-4 left-1/4 w-1/2 flex items-center justify-center transition-opacity duration-200 ease-in opacity-0 animate-fadeIn">
+            {infoOpen === item.idRepuesto && (
+              <div className="absolute z-[1000] bottom-4 left-1/4 w-1/2 flex items-center justify-center transition-opacity duration-200 ease-in opacity-0 animate-fadeIn">
                 <div className="absolute top-0 left-1/4 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-secondary-foreground"></div>
 
                 <div className="absolute top-2 w-full bg-secondary-foreground rounded-lg p-4">
