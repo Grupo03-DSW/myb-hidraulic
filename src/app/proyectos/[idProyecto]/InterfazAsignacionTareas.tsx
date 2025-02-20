@@ -103,6 +103,8 @@ export function InterfazAsignacionTareas({
     });
 
     if (!res.ok) {
+      const err = await res.json();
+      console.error("Error al asignar las tareas", err);
       throw new MyBError("Error al asignar las tareas");
     }
 

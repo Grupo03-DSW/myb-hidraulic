@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { FlowStage } from "@/components/ProjectFlow/FlowStage";
 import { Timeline } from "@mui/lab";
+import { timelineItemClasses } from "@mui/lab/TimelineItem";
+
 import { stageLabels } from "@/lib/utils";
 import { useMediaQuery } from "@mui/material";
 import { ChevronDown } from "lucide-react";
@@ -14,7 +16,20 @@ const MyBTimeline = ({
   isMobile: boolean;
 }) => {
   return (
-    <Timeline position={isMobile ? "right" : "alternate"}>
+    <Timeline
+      position={isMobile ? "right" : "alternate"}
+      sx={
+        isMobile
+          ? {
+              [`& .${timelineItemClasses.root}`]: {
+                "::before": {
+                  content: "none",
+                },
+              },
+            }
+          : undefined
+      }
+    >
       {stageLabels.map((label, index) => (
         <FlowStage
           key={index}

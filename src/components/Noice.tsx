@@ -12,7 +12,7 @@ export function Noice({ noice }: NoiceProps) {
     return (
       <div
         className={cn(
-          "fixed z-[100] inset-0 flex items-center justify-center bg-white",
+          "fixed z-[30000] inset-0 flex items-center justify-center bg-white",
           noice.styleType === "modal" && "bg-black bg-opacity-50"
         )}
       >
@@ -52,7 +52,7 @@ export function Noice({ noice }: NoiceProps) {
     return (
       <div
         className={cn(
-          "fixed  z-50 right-0 top-0 w-lvw h-lvh flex items-center justify-center bg-white",
+          "fixed  z-[30000] right-0 top-0 w-lvw h-lvh flex items-center justify-center bg-white",
           noice.styleType === "modal" && "bg-black bg-opacity-50"
         )}
       >
@@ -103,7 +103,7 @@ export function Noice({ noice }: NoiceProps) {
     return (
       <div
         className={cn(
-          "fixed  z-50 right-0 top-0 w-lvw h-lvh flex items-center justify-center bg-white",
+          "fixed  z-[30000] right-0 top-0 w-lvw h-lvh flex items-center justify-center bg-white",
           noice.styleType === "modal" && "bg-black bg-opacity-50"
         )}
       >

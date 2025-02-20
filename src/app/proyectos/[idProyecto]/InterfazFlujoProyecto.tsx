@@ -4,20 +4,20 @@ import { ProjectFlow } from "@/components/ProjectFlow/ProjectFlow";
 import { ProyectoHeader } from "@/components/ProyectoHeader";
 import { InterfazAsignacionTareas } from "@/app/proyectos/[idProyecto]/InterfazAsignacionTareas";
 import { Proyecto } from "@/models/proyecto";
-import { InterfazVerificacionReparacion } from "./InterfazVerificacionReparacion";
-import { InterfazGenerarCC } from "./InterfazGenerarCC";
-import { InterfazGenerarVentas } from "./InterfazGenerarVentas";
+import { InterfazVerificacionReparacion } from "@/app/proyectos/[idProyecto]/InterfazVerificacionReparacion";
+import { InterfazGenerarCC } from "@/app/proyectos/[idProyecto]/InterfazGenerarCC";
+import { InterfazGenerarVentas } from "@/app/proyectos/[idProyecto]/InterfazGenerarVentas";
 import { NoiceType } from "@/models/noice";
 import { Noice } from "@/components/Noice";
 import MyBError from "@/lib/mybError";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { InterfazReparando } from "./InterfazReparando";
-import { InterfazPintadoYEmbalado } from "./InterfazPintadoYEmbalado";
-import { InterfazTerminado } from "./InterfazTerminado";
+import { InterfazReparando } from "@/app/proyectos/[idProyecto]/InterfazReparando";
+import { InterfazPintadoYEmbalado } from "@/app/proyectos/[idProyecto]/InterfazPintadoYEmbalado";
+import { InterfazTerminado } from "@/app/proyectos/[idProyecto]/InterfazTerminado";
 import { useSession } from "next-auth/react";
 import { stageLabels } from "@/lib/utils";
-import { InterfazAsignacionRepuestos } from "./InterfazAsignacionRepuestos";
+import { InterfazAsignacionRepuestos } from "@/app/proyectos/[idProyecto]/InterfazAsignacionRepuestos";
 
 export function InterfazFlujoProyecto({ idProyecto }: { idProyecto: string }) {
   const [proyecto, setProyecto] = useState<Proyecto>();
