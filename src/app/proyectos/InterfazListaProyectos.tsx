@@ -37,7 +37,7 @@ export function InterfazListaProyectos() {
         console.log(response);
         const data = await response.json();
 
-        console.log(data);
+        console.log("Data: ", data);
         setProyectos(data ? data : []);
         setFilteredProyectos(data ? data : []);
         setNoice(null);
