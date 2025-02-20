@@ -107,6 +107,7 @@ export default function Page() {
                 <div className="w-full md:w-1/2">
                   <InputField
                     inputLabel="Correo"
+                    id="correo"
                     labelClassName={
                       errors.correo &&
                       "text-destructive peer-focus:text-destructive"
@@ -128,6 +129,7 @@ export default function Page() {
                 <div className="w-full md:w-1/2 mt-2">
                   <InputField
                     inputLabel="Contraseña"
+                    id="password"
                     type="password"
                     labelClassName={
                       errors.password &&
