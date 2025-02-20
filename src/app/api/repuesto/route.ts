@@ -21,7 +21,15 @@ export async function POST(req: NextRequest) {
   // Aqui se hace la subida a firebase y se obtiene el url
   const downloadURL = await uploadImage(
     base64String,
-    `repuestos/preview/${repuesto.nombre}`
+    `repuestos/preview/${repuesto.nombre
+      .toLowerCase()
+      .replaceAll("á", "a")
+      .replaceAll("é", "e")
+      .replaceAll("í", "i")
+      .replaceAll("ó", "o")
+      .replaceAll("ú", "u")
+      .replaceAll("ñ", "n")
+      .replaceAll(" ", "_")}`
   );
   // Debe enviar el repuesto con la imagen como un url
   repuesto.linkImg = downloadURL || "";
