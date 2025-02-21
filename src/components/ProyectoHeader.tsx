@@ -15,7 +15,7 @@ export function ProyectoHeader({
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
+    <div className="flex flex-row justify-between items-start md:items-center w-full gap-4">
       <ProjectDetailsModal
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}

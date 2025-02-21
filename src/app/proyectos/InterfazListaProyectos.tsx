@@ -1,10 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Proyecto } from "@/models/proyecto";
 import { ProyectosList } from "@/components/ProyectosList";
 import { Noice } from "@/components/Noice";
 import { NoiceType } from "@/models/noice";
 import { useSession } from "next-auth/react";
+import { Circle, CircleCheck } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function InterfazListaProyectos() {
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
@@ -15,7 +17,7 @@ export function InterfazListaProyectos() {
   });
 
   const [etapasSeleccionadas, setEtapasSeleccionadas] = useState<number[]>([]);
-  const [clientesSeleccionados, setClientesSeleccionados] = useState<string[]>(
+  const [clientesSeleccionados, setClientesSeleccionados] = useState<number[]>(
     []
   );
   const [showEtapas, setShowEtapas] = useState(false);
@@ -62,7 +64,7 @@ export function InterfazListaProyectos() {
 
       if (clientesSeleccionados.length > 0) {
         filtrados = filtrados.filter((p) =>
-          clientesSeleccionados.includes(p.cliente!.nombre)
+          clientesSeleccionados.includes(p.cliente!.idCliente)
         );
       }
 
@@ -80,11 +82,11 @@ export function InterfazListaProyectos() {
     );
   };
 
-  const manejarCambioCliente = (cliente: string) => {
+  const manejarCambioCliente = (clienteId: number) => {
     setClientesSeleccionados((prev) =>
-      prev.includes(cliente)
-        ? prev.filter((c) => c !== cliente)
-        : [...prev, cliente]
+      prev.includes(clienteId)
+        ? prev.filter((c) => c !== clienteId)
+        : [...prev, clienteId]
     );
   };
 
@@ -98,65 +100,33 @@ export function InterfazListaProyectos() {
   ).sort((a, b) => a.id - b.id);
 
   const clientesDisponibles = Array.from(
-    new Set(proyectos.map((p) => p.cliente!.nombre))
+    new Map(
+      proyectos.map((p) => [
+        p.cliente?.idCliente,
+        { id: p.cliente?.idCliente, nombre: p.cliente?.nombre },
+      ])
+    ).values()
   );
 
   return (
-    <div className="p-4 h-dvh">
+    <div className="p-10 max-w-screen-xl min-h-screen gap-4 grid grid-rows-[auto_1fr] mx-auto">
       {noice && <Noice noice={noice} />}
       <div className="flex flex-col gap-2 h-[8%]">
+        <h1 className="w-full text-center">Proyectos</h1>
         <div className="flex items-center gap-4">
           <div className="flex gap-2">
-            <button
-              onClick={() => setShowEtapas((prev) => !prev)}
-              className="px-4 py-2 bg-black text-white rounded-md shadow hover:bg-gray-700"
-            >
-              Etapas
-            </button>
-            {showEtapas && (
-              <div className="absolute top-[7%] left-[1%] bg-white border rounded-md shadow-lg p-4 z-50">
-                <h3 className="text-md font-semibold mb-2">Etapas</h3>
-                <div className="flex flex-col gap-2">
-                  {etapasDisponibles.map(({ id, nombre }) => (
-                    <label key={id} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        value={id}
-                        checked={etapasSeleccionadas.includes(id)}
-                        onChange={() => manejarCambioEtapa(id)}
-                        className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                      />
-                      {nombre}
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-            <button
-              onClick={() => setShowClientes((prev) => !prev)}
-              className="px-4 py-2 bg-black text-white rounded-md shadow hover:bg-gray-700"
-            >
-              Clientes
-            </button>
-            {showClientes && (
-              <div className="absolute top-[7%] left-[5%] bg-white border rounded-md shadow-lg p-4 z-50">
-                <h3 className="text-md font-semibold mb-2">Clientes</h3>
-                <div className="flex flex-col gap-2">
-                  {clientesDisponibles.map((cliente) => (
-                    <label key={cliente} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        value={cliente}
-                        checked={clientesSeleccionados.includes(cliente)}
-                        onChange={() => manejarCambioCliente(cliente)}
-                        className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                      />
-                      {cliente}
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
+            <Selector
+              title="Etapas"
+              items={etapasDisponibles}
+              selectedItems={etapasSeleccionadas}
+              controlChange={manejarCambioEtapa}
+            />
+            <Selector
+              title="Clientes"
+              items={clientesDisponibles}
+              selectedItems={clientesSeleccionados}
+              controlChange={manejarCambioCliente}
+            />
           </div>
           <div className="flex flex-wrap gap-2">
             {etapasSeleccionadas.map((id) => {
@@ -164,28 +134,106 @@ export function InterfazListaProyectos() {
               return (
                 <span
                   key={id}
-                  className="px-2 py-1 bg-blue-100 text-blue-700 text-sm rounded-full cursor-pointer"
+                  className="px-4 py-1 bg-white/40 border-primary-foreground border-2 text-primary-foreground font-medium text-sm rounded-full cursor-pointer"
                   onClick={() => manejarCambioEtapa(id)}
                 >
                   {etapa?.nombre} ✕
                 </span>
               );
             })}
-            {clientesSeleccionados.map((cliente) => (
-              <span
-                key={cliente}
-                className="px-2 py-1 bg-blue-100 text-blue-700 text-sm rounded-full cursor-pointer"
-                onClick={() => manejarCambioCliente(cliente)}
-              >
-                {cliente} ✕
-              </span>
-            ))}
+            {clientesSeleccionados.map((id) => {
+              const cliente = clientesDisponibles.find((c) => c.id === id);
+              return (
+                <span
+                  key={id}
+                  className="px-4 py-1 bg-white/40 border-primary-foreground border-2 text-primary-foreground font-medium text-sm rounded-full cursor-pointer"
+                  onClick={() => manejarCambioCliente(id)}
+                >
+                  {cliente?.nombre} ✕
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>
-      <div className="p-2 h-[92%] overflow-y-scroll">
+      <div className="w-full overflow-y-scroll">
         <ProyectosList proyectos={filteredProyectos} />
       </div>
     </div>
   );
 }
+
+const Selector = ({
+  title,
+  items,
+  selectedItems,
+  controlChange,
+}: {
+  title: string;
+  items: { id: number | undefined; nombre: string | undefined }[];
+  selectedItems: number[];
+  controlChange: (id: number) => void;
+}) => {
+  const [show, setShow] = useState(false);
+  const selectorRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        selectorRef.current &&
+        !selectorRef.current.contains(e.target as Node)
+      ) {
+        setShow(false);
+      }
+    };
+
+    if (show) {
+      document.body.style.overflow = "hidden";
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.body.style.overflow = "unset";
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [show]);
+
+  return (
+    <div className="relative" ref={selectorRef}>
+      <button
+        onClick={() => setShow((prev) => !prev)}
+        className={cn(
+          "px-4 py-2 bg-white/35 text-primary-foreground border-2 border-primary-foreground/35 rounded-md shadow hover:bg-secondary-foreground hover:text-white hover:border-transparent hover:font-medium transition-colors ease-in-out duration-300",
+          show &&
+            "bg-secondary-foreground text-white border-transparent font-medium"
+        )}
+      >
+        {title}
+      </button>
+      {show && (
+        <div className="absolute text-white top-full p-4 mt-2 bg-secondary-foreground border rounded-md shadow-lg z-50">
+          <h3 className="text-md font-semibold mb-2 my-2 mx-2">{title}</h3>
+          <div className="flex flex-col gap-2">
+            {items.map((item) => (
+              <label
+                key={item.id}
+                className="flex items-center gap-2 px-3 hover:font-semibold hover:bg-secondary/40 hover:py-3 transition-all ease-in-out duration-300 rounded-md cursor-pointer"
+                onClick={() => controlChange(item.id as number)}
+              >
+                <div>
+                  {selectedItems.includes(item.id as number) ? (
+                    <CircleCheck size={24} />
+                  ) : (
+                    <Circle size={24} />
+                  )}
+                </div>
+                {item.nombre}
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
