@@ -88,13 +88,13 @@ export function InterfazRegistroCliente() {
   };
 
   return (
-    <div className="p-4 max-w-lg mx-auto">
+    <div className="p-4 max-w-lg min-h-screen gap-4 grid grid-rows-[auto_1fr_auto] mx-auto">
       {noice && <Noice noice={noice} />}
-      <h1 className="mb-4">Registro de Cliente</h1>
+      <h1 className="mb-4 text-center">Registro de Cliente</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full flex flex-col space-y-5"
+        className="w-full h-full flex flex-col items-center justify-center space-y-14"
       >
         <div className="content-form-group">
           <div className="content-form-group-label">

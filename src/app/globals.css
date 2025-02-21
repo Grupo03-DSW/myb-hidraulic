@@ -126,7 +126,7 @@ body {
 }
 
 .content-form-group {
-  @apply w-full flex flex-col border-2 rounded-lg px-3 pb-3 pt-4 bg-white/35 relative max-h-min;
+  @apply w-full flex flex-col border-2 px-6 pb-3 pt-4 bg-white/35 relative max-h-min shadow-xl rounded-2xl;
 }
 
 .content-form-group-label {

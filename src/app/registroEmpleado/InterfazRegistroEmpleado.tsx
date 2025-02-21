@@ -150,258 +150,269 @@ export function InterfazRegistroEmpleado() {
   };
 
   return (
-    <div className="p-10 max-w-screen-lg mx-auto">
+    <div className="p-10 max-w-screen-lg min-h-screen gap-4 grid grid-rows-[auto_1fr_auto] mx-auto">
       {noice && <Noice noice={noice} />}
-      <h1 className="mb-4">Registro de Empleado</h1>
+      <h1 className="mb-4 w-full text-center">Registro de Empleado</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10"
+        className="w-full h-full flex flex-col lg:grid lg:grid-cols-2 lg:space-x-7 items-center justify-center space-y-12 lg:space-y-0"
       >
-        <div className="w-full flex flex-col">
-          <h3 className="text-base font-medium mb-2">Datos Personales</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="mb-4">
-              <Controller
-                name="nombre"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="nombre"
-                      inputLabel="Nombre"
-                      labelClassName={
-                        errors.nombre &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      {...field}
-                    />
-                    {errors.nombre && (
-                      <p className="message-error">{errors.nombre.message}</p>
-                    )}
-                  </>
-                )}
-              />
+        <div className="w-full flex flex-col space-y-11">
+          <div className="content-form-group">
+            <div className="content-form-group-label">
+              <h3 className="form-group-label">Datos del Empleado</h3>
             </div>
-
-            <div className="mb-4">
-              <Controller
-                name="apellido"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="apellido"
-                      inputLabel="Apellido"
-                      labelClassName={
-                        errors.apellido &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      {...field}
-                    />
-                    {errors.apellido && (
-                      <p className="message-error">{errors.apellido.message}</p>
-                    )}
-                  </>
-                )}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="mb-4">
-              <Controller
-                name="telefono"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="telefono"
-                      inputLabel="Teléfono"
-                      labelClassName={
-                        errors.telefono &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      {...field}
-                    />
-                    {errors.telefono && (
-                      <p className="message-error">{errors.telefono.message}</p>
-                    )}
-                  </>
-                )}
-              />
-            </div>
-
-            <div className="mb-4">
-              <Controller
-                name="direccion"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="direccion"
-                      inputLabel="Dirección"
-                      labelClassName={
-                        errors.direccion &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      {...field}
-                    />
-                    {errors.direccion && (
-                      <p className="message-error">
-                        {errors.direccion.message}
-                      </p>
-                    )}
-                  </>
-                )}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="mb-4">
-              <Controller
-                name="tipoDocumento"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="tipoDocumento"
-                      inputLabel="Tipo de Documento"
-                      labelClassName={
-                        errors.tipoDocumento &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      {...field}
-                    />
-                    {errors.tipoDocumento && (
-                      <p className="message-error">
-                        {errors.tipoDocumento.message}
-                      </p>
-                    )}
-                  </>
-                )}
-              />
-            </div>
-
-            <div className="mb-4">
-              <Controller
-                name="documentoIdentidad"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="documentoIdentidad"
-                      inputLabel="Documento de Identidad"
-                      labelClassName={
-                        errors.documentoIdentidad &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      {...field}
-                    />
-                    {errors.documentoIdentidad && (
-                      <p className="message-error">
-                        {errors.documentoIdentidad.message}
-                      </p>
-                    )}
-                  </>
-                )}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="w-full flex flex-col">
-          <h3 className="text-base font-medium mb-2">Datos de Usuario</h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="mb-4 lg:mb-1">
-              <Controller
-                name="correo"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="correo"
-                      inputLabel="Correo"
-                      labelClassName={
-                        errors.correo &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      {...field}
-                    />
-                    {errors.correo && (
-                      <p className="message-error">{errors.correo.message}</p>
-                    )}
-                  </>
-                )}
-              />
-            </div>
-
-            <div className="mb-4 lg:mb-1">
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputField
-                      id="password"
-                      inputLabel="Contraseña"
-                      labelClassName={
-                        errors.password &&
-                        "text-destructive peer-focus:text-destructive"
-                      }
-                      type="password"
-                      {...field}
-                    />
-                    {errors.password && (
-                      <p className="message-error">{errors.password.message}</p>
-                    )}
-                  </>
-                )}
-              />
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="mb-4">
-              <Controller
-                name="rol"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <label
-                      className={cn(
-                        "text-xs",
-                        errors.rol && "text-destructive"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mb-4">
+                <Controller
+                  name="nombre"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="nombre"
+                        inputLabel="Nombre"
+                        labelClassName={
+                          errors.nombre &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        {...field}
+                      />
+                      {errors.nombre && (
+                        <p className="message-error">{errors.nombre.message}</p>
                       )}
-                    >
-                      Rol
-                    </label>
-                    <SingleSelect
-                      options={[
-                        { label: "Logística", value: "logistica" },
-                        { label: "Técnico", value: "tecnico" },
-                        { label: "Supervisor", value: "supervisor" },
-                        { label: "Jefe", value: "jefe" },
-                        { label: "Admin", value: "admin" },
-                      ]}
-                      value={field.value}
-                      onChange={(value) => {
-                        field.onChange(value);
-                      }}
-                      placeholder="Selecciona un rol"
-                      className="h-10"
-                    />
-                    {errors.rol && (
-                      <p className="message-error">{errors.rol.message}</p>
-                    )}
-                  </>
-                )}
-              />
+                    </>
+                  )}
+                />
+              </div>
+
+              <div className="mb-4">
+                <Controller
+                  name="apellido"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="apellido"
+                        inputLabel="Apellido"
+                        labelClassName={
+                          errors.apellido &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        {...field}
+                      />
+                      {errors.apellido && (
+                        <p className="message-error">
+                          {errors.apellido.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mb-4">
+                <Controller
+                  name="telefono"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="telefono"
+                        inputLabel="Teléfono"
+                        labelClassName={
+                          errors.telefono &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        {...field}
+                      />
+                      {errors.telefono && (
+                        <p className="message-error">
+                          {errors.telefono.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+
+              <div className="mb-4">
+                <Controller
+                  name="direccion"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="direccion"
+                        inputLabel="Dirección"
+                        labelClassName={
+                          errors.direccion &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        {...field}
+                      />
+                      {errors.direccion && (
+                        <p className="message-error">
+                          {errors.direccion.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mb-4">
+                <Controller
+                  name="tipoDocumento"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="tipoDocumento"
+                        inputLabel="Tipo de Documento"
+                        labelClassName={
+                          errors.tipoDocumento &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        {...field}
+                      />
+                      {errors.tipoDocumento && (
+                        <p className="message-error">
+                          {errors.tipoDocumento.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+
+              <div className="mb-4">
+                <Controller
+                  name="documentoIdentidad"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="documentoIdentidad"
+                        inputLabel="Documento de Identidad"
+                        labelClassName={
+                          errors.documentoIdentidad &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        {...field}
+                      />
+                      {errors.documentoIdentidad && (
+                        <p className="message-error">
+                          {errors.documentoIdentidad.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="content-form-group">
+            <div className="content-form-group-label">
+              <h3 className="form-group-label">Datos del Empleado</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="mb-4 lg:mb-1">
+                <Controller
+                  name="correo"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="correo"
+                        inputLabel="Correo"
+                        labelClassName={
+                          errors.correo &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        {...field}
+                      />
+                      {errors.correo && (
+                        <p className="message-error">{errors.correo.message}</p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+
+              <div className="mb-4 lg:mb-1">
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputField
+                        id="password"
+                        inputLabel="Contraseña"
+                        labelClassName={
+                          errors.password &&
+                          "text-destructive peer-focus:text-destructive"
+                        }
+                        type="password"
+                        {...field}
+                      />
+                      {errors.password && (
+                        <p className="message-error">
+                          {errors.password.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="mb-4">
+                <Controller
+                  name="rol"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <label
+                        className={cn(
+                          "text-xs",
+                          errors.rol && "text-destructive"
+                        )}
+                      >
+                        Rol
+                      </label>
+                      <SingleSelect
+                        options={[
+                          { label: "Logística", value: "logistica" },
+                          { label: "Técnico", value: "tecnico" },
+                          { label: "Supervisor", value: "supervisor" },
+                          { label: "Jefe", value: "jefe" },
+                          { label: "Admin", value: "admin" },
+                        ]}
+                        value={field.value}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
+                        placeholder="Selecciona un rol"
+                        className="h-10"
+                      />
+                      {errors.rol && (
+                        <p className="message-error">{errors.rol.message}</p>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-2 flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
           <div className="max-w-md">
             <div className="mb-4">
               <Label>Foto del Empleado</Label>
