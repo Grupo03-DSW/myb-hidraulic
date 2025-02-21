@@ -11,6 +11,7 @@ import { InterfazNoTareasAsignadas } from "./InterfazNoTareasAsignadas";
 import { InterfazSeguimientoTareasPintado } from "./InterfazSeguimientoTareasPintado";
 import MyBError from "@/lib/mybError";
 import { useSession } from "next-auth/react";
+import { stageLabels } from "@/lib/utils";
 
 const proyectoSchema = z.object({
   idProyecto: z.number(),
@@ -53,67 +54,75 @@ const proyectoSchema = z.object({
     })
   ),
 
-  especificaciones: z.array(
-    z.object({
-      idTipoPrueba: z.number(),
-      nombre: z.string(),
-      parametros: z.array(
-        z.object({
-          idParametro: z.number(),
-          nombre: z.string(),
-          unidades: z.string(),
-          valorMaximo: z.number(),
-          valorMinimo: z.number(),
-        })
-      ),
-    })
-  ).nullable(),
+  especificaciones: z
+    .array(
+      z.object({
+        idTipoPrueba: z.number(),
+        nombre: z.string(),
+        parametros: z.array(
+          z.object({
+            idParametro: z.number(),
+            nombre: z.string(),
+            unidades: z.string(),
+            valorMaximo: z.number(),
+            valorMinimo: z.number(),
+          })
+        ),
+      })
+    )
+    .nullable(),
 
-  resultados: z.array(
-    z.object({
-      idResultadoPrueba: z.number(),
-      idProyecto: z.number(),
-      idEmpleado: z.number(),
-      fecha: z.string(),
-      resultados: z.array(
-        z.object({
-          idTipoPrueba: z.number(),
-          resultadosParametros: z.array(
-            z.object({
-              idParametro: z.number(),
-              nombre: z.string(),
-              unidades: z.string(),
-              resultado: z.number(),
-            })
-          ),
-        })
-      ),
-    })
-  ).nullable(),
+  resultados: z
+    .array(
+      z.object({
+        idResultadoPrueba: z.number(),
+        idProyecto: z.number(),
+        idEmpleado: z.number(),
+        fecha: z.string(),
+        resultados: z.array(
+          z.object({
+            idTipoPrueba: z.number(),
+            resultadosParametros: z.array(
+              z.object({
+                idParametro: z.number(),
+                nombre: z.string(),
+                unidades: z.string(),
+                resultado: z.number(),
+              })
+            ),
+          })
+        ),
+      })
+    )
+    .nullable(),
 
-  feedbacks: z.array(
-    z.object({
-      idFeedback: z.number(),
-      idResultadoPruebaTecnico: z.number(),
-      idResultadoPruebaSupervisor: z.number(),
-      aprobado: z.boolean(),
-      comentario: z.string(),
-    })
-  ).nullable(),
+  feedbacks: z
+    .array(
+      z.object({
+        idFeedback: z.number(),
+        idResultadoPruebaTecnico: z.number(),
+        idResultadoPruebaSupervisor: z.number(),
+        aprobado: z.boolean(),
+        comentario: z.string(),
+      })
+    )
+    .nullable(),
 
-  empleadosActuales: z.array(
-    z.object({
-      idEmpleado: z.number(),
-      nombre: z.string(),
-      apellido: z.string(),
-      correo: z.string(),
-      telefono: z.string(),
-      direccion: z.string(),
-      rol: z.string(),
-      linkImg: z.string().optional(),
-    })
-  ).nullable(),
-})
+  empleadosActuales: z
+    .array(
+      z.object({
+        idEmpleado: z.number(),
+        nombre: z.string(),
+        apellido: z.string(),
+        correo: z.string(),
+        telefono: z.string(),
+        direccion: z.string(),
+        rol: z.string(),
+        linkImg: z.string().optional(),
+      })
+    )
+    .nullable(),
+});
 
 export function InterfazSeguimientoTareas() {
   const [idEmpleadoMock] = useState<string>("5");
@@ -140,7 +149,7 @@ export function InterfazSeguimientoTareas() {
         ...data,
         fechaInicio: new Date(`${data.fechaInicio}T00:00:00`),
         fechaFin: new Date(`${data.fechaFin}T00:00:00`),
-      }
+      };
 
       const parsedData = proyectoSchema.safeParse(data);
 
@@ -165,30 +174,42 @@ export function InterfazSeguimientoTareas() {
   }, [status]);
 
   return (
-    <div className="flex flex-col items-center pt-10 px-20 gap-3">
+    <div className="flex flex-col items-center md:pt-10 md:px-20 gap-3">
       {noice ? (
         <Noice noice={noice} />
       ) : proyecto ? (
         <>
           <ProyectoHeader proyecto={proyecto} showSeeDetailsBtn={true} />
-          <ProjectFlow etapa={Number(proyecto.idEtapaActual) - 1} />
-          {proyecto.idEtapaActual == 3 ? (
-            <InterfazSeguimientoTareasReparacion
-              idEmpleado={Number(idEmpleadoMock)}
-              proyecto={proyecto}
-            />
-          ) : proyecto.idEtapaActual == 4 ? (
-            <div className="w-full p-7">
-              <h1 className="text-center font-bold text-xl">
-                En control de calidad...
-              </h1>
+          <div className="flex flex-col items-center gap-5 md:grid md:grid-cols-2 md:gap-5 w-full">
+            <div className="w-full">
+              <ProjectFlow etapa={Number(proyecto.idEtapaActual) - 1} />
             </div>
-          ) : proyecto.idEtapaActual == 7 ? (
-            <InterfazSeguimientoTareasPintado
-              proyecto={proyecto}
-              idEmpleado={idEmpleadoMock}
-            />
-          ) : null}
+
+            <div className="w-full h-full flex flex-col border-2 rounded-lg px-3 pb-3 pt-4 bg-white/35 relative">
+              <div className="content-form-group-label">
+                <label className="form-group-label">
+                  {stageLabels[Number(proyecto.idEtapaActual) - 1]}
+                </label>
+              </div>
+              {proyecto.idEtapaActual == 3 ? (
+                <InterfazSeguimientoTareasReparacion
+                  idEmpleado={Number(idEmpleadoMock)}
+                  proyecto={proyecto}
+                />
+              ) : proyecto.idEtapaActual == 4 ? (
+                <div className="w-full p-7">
+                  <h1 className="text-center font-bold text-xl">
+                    En control de calidad...
+                  </h1>
+                </div>
+              ) : proyecto.idEtapaActual == 7 ? (
+                <InterfazSeguimientoTareasPintado
+                  proyecto={proyecto}
+                  idEmpleado={idEmpleadoMock}
+                />
+              ) : null}
+            </div>
+          </div>
         </>
       ) : (
         <InterfazNoTareasAsignadas />

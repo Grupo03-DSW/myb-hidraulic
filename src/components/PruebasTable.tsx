@@ -34,7 +34,7 @@ export function PruebasTable({
   error,
 }: PruebasTableProps) {
   return (
-    <div className="mx-3 overflow-y-auto" style={{ height: "40h" }}>
+    <div className="mx-0 md:mx-3 overflow-y-auto" style={{ height: "40h" }}>
       {pruebas.length === 0 ? (
         <p className="w-full text-center">{messageNothingAdded}</p>
       ) : (
@@ -45,22 +45,30 @@ export function PruebasTable({
             );
 
             return (
-              <div key={prueba.idTipoPrueba} className="relative">
-                <div className="flex flex-row justify-between">
+              <div
+                key={prueba.idTipoPrueba}
+                className="relative md:mx-6 2xl:mx-0 rounded-lg shadow-lg overflow-hidden bg-secondary/50"
+              >
+                <div
+                  className={`flex flex-row items-center w-full text-white rounded-t-lg p-4  ${
+                    error && error(prueba_index) ? "bg-red-500" : "bg-primary-foreground"
+                  }`}
+                >
                   <span
-                    className={`text-2xl pb-6 text-left font-medium leading-none ${
-                      error && error(prueba_index) && "text-red-500"
-                    }`}
+                    className={`text-xl text-left font-medium leading-none`}
                   >
                     {especificacionOriginal?.nombre}
                   </span>
                 </div>
-                <div className="col-span-6 pt-2 flex">
-                  <div className="overflow-x-auto w-full">
-                    <table className="w-full  text-sm text-left rtl:text-right text-gray-500">
-                      <thead className="text-xs text-gray-900">
+                <div className="col-span-6 flex mt-2 p-3">
+                  <div className="overflow-x-auto w-full border-[1px] border-secondary-foreground/30 rounded-lg">
+                    <table className="w-full text-sm text-left rtl:text-right bg-white/85">
+                      <thead>
                         <tr>
-                          <th scope="col" className="px-6 py-3">
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-xs font-medium"
+                          >
                             Parametro
                           </th>
                           {columnas}
@@ -79,13 +87,13 @@ export function PruebasTable({
                             return (
                               <tr
                                 key={especificacion?.idParametro}
-                                className="bg-gray-100 text-black"
+                                className="bg-secondary/30"
                               >
                                 <th
                                   scope="row"
-                                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                                  className="px-6 py-4 font-medium whitespace-nowrap"
                                 >
-                                  {`${parametroOriginal?.nombre}( ${parametroOriginal?.unidades} )`}
+                                  {`${parametroOriginal?.nombre} (${parametroOriginal?.unidades})`}
                                 </th>
                                 {filas(
                                   prueba_index,

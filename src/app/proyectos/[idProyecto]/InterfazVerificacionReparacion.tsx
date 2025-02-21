@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -175,12 +175,16 @@ export function InterfazVerificacionReparacion({
   };
 
   return (
-    <Form {...form}>
+    <div className="w-full h-full grid grid-rows-[auto,1fr] gap-4">
       {noice && <Noice noice={noice} />}
-
-      <Button onClick={() => setDialogOpen(true)} className="mb-4">
-        Ver Resultados Anteriores
-      </Button>
+      <div className="w-full flex items-center justify-end">
+        <Button
+          onClick={() => setDialogOpen(true)}
+          className="mb-4 w-full md:w-1/2"
+        >
+          Ver Resultados Anteriores
+        </Button>
+      </div>
 
       <ResultadosModal
         open={dialogOpen}
@@ -189,41 +193,39 @@ export function InterfazVerificacionReparacion({
       />
 
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          form.handleSubmit(onSubmit)(event);
-        }}
-        className="w-full mb-6"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full flex flex-col items-center justify-center"
       >
-        <FormField
+        <div className="w-full flex flex-row items-center justify-start my-2">
+          <label className="text-xl font-bold mx-4">Pruebas a realizar</label>
+        </div>
+        <Controller
           control={form.control}
           name="resultados"
           render={({ field }) => (
             <EspecificacionesList
               especificaciones={field.value}
               especificacionesOriginales={proyecto.especificaciones || []}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-2"
+              className="grid grid-cols-1 2xl:grid-cols-2 gap-2"
               messageNothingAdded="No hay pruebas"
               counterResult={(prueba_index, espec_index) => (
-                <FormField
+                <Controller
                   name={`resultados.${prueba_index}.especificaciones.${espec_index}.resultado`}
                   control={form.control}
                   render={({ field }) => (
-                    <FormItem>
-                      <Counter
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e.target.value);
-                          if (e.target.value !== "") generateFeedback();
-                        }}
-                        className={`w-20 ${
-                          form.formState.errors.resultados?.[prueba_index]
-                            ?.especificaciones?.[espec_index]
-                            ? "border-red-500"
-                            : ""
-                        }`}
-                      />
-                    </FormItem>
+                    <Counter
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                        if (e.target.value !== "") generateFeedback();
+                      }}
+                      className={`w-20 ${
+                        form.formState.errors.resultados?.[prueba_index]
+                          ?.especificaciones?.[espec_index]
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                    />
                   )}
                 />
               )}
@@ -242,49 +244,50 @@ export function InterfazVerificacionReparacion({
           )}
         />
 
-        <div className="mb-4">
-          <FormField
-            name="comentario"
+        <div className="w-full my-3 xl:grid xl:grid-cols-2 xl:gap-4">
+          <div className="mb-4 w-full">
+            <Controller
+              name="comentario"
+              control={form.control}
+              render={({ field }) => (
+                <>
+                  <label className="text-sm font-medium">Comentario</label>
+                  <Textarea
+                    {...field}
+                    placeholder="Ingresa un comentario..."
+                    className="min-h-20 max-h-32 overflow-y-auto border-2 rounded-lg w-full shadow-md"
+                  />
+                </>
+              )}
+            />
+          </div>
+
+          <Controller
             control={form.control}
+            name="aprobado"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Comentario</FormLabel>
-                <Textarea
-                  {...field}
-                  placeholder="Ingresa un comentario..."
-                  className="min-h-20 max-h-32 overflow-y-auto border-2 rounded-lg w-full shadow-md"
+              <div className="flex flex-col w-full">
+                <label className="text-sm font-medium">Aprobado</label>
+                <Combobox<string>
+                  items={["Si", "No"]}
+                  initialValue={"Si"}
+                  getValue={(r) => r}
+                  getLabel={(r) => r}
+                  getRealValue={(r) => r}
+                  originalValue={field.value ? "Si" : "No"}
+                  onSelection={(r) => {
+                    field.onChange(r === "Si");
+                  }}
+                  itemName={"Supervisor"}
                 />
-              </FormItem>
+              </div>
             )}
           />
         </div>
-
-        <FormField
-          control={form.control}
-          name="aprobado"
-          render={({ field }) => (
-            <FormItem className="flex flex-col w-full">
-              <FormLabel htmlFor="idSupervisor">Aprobado</FormLabel>
-              <Combobox<string>
-                items={["Si", "No"]}
-                initialValue={"Si"}
-                getValue={(r) => r}
-                getLabel={(r) => r}
-                getRealValue={(r) => r}
-                originalValue={field.value ? "Si" : "No"}
-                onSelection={(r) => {
-                  field.onChange(r === "Si");
-                }}
-                itemName={"Supervisor"}
-              />
-            </FormItem>
-          )}
-        />
-
         <Button type="submit" className="mt-4 w-full">
           Enviar Feedback
         </Button>
       </form>
-    </Form>
+    </div>
   );
 }

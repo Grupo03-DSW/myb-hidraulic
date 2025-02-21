@@ -35,14 +35,14 @@ export function EspecificacionesList({
       messageNothingAdded={messageNothingAdded}
       columnas={
         <>
-          <th scope="col" className="px-2 py-3">
+          <th scope="col" className="px-2 py-3  text-xs font-medium">
             Resultado
           </th>
-          <th scope="col" className="px-2 py-3">
-            Valor Min.
+          <th scope="col" className="px-2 py-3  text-xs font-medium">
+            Min.
           </th>
-          <th scope="col" className="px-2 py-3">
-            Valor Max.
+          <th scope="col" className="px-2 py-3  text-xs font-medium">
+            Max.
           </th>
         </>
       }

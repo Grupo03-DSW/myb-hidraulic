@@ -62,7 +62,7 @@ export function InterfazFlujoProyecto({ idProyecto }: { idProyecto: string }) {
   if (!proyecto) return noice && <Noice noice={noice} />;
 
   return (
-    <div className="flex flex-col items-center pt-10 px-20 gap-3">
+    <div className="flex flex-col items-center pt-4 px-4 md:pt-10 md:px-20 gap-3">
       {noice && <Noice noice={noice} />}
       <div className="w-full">
         <Button

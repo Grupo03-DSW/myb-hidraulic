@@ -36,11 +36,9 @@ export function ResultadosModal({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-gray-800">
-            Resultados Anteriores
-          </DialogTitle>
+          <DialogTitle>Resultados Anteriores</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="mb-4 text-gray-600">
+        <DialogDescription>
           Estos son los resultados técnicos registrados y sus comentarios
           asociados.
         </DialogDescription>
@@ -74,16 +72,16 @@ export function ResultadosModal({
                     key={resultado.idResultadoPrueba}
                     className={`p-4 border-2 rounded-md ${
                       esRechazado
-                        ? "border-red-500 bg-red-100"
+                        ? "border-red-400 bg-red-100/40"
                         : esAprobado
                         ? "border-green-500 bg-green-100"
                         : "border-gray-300"
                     }`}
                   >
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm">
                       Fecha: {new Date(resultado.fecha).toLocaleDateString()}
                     </p>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm">
                       Empleado:{" "}
                       {
                         proyecto.empleadosActuales?.find(
@@ -95,9 +93,9 @@ export function ResultadosModal({
                       {resultado.resultados.map((prueba) => (
                         <div
                           key={prueba.idTipoPrueba}
-                          className="border-t pt-2"
+                          className="border-t border-primary-foreground pt-2"
                         >
-                          <p className="font-medium text-gray-800">
+                          <p className="font-medium">
                             Prueba:{" "}
                             {
                               proyecto.especificaciones?.find(
@@ -120,7 +118,7 @@ export function ResultadosModal({
                               return (
                                 <p
                                   key={parametro.idParametro}
-                                  className="text-sm text-gray-600"
+                                  className="text-sm"
                                 >
                                   {parametro.nombre}: {parametro.resultado}{" "}
                                   {parametro.unidades} ( Rango:{" "}
@@ -137,13 +135,13 @@ export function ResultadosModal({
                     {/* Comentario del feedback */}
                     {feedbackRelacionado && (
                       <div className="mt-4">
-                        <p className="font-medium text-gray-800">
+                        <p className="font-medium">
                           Comentario del Supervisor:
                         </p>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm">
                           {feedbackRelacionado.comentario}
                         </p>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm">
                           Aprobado:{" "}
                           <span className="font-bold">
                             {feedbackRelacionado.aprobado ? "Sí" : "No"}
@@ -154,11 +152,9 @@ export function ResultadosModal({
 
                     {/* Resultado del supervisor como respuesta */}
                     {resultadoSupervisor && (
-                      <div className="mt-4 p-3 border-l-2 border-gray-400 bg-gray-100">
-                        <p className="font-medium text-gray-800">
-                          Respuesta del Supervisor:
-                        </p>
-                        <p className="text-sm text-gray-700">
+                      <div className="mt-4 p-3 border-l-2 border-primary-foreground bg-white/35">
+                        <p className="font-medium">Respuesta del Supervisor:</p>
+                        <p className="text-sm">
                           Fecha:{" "}
                           {new Date(
                             resultadoSupervisor.fecha
@@ -166,7 +162,7 @@ export function ResultadosModal({
                         </p>
                         {resultadoSupervisor.resultados.map((prueba) => (
                           <div key={prueba.idTipoPrueba} className="mt-2">
-                            <p className="font-medium text-gray-800">
+                            <p className="font-medium">
                               Prueba:{" "}
                               {
                                 proyecto.especificaciones?.find(
@@ -178,7 +174,7 @@ export function ResultadosModal({
                               {prueba.resultadosParametros.map((parametro) => (
                                 <p
                                   key={parametro.idParametro}
-                                  className="text-sm text-gray-600"
+                                  className="text-sm"
                                 >
                                   {parametro.nombre}: {parametro.resultado}{" "}
                                   {parametro.unidades}
@@ -193,9 +189,7 @@ export function ResultadosModal({
                 );
               })
           ) : (
-            <p className="text-gray-600">
-              No hay resultados anteriores disponibles.
-            </p>
+            <p className="">No hay resultados anteriores disponibles.</p>
           )}
         </div>
       </DialogContent>

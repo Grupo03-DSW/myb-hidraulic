@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -179,12 +179,17 @@ export function InterfazSeguimientoTareasReparacion({
   };
 
   return (
-    <Form {...form}>
+    <div className="w-full h-full grid grid-rows-[auto,1fr] gap-4">
       {noice && <Noice noice={noice} />}
 
-      <Button onClick={() => setDialogOpen(true)} className="mb-4">
-        Ver Resultados Anteriores
-      </Button>
+      <div className="w-full flex items-center justify-end">
+        <Button
+          onClick={() => setDialogOpen(true)}
+          className="mb-4 w-full md:w-1/2"
+        >
+          <span className="text-wrap">Ver Resultados Anteriores</span>
+        </Button>
+      </div>
 
       <ResultadosModal
         open={dialogOpen}
@@ -193,49 +198,48 @@ export function InterfazSeguimientoTareasReparacion({
       />
 
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          form.handleSubmit(onSubmit)(event);
-        }}
-        className="w-full"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full flex flex-col items-center justify-center"
       >
-        <FormField
+        <Controller
           control={form.control}
           name="resultados"
           render={({ field }) => (
             <EspecificacionesList
               especificaciones={field.value}
               especificacionesOriginales={proyecto.especificaciones || []}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-2"
+              className="grid grid-cols-1 2xl:grid-cols-2 gap-2"
               messageNothingAdded="No hay pruebas"
               counterResult={(prueba_index, espec_index) => (
-                <FormField
+                <Controller
                   name={`resultados.${prueba_index}.especificaciones.${espec_index}.resultado`}
                   control={form.control}
                   render={({ field }) => (
-                    <FormItem>
-                      <Counter
-                        {...field}
-                        className={`w-20 ${
-                          form.formState.errors.resultados?.[prueba_index]
-                            ?.especificaciones?.[espec_index]
-                            ? "border-red-500"
-                            : ""
-                        }`}
-                      />
-                    </FormItem>
+                    <Counter
+                      {...field}
+                      className={`w-20 ${
+                        form.formState.errors.resultados?.[prueba_index]
+                          ?.especificaciones?.[espec_index]
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                    />
                   )}
                 />
               )}
               error={(index) =>
                 form.formState.errors.resultados?.[index]?.especificaciones
                   ?.root && (
-                  <span className="text-red-500 text-lg">
-                    {
-                      form.formState.errors.resultados[index]?.especificaciones
-                        ?.root.message
-                    }
-                  </span>
+                  <div className="w-full flex items-center justify-center py-2">
+                    <div className="border-r-2 border-l-2 bg-white/60 border-red-600 px-3 py-1 w-11/12 mx-auto flex items-center justify-center">
+                      <span className="message-error">
+                        {
+                          form.formState.errors.resultados[index]
+                            ?.especificaciones?.root.message
+                        }
+                      </span>
+                    </div>
+                  </div>
                 )
               }
             />
@@ -246,6 +250,6 @@ export function InterfazSeguimientoTareasReparacion({
           Registrar Resultados
         </Button>
       </form>
-    </Form>
+    </div>
   );
 }
