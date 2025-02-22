@@ -1,6 +1,6 @@
 export function InterfazNoTareasAsignadas() {
   return (
-    <div className="flex w-lvw h-lvh flex-col items-center justify-center pt-10 px-20 gap-3">
+    <div className="flex flex-1 h-full w-full flex-col items-center justify-center">
       <h1 className="text-2xl font-bold">No tiene tareas pendientes</h1>
     </div>
   );

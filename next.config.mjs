@@ -3,13 +3,14 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     appDir: true,
+    serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
   images: {
     domains: [
       "firebasestorage.googleapis.com",
       "avatar.iran.liara.run",
       "placehold.co",
-      "sjtcdpqlesvqtgjwhtny.supabase.co"
+      "sjtcdpqlesvqtgjwhtny.supabase.co",
     ],
   },
 };

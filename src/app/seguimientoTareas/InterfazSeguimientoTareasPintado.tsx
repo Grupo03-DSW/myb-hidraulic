@@ -31,7 +31,7 @@ export function InterfazSeguimientoTareasPintado({
           fechaInicio: new Date(),
         }),
       });
-  
+
       if (!response.ok) throw new Error("Error al cambiar de etapa");
 
       setNoice({
@@ -62,11 +62,13 @@ export function InterfazSeguimientoTareasPintado({
   return (
     <form
       onSubmit={onSubmit}
-      className="w-full flex flex-row justify-center py-7"
+      className="w-full h-full flex flex-row items-center justify-center"
     >
       {noice && <Noice noice={noice} />}
-      <Button type="submit" className="sm:w-1/2 lg:w-1/4">
-        Completar Tarea de pintado y embalado
+      <Button type="submit" className="w-full lg:w-1/2  my-10 min-h-min mx-5 flex items-center justify-center">
+        <span className="w-full mx-10 text-center break-words text-wrap">
+          Completar Tarea de pintado y embalado
+        </span>
       </Button>
     </form>
   );

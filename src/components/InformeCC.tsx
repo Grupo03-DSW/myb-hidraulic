@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   subsection: {
     paddingHorizontal: 15,
-    marginBottom: 10,
+    marginBottom: 5,
     display: "flex",
     flexDirection: "column",
   },
@@ -188,17 +188,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   sectionContent: {
-    marginBottom: 16,
+    marginBottom: 5,
+    marginLeft: 30,
+  },
+  subsectionContent: {
     marginLeft: 30,
   },
   feedback: {
     display: "flex",
     flexDirection: "column",
     gap: 2,
+    marginVertical: 4,
   },
   table: {
     width: "100%",
-    marginBottom: 10,
+    marginBottom: 5,
   },
   tableRow: {
     flexDirection: "row",
@@ -293,21 +297,23 @@ export const ContentCC = ({ proyecto }: { proyecto: Proyecto }) => {
                 </Text>
               </View>
 
-              <View style={styles.table}>
-                <View style={[styles.tableRow, styles.tableHeader]}>
-                  <Text style={styles.tableCell}>Parámetro</Text>
-                  <Text style={styles.tableCell}>Rango Aceptable</Text>
-                </View>
-                {especificacion.parametros.map((parametro) => (
-                  <View key={parametro.idParametro} style={styles.tableRow}>
-                    <Text style={styles.tableCell}>{parametro.nombre}</Text>
-                    <Text style={styles.tableCell}>
-                      {parametro.valorMinimo}
-                      {parametro.unidades} - {parametro.valorMaximo}
-                      {parametro.unidades}
-                    </Text>
+              <View style={styles.subsectionContent}>
+                <View style={styles.table}>
+                  <View style={[styles.tableRow, styles.tableHeader]}>
+                    <Text style={styles.tableCell}>Parámetro</Text>
+                    <Text style={styles.tableCell}>Rango Aceptable</Text>
                   </View>
-                ))}
+                  {especificacion.parametros.map((parametro) => (
+                    <View key={parametro.idParametro} style={styles.tableRow}>
+                      <Text style={styles.tableCell}>{parametro.nombre}</Text>
+                      <Text style={styles.tableCell}>
+                        {parametro.valorMinimo}
+                        {parametro.unidades} - {parametro.valorMaximo}
+                        {parametro.unidades}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
               </View>
             </View>
           ))}
@@ -331,11 +337,6 @@ export const ContentCC = ({ proyecto }: { proyecto: Proyecto }) => {
                   (fb) =>
                     fb.idResultadoPruebaTecnico === resultado.idResultadoPrueba
                 );
-
-                const esRechazado =
-                  feedbackRelacionado && !feedbackRelacionado.aprobado;
-                const esAprobado =
-                  feedbackRelacionado && feedbackRelacionado.aprobado;
 
                 const resultadoSupervisor = feedbackRelacionado
                   ? resultadosAnteriores.find(
@@ -363,121 +364,141 @@ export const ContentCC = ({ proyecto }: { proyecto: Proyecto }) => {
                       </Text>
                     </View>
 
-                    <Text style={[styles.fontText, styles.defaultText]}>
-                      A cargo de:{" "}
-                      {proyecto.empleadosActuales?.find(
-                        (e) => e.idEmpleado === resultado.idEmpleado
-                      )?.nombre || "Desconocido"}
-                    </Text>
-
-                    {resultado.resultados.map((prueba, index) => (
-                      <View key={index} style={styles.table}>
-                        <View style={[styles.tableTitle]}>
-                          <Text
-                            style={[styles.fontText, styles.textTableTitle]}
-                          >
-                            Resultado del Tecnico en{" "}
-                            {proyecto.especificaciones?.find(
-                              (e) => e.idTipoPrueba === prueba.idTipoPrueba
-                            )?.nombre || "Desconocido"}
-                          </Text>
-                        </View>
-
-                        <View style={[styles.tableRow, styles.tableHeader]}>
-                          <Text style={styles.tableCell}>Parámetro</Text>
-                          <Text style={styles.tableCell}>Resultado</Text>
-                        </View>
-
-                        {prueba.resultadosParametros.map((parametro) => (
-                          <View
-                            key={parametro.idParametro}
-                            style={styles.tableRow}
-                          >
-                            <Text style={styles.tableCell}>
-                              {parametro.nombre}
-                            </Text>
-                            <Text style={styles.tableCell}>
-                              {parametro.resultado}
-                              {parametro.unidades}
-                            </Text>
-                          </View>
-                        ))}
-                      </View>
-                    ))}
-
-                    {resultadoSupervisor && (
-                      <View>
-                        <View style={styles.feedback}>
-                          <Text style={[styles.fontText, styles.defaultText]}>
-                            <Text style={[styles.fontText, styles.highlight]}>
-                              Supervisión a cargo de:
-                            </Text>{" "}
-                            {proyecto.supervisor?.nombre || "Desconocido"}{" "}
-                            {proyecto.supervisor?.apellido}
-                          </Text>
-                          <Text style={[styles.fontText, styles.defaultText]}>
-                            <Text style={[styles.fontText, styles.highlight]}>
-                              Verifación de reparación realizada el
-                            </Text>{" "}
-                            {new Date(
-                              resultadoSupervisor.fecha
-                            ).toLocaleDateString()}
-                          </Text>
-                        </View>
-
-                        {resultadoSupervisor.resultados.map((prueba, index) => (
-                          <View key={index} style={styles.table}>
-                            <View style={[styles.tableTitle]}>
-                              <Text
-                                style={[styles.fontText, styles.textTableTitle]}
-                              >
-                                Resultados de Verificación de Reparación en{" "}
-                                {proyecto.especificaciones?.find(
-                                  (e) => e.idTipoPrueba === prueba.idTipoPrueba
-                                )?.nombre || "Desconocido"}
-                              </Text>
-                            </View>
-
-                            <View style={[styles.tableRow, styles.tableHeader]}>
-                              <Text style={styles.tableCell}>Parámetro</Text>
-                              <Text style={styles.tableCell}>Resultado</Text>
-                            </View>
-
-                            {prueba.resultadosParametros.map((parametro) => (
-                              <View
-                                key={parametro.idParametro}
-                                style={styles.tableRow}
-                              >
-                                <Text style={styles.tableCell}>
-                                  {parametro.nombre}
-                                </Text>
-                                <Text style={styles.tableCell}>
-                                  {parametro.resultado}
-                                  {parametro.unidades}
-                                </Text>
-                              </View>
-                            ))}
-                          </View>
-                        ))}
-                      </View>
-                    )}
-
-                    {feedbackRelacionado && (
+                    <View style={styles.subsectionContent}>
                       <View style={styles.feedback}>
                         <Text style={[styles.fontText, styles.defaultText]}>
                           <Text style={[styles.fontText, styles.highlight]}>
-                            Comentario:
+                            A cargo de:{" "}
                           </Text>{" "}
-                          {feedbackRelacionado.comentario}
-                        </Text>
-                        <Text style={[styles.fontText, styles.defaultText]}>
-                          <Text style={[styles.fontText, styles.highlight]}>
-                            Aprobado:
-                          </Text>{" "}
-                          {feedbackRelacionado.aprobado ? "Sí" : "No"}
+                          {proyecto.empleadosActuales?.find(
+                            (e) => e.idEmpleado === resultado.idEmpleado
+                          )?.nombre || "Desconocido"}
                         </Text>
                       </View>
-                    )}
+
+                      {resultado.resultados.map((prueba, index) => (
+                        <View key={index} style={styles.table}>
+                          <View style={[styles.tableTitle]}>
+                            <Text
+                              style={[styles.fontText, styles.textTableTitle]}
+                            >
+                              Resultado del Tecnico en{" "}
+                              {proyecto.especificaciones?.find(
+                                (e) => e.idTipoPrueba === prueba.idTipoPrueba
+                              )?.nombre || "Desconocido"}
+                            </Text>
+                          </View>
+
+                          <View style={[styles.tableRow, styles.tableHeader]}>
+                            <Text style={styles.tableCell}>Parámetro</Text>
+                            <Text style={styles.tableCell}>Resultado</Text>
+                          </View>
+
+                          {prueba.resultadosParametros.map((parametro) => (
+                            <View
+                              key={parametro.idParametro}
+                              style={styles.tableRow}
+                            >
+                              <Text style={styles.tableCell}>
+                                {parametro.nombre}
+                              </Text>
+                              <Text style={styles.tableCell}>
+                                {parametro.resultado}
+                                {parametro.unidades}
+                              </Text>
+                            </View>
+                          ))}
+                        </View>
+                      ))}
+
+                      {resultadoSupervisor && (
+                        <View>
+                          <View style={styles.feedback}>
+                            <Text style={[styles.fontText, styles.defaultText]}>
+                              <Text style={[styles.fontText, styles.highlight]}>
+                                Supervisión a cargo de:
+                              </Text>{" "}
+                              {proyecto.supervisor?.nombre || "Desconocido"}{" "}
+                              {proyecto.supervisor?.apellido}
+                            </Text>
+                            <Text style={[styles.fontText, styles.defaultText]}>
+                              <Text style={[styles.fontText, styles.highlight]}>
+                                Verifación de reparación realizada el
+                              </Text>{" "}
+                              {new Date(
+                                resultadoSupervisor.fecha
+                              ).toLocaleDateString()}
+                            </Text>
+                          </View>
+
+                          {resultadoSupervisor.resultados.map(
+                            (prueba, index) => (
+                              <View key={index} style={styles.table}>
+                                <View style={[styles.tableTitle]}>
+                                  <Text
+                                    style={[
+                                      styles.fontText,
+                                      styles.textTableTitle,
+                                    ]}
+                                  >
+                                    Resultados de Verificación de Reparación en{" "}
+                                    {proyecto.especificaciones?.find(
+                                      (e) =>
+                                        e.idTipoPrueba === prueba.idTipoPrueba
+                                    )?.nombre || "Desconocido"}
+                                  </Text>
+                                </View>
+
+                                <View
+                                  style={[styles.tableRow, styles.tableHeader]}
+                                >
+                                  <Text style={styles.tableCell}>
+                                    Parámetro
+                                  </Text>
+                                  <Text style={styles.tableCell}>
+                                    Resultado
+                                  </Text>
+                                </View>
+
+                                {prueba.resultadosParametros.map(
+                                  (parametro) => (
+                                    <View
+                                      key={parametro.idParametro}
+                                      style={styles.tableRow}
+                                    >
+                                      <Text style={styles.tableCell}>
+                                        {parametro.nombre}
+                                      </Text>
+                                      <Text style={styles.tableCell}>
+                                        {parametro.resultado}
+                                        {parametro.unidades}
+                                      </Text>
+                                    </View>
+                                  )
+                                )}
+                              </View>
+                            )
+                          )}
+                        </View>
+                      )}
+
+                      {feedbackRelacionado && (
+                        <View style={styles.feedback}>
+                          <Text style={[styles.fontText, styles.defaultText]}>
+                            <Text style={[styles.fontText, styles.highlight]}>
+                              Comentario:
+                            </Text>{" "}
+                            {feedbackRelacionado.comentario}
+                          </Text>
+                          <Text style={[styles.fontText, styles.defaultText]}>
+                            <Text style={[styles.fontText, styles.highlight]}>
+                              Aprobado:
+                            </Text>{" "}
+                            {feedbackRelacionado.aprobado ? "Sí" : "No"}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
                   </View>
                 );
               })

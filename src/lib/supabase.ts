@@ -32,7 +32,7 @@ export const uploadImage = async (
   }
   console.log("Buckets disponibles:", buckets);
 
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("myb_hidraulic")
     .upload(`${filePath}.png`, blob, {
       contentType,

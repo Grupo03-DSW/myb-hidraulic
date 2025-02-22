@@ -20,8 +20,6 @@ export function InterfazListaProyectos() {
   const [clientesSeleccionados, setClientesSeleccionados] = useState<number[]>(
     []
   );
-  const [showEtapas, setShowEtapas] = useState(false);
-  const [showClientes, setShowClientes] = useState(false);
   const { data: session, status } = useSession();
 
   useEffect(() => {

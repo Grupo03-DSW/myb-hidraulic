@@ -1,14 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Proyecto } from "@/models/proyecto";
 import { ResultadoPrueba } from "@/models/resultado";
+import { Modal } from "@/components/Modal";
 
 export function ResultadosModal({
   open,
@@ -37,16 +31,21 @@ export function ResultadosModal({
   }, [proyecto]);
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Resultados Anteriores</DialogTitle>
-        </DialogHeader>
-        <DialogDescription>
-          Estos son los resultados técnicos registrados y sus comentarios
-          asociados.
-        </DialogDescription>
-        <div className="max-h-96 overflow-y-auto space-y-4">
+    <Modal
+      isOpen={open}
+      onClose={() => {
+        onClose(false);
+      }}
+    >
+      <div className="w-full">
+        <div className="my-2 flex flex-col space-y-2">
+          <h2>Resultados Anteriores</h2>
+          <span className="text-sm">
+            Estos son los resultados técnicos registrados y sus comentarios
+            asociados.
+          </span>
+        </div>
+        <div className="max-h-96 overflow-y-auto space-y-4 px-4">
           {resultadosFiltrados.length > 0 ? (
             resultadosFiltrados
               .toSorted((a, b) => b.idResultadoPrueba - a.idResultadoPrueba)
@@ -196,7 +195,7 @@ export function ResultadosModal({
             <p className="">No hay resultados anteriores disponibles.</p>
           )}
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </Modal>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { Proyecto } from "@/models/proyecto";
-import ProjectDetailsModal from "./ProyectDetailsModal";
-import { Button } from "./ui/button";
-import { EmpleadoPictureCard } from "./EmpleadoPictureCard";
+import ProjectDetailsModal from "@/components/ProyectDetailsModal";
+import { Button } from "@/components/ui/button";
+import { EmpleadoPictureCard } from "@/components/EmpleadoPictureCard";
 
 export function ProyectoHeader({
   proyecto,
@@ -12,13 +12,15 @@ export function ProyectoHeader({
   proyecto: Proyecto;
   showSeeDetailsBtn: boolean;
 }) {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   return (
     <div className="flex flex-row justify-between items-start md:items-center w-full gap-4">
       <ProjectDetailsModal
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
+        open={detailOpen}
+        onClose={() => {
+          setDetailOpen(false);
+        }}
         proyecto={proyecto}
       />
       {/* Título y detalles del proyecto */}
@@ -26,7 +28,7 @@ export function ProyectoHeader({
         <div className="flex flex-row items-center justify-between gap-4">
           <h1 className="font-bold text-3xl">{proyecto.titulo}</h1>
           {showSeeDetailsBtn && (
-            <Button onClick={() => setDialogOpen(true)}>Ver Detalles</Button>
+            <Button onClick={() => setDetailOpen(true)}>Ver Detalles</Button>
           )}
         </div>
         <div className="flex flex-col md:flex-row md:items-center gap-2">
@@ -36,7 +38,11 @@ export function ProyectoHeader({
       {/* Empleados actuales */}
       <div className="flex gap-2 flex-wrap md:flex-nowrap h-auto md:h-20">
         {proyecto.empleadosActuales?.map((empleado) => (
-          <EmpleadoPictureCard key={empleado.idEmpleado} empleado={empleado} enableOnHoverInfo />
+          <EmpleadoPictureCard
+            key={empleado.idEmpleado}
+            empleado={empleado}
+            enableOnHoverInfo
+          />
         ))}
       </div>
     </div>

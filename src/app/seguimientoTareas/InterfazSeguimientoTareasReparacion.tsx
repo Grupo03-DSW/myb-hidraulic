@@ -4,7 +4,6 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Noice } from "@/components/Noice";
 import { Proyecto } from "@/models/proyecto";
 import { ResultadosModal } from "@/components/ResultadosModal";

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Repuesto } from "@/models/repuesto";
-import { PictureCard } from "./PictureCard";
+import { PictureCard } from "@/components/PictureCard";
 import { cn } from "@/lib/utils";
 
 export function RepuestosList<T extends Repuesto>({

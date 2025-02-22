@@ -1,6 +1,6 @@
 import React from "react";
 import { EspecificacionPrueba } from "@/models/especificacion";
-import { PruebasTable } from "./PruebasTable";
+import { PruebasTable } from "@/components/PruebasTable";
 
 type ResultadosForm = {
   idTipoPrueba: number;

@@ -134,49 +134,52 @@ export function InterfazSeguimientoTareas() {
 
   const { data: session, status } = useSession();
 
-  const fetchTareas = async () => {
-    try {
-      const res = await fetch(`/api/proyecto/por-tecnico/${session?.user?.id}`);
-      let data = await res.json();
-
-      if (data == null) {
-        setProyecto(null);
-        setNoice(null);
-        return;
-      }
-
-      data = {
-        ...data,
-        fechaInicio: new Date(`${data.fechaInicio}T00:00:00`),
-        fechaFin: new Date(`${data.fechaFin}T00:00:00`),
-      };
-
-      const parsedData = proyectoSchema.safeParse(data);
-
-      if (parsedData.success) {
-        setProyecto(parsedData.data);
-      } else {
-        console.error(parsedData.error.errors);
-        throw new MyBError("Error al cargar el proyecto");
-      }
-      setNoice(null);
-    } catch (error) {
-      if (error instanceof MyBError)
-        setNoice({ type: "error", message: error.message });
-      else setNoice({ type: "error", message: "Error al cargar las tareas" });
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     if (status === "loading") return;
+
+    const fetchTareas = async () => {
+      try {
+        const res = await fetch(
+          `/api/proyecto/por-tecnico/${session?.user?.id}`
+        );
+        let data = await res.json();
+
+        if (data == null) {
+          setProyecto(null);
+          setNoice(null);
+          return;
+        }
+
+        data = {
+          ...data,
+          fechaInicio: new Date(`${data.fechaInicio}T00:00:00`),
+          fechaFin: new Date(`${data.fechaFin}T00:00:00`),
+        };
+
+        const parsedData = proyectoSchema.safeParse(data);
+
+        if (parsedData.success) {
+          setProyecto(parsedData.data);
+        } else {
+          console.error(parsedData.error.errors);
+          throw new MyBError("Error al cargar el proyecto");
+        }
+        setNoice(null);
+      } catch (error) {
+        if (error instanceof MyBError)
+          setNoice({ type: "error", message: error.message });
+        else setNoice({ type: "error", message: "Error al cargar las tareas" });
+        console.error(error);
+      }
+    };
+
     fetchTareas();
   }, [status]);
 
   if (noice && noice?.styleType === "page") return <Noice noice={noice} />;
 
   return (
-    <div className="flex flex-col items-center md:pt-10 md:px-20 gap-3">
+    <div className="flex flex-col min-h-screen items-center pt-5 px-8 md:pt-10 md:px-20 gap-3">
       {noice ? (
         <Noice noice={noice} />
       ) : proyecto ? (
@@ -187,26 +190,28 @@ export function InterfazSeguimientoTareas() {
               <ProjectFlow etapa={Number(proyecto.idEtapaActual) - 1} />
             </div>
 
-            <div className="w-full h-full flex flex-col border-2 rounded-lg px-3 pb-3 pt-4 bg-white/35 relative">
-              <div className="content-form-group-label">
-                <label className="form-group-label">
-                  {stageLabels[Number(proyecto.idEtapaActual) - 1]}
-                </label>
-              </div>
-              {proyecto.idEtapaActual == 3 ? (
-                <InterfazSeguimientoTareasReparacion
-                  idEmpleado={session?.user.id as number}
-                  proyecto={proyecto}
-                />
-              ) : proyecto.idEtapaActual == 4 ? (
-                <div className="w-full p-7">
-                  <h1 className="text-center font-bold text-xl">
-                    En control de calidad...
-                  </h1>
+            <div className="w-full h-full flex items-center justify-center px-4">
+              <div className="w-full h-full flex flex-col border-2 rounded-lg px-3 pb-3 pt-4 bg-white/35 relative">
+                <div className="content-form-group-label">
+                  <label className="form-group-label">
+                    {stageLabels[Number(proyecto.idEtapaActual) - 1]}
+                  </label>
                 </div>
-              ) : proyecto.idEtapaActual == 7 ? (
-                <InterfazSeguimientoTareasPintado proyecto={proyecto} />
-              ) : null}
+                {proyecto.idEtapaActual == 3 ? (
+                  <InterfazSeguimientoTareasReparacion
+                    idEmpleado={session?.user.id as number}
+                    proyecto={proyecto}
+                  />
+                ) : proyecto.idEtapaActual == 4 ? (
+                  <div className="w-full p-7">
+                    <h1 className="text-center font-bold text-xl">
+                      En control de calidad...
+                    </h1>
+                  </div>
+                ) : proyecto.idEtapaActual == 7 ? (
+                  <InterfazSeguimientoTareasPintado proyecto={proyecto} />
+                ) : null}
+              </div>
             </div>
           </div>
         </>

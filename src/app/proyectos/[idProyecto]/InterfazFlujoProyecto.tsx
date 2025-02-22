@@ -27,7 +27,7 @@ export function InterfazFlujoProyecto({ idProyecto }: { idProyecto: string }) {
     message: "Cargando proyecto...",
   });
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchProyecto = async () => {

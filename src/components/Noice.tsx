@@ -1,6 +1,6 @@
 "use client";
 import { NoiceType } from "@/models/noice";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface NoiceProps {

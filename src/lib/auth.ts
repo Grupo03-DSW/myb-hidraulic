@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import MyBError from "@/lib/mybError";
 
 export const authOptions: NextAuthOptions = {
   providers: [

@@ -14,7 +14,13 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
     if (onClose === undefined) return;
 
     const handleClickOutside = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      // ✅ Evitar cierre si el clic es en un elemento superpuesto con data-ignore-modal
+      const target = e.target as HTMLElement;
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(target) &&
+        !target.closest("[data-ignore-modal]")
+      ) {
         onClose();
       }
     };
@@ -33,13 +39,11 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    // Añadir o eliminar clase `overflow-hidden` al body
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-    // Cleanup: eliminar clase al desmontar
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -48,7 +52,7 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div className="m-0 fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
       <div
         ref={modalRef}
         className={`${

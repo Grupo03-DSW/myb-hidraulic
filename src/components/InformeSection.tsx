@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Modal } from "./Modal";
+import { Modal } from "@/components/Modal";
 
 interface InformeSectionProps {
   informeLabel: string;

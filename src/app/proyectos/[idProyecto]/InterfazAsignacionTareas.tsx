@@ -111,7 +111,7 @@ export function InterfazAsignacionTareas({
     return res.json();
   };
 
-  const onSubmit = async (data: z.infer<typeof empleadosSchema>) => {
+  const onSubmit = async () => {
     setNoice({
       type: "loading",
       message: "Asignando tareas...",
@@ -119,10 +119,6 @@ export function InterfazAsignacionTareas({
     });
 
     try {
-      const empleados = data.empleados
-        .filter((empleado) => empleado.checked)
-        .map((empleado) => empleado.idEmpleado);
-      const { idProyecto, idEtapaActual } = proyecto;
 
       await asignarTareas();
 

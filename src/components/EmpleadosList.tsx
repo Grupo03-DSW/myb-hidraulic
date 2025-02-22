@@ -1,6 +1,6 @@
 import React from "react";
 import { EmpleadoForm } from "@/models/empleado";
-import { EmpleadoPictureCard } from "./EmpleadoPictureCard";
+import { EmpleadoPictureCard } from "@/components/EmpleadoPictureCard";
 
 interface EmpleadoListProps<T extends EmpleadoForm> {
   messageNothingAdded: string;
