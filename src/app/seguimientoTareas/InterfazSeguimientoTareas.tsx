@@ -125,11 +125,11 @@ const proyectoSchema = z.object({
 });
 
 export function InterfazSeguimientoTareas() {
-  const [idEmpleadoMock] = useState<string>("5");
   const [proyecto, setProyecto] = useState<Proyecto | null>(null);
   const [noice, setNoice] = useState<NoiceType | null>({
     type: "loading",
     message: "Cargando tareas...",
+    styleType: "page",
   });
 
   const { data: session, status } = useSession();
@@ -173,6 +173,8 @@ export function InterfazSeguimientoTareas() {
     fetchTareas();
   }, [status]);
 
+  if (noice && noice?.styleType === "page") return <Noice noice={noice} />;
+
   return (
     <div className="flex flex-col items-center md:pt-10 md:px-20 gap-3">
       {noice ? (
@@ -193,7 +195,7 @@ export function InterfazSeguimientoTareas() {
               </div>
               {proyecto.idEtapaActual == 3 ? (
                 <InterfazSeguimientoTareasReparacion
-                  idEmpleado={Number(idEmpleadoMock)}
+                  idEmpleado={session?.user.id as number}
                   proyecto={proyecto}
                 />
               ) : proyecto.idEtapaActual == 4 ? (
@@ -203,10 +205,7 @@ export function InterfazSeguimientoTareas() {
                   </h1>
                 </div>
               ) : proyecto.idEtapaActual == 7 ? (
-                <InterfazSeguimientoTareasPintado
-                  proyecto={proyecto}
-                  idEmpleado={idEmpleadoMock}
-                />
+                <InterfazSeguimientoTareasPintado proyecto={proyecto} />
               ) : null}
             </div>
           </div>

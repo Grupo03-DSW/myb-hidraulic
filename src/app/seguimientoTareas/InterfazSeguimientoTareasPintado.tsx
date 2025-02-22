@@ -8,10 +8,8 @@ import { Proyecto } from "@/models/proyecto";
 
 export function InterfazSeguimientoTareasPintado({
   proyecto,
-  idEmpleado,
 }: {
   proyecto: Proyecto;
-  idEmpleado: string;
 }) {
   const [noice, setNoice] = useState<NoiceType | null>(null);
 

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -31,6 +31,10 @@ export function ResultadosModal({
           feedback.idResultadoPruebaSupervisor === resultado.idResultadoPrueba
       )
   );
+
+  useEffect(() => {
+    console.log("Proyecto:", proyecto);
+  }, [proyecto]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InformeSection } from "@/components/InformeSection";
 import { Noice } from "@/components/Noice";
 import { NoiceType } from "@/models/noice";
@@ -11,6 +11,10 @@ import MyBError from "@/lib/mybError";
 
 export function InterfazGenerarCC({ proyecto }: { proyecto: Proyecto }) {
   const [noice, setNoice] = useState<NoiceType | null>(null);
+
+  useEffect(() => {
+    console.log(proyecto);
+  }, [proyecto]);
 
   const handleActualizarEtapa = async () => {
     setNoice({

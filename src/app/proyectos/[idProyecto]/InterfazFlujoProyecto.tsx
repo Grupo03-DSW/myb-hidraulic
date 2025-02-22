@@ -112,7 +112,7 @@ export function InterfazFlujoProyecto({ idProyecto }: { idProyecto: string }) {
               (proyecto.idEtapaActual == 4 ? (
                 <InterfazVerificacionReparacion
                   proyecto={proyecto}
-                  idEmpleado={1}
+                  idEmpleado={session.user.id}
                 />
               ) : proyecto.idEtapaActual == 5 ? (
                 <InterfazGenerarCC proyecto={proyecto} />
