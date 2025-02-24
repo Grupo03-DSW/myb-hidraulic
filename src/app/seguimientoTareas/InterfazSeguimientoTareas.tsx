@@ -23,6 +23,7 @@ const proyectoSchema = z.object({
 
   fechaInicio: z.date(),
   fechaFin: z.date(),
+  costoTotal: z.number(),
 
   cliente: z.object({
     idCliente: z.number(),
@@ -36,11 +37,15 @@ const proyectoSchema = z.object({
   supervisor: z.object({
     idEmpleado: z.number(),
     nombre: z.string(),
+    apellido: z.string(),
+    linkImg: z.string().optional(),
   }),
 
   jefe: z.object({
     idEmpleado: z.number(),
     nombre: z.string(),
+    apellido: z.string(),
+    linkImg: z.string().optional(),
   }),
 
   repuestos: z.array(
