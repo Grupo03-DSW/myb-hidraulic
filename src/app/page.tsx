@@ -11,7 +11,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [noice, setNoice] = useState<NoiceType | null>({
     type: "loading",
-    styleType: "page",
+    styleType: "modal",
     message: "Estamos configurando algunas cosas...",
   });
 

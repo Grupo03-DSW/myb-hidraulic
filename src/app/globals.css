@@ -159,3 +159,30 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Color cuando el mouse pasa sobre el scrollbar */
 }
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
+  .animate-spin-reverse {
+    animation: spin-reverse 3s linear infinite;
+  }
+}

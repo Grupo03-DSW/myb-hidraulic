@@ -77,7 +77,7 @@ export function InterfazRegistroCliente() {
           setNoice(null);
           resolve();
           router.replace("/");
-        }, 2000);
+        }, 3000);
       });
     } catch (error) {
       if (error instanceof MyBError)

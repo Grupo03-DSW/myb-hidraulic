@@ -80,11 +80,84 @@ const config: Config = {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        draw: {
+          to: {
+            strokeDashoffset: "0",
+          },
+        },
+        circularDash: {
+          "0%": {
+            "stroke-dasharray": "1px, 200px",
+            "stroke-dashoffset": "0",
+          },
+          "20%": {
+            "stroke-dasharray": "100px, 200px",
+            "stroke-dashoffset": "-15px",
+          },
+          "40%": {
+            "stroke-dasharray": "251.33px, 251.33px", // Longitud total aproximada del círculo (2πr para r=40)
+            "stroke-dashoffset": "0",
+          },
+          "100%": {
+            "stroke-dasharray": "251.33px, 251.33px",
+            "stroke-dashoffset": "0",
+          },
+        },
+        failedCircularDash: {
+          "0%": {
+            "stroke-dasharray": "1px, 200px",
+            "stroke-dashoffset": "0",
+          },
+          "10%": {
+            "stroke-dasharray": "50px, 300px",
+            "stroke-dashoffset": "20px",
+          },
+          "20%": {
+            "stroke-dasharray": "50px, 251.33px",
+            "stroke-dashoffset": "10px",
+          },
+          "30%": {
+            "stroke-dasharray": "50px, 300px",
+            "stroke-dashoffset": "20px",
+          },
+          "35%": {
+            "stroke-dasharray": "60px, 251.33px",
+            "stroke-dashoffset": "10px",
+          },
+          "40%": {
+            "stroke-dasharray": "0px, 260px",
+            "stroke-dashoffset": "-1px",
+            "stroke-width": "1",
+          },
+          "41%": {
+            "stroke-width": "0",
+          },
+          "100%": {
+            "stroke-dasharray": "0px, 260px",
+            "stroke-dashoffset": "-1px",
+            "stroke-width": "0",
+          },
+        },
+        jump: {
+          "0%": { transform: "scale(0)" },
+          "30%": { transform: "scale(0)" },
+          "50%": { transform: "scale(1.4)" },
+          "60%": { transform: "scale(1)" },
+          "70%": { transform: "scale(1.3)" },
+          "80%": { transform: "scale(1)" },
+          "100%": { transform: "scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         fadeIn: "fadeIn 0.7s ease-in forwards",
+        "spin-slow": "spin-slow 3s linear infinite",
+        "spin-reverse": "spin-reverse 3s linear infinite",
+        draw: "draw 4s ease-in-out forwards",
+        circularDash: "circularDash 5s ease-in-out infinite",
+        jump: "jump 5s ease-in-out infinite",
+        failedCircularDash: "failedCircularDash 5s ease-in-out infinite",
       },
       fontFamily: {
         roboto: ["var(--font-roboto)", "sans-serif"],

@@ -136,7 +136,7 @@ export function InterfazProyeccionRepuestos() {
           resolve();
           setNoice(null);
           window.location.reload();
-        }, 2000);
+        }, 3000);
       });
     } catch (e) {
       console.error("Error al solicitar repuestos:", e);
