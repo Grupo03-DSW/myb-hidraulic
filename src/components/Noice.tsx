@@ -28,7 +28,7 @@ export function Noice({ noice }: NoiceProps) {
         >
           <div className="flex flex-col justify-center items-center border-2 border-primary-foreground shadow-lg bg-white/35 rounded-lg gap-4 p-5">
             <LoadingGear size="lg" color="text-primary-foreground" />
-            <LoadingTyping text={noice.message} size="lg" />
+            <LoadingTyping text={noice.message || "Cargando..."} size="lg" />
           </div>
         </div>
       </div>
@@ -65,8 +65,8 @@ export function Noice({ noice }: NoiceProps) {
                 />
               </div>
             </div>
-            <p className="flex flex-col items-center text-sm font-medium text-primary-foreground gap-y-4 text-red-700">
-              {noice.message || "Todo salio bien."}
+            <p className="flex flex-col items-center text-sm font-medium text-primary-foreground gap-y-4 text-red-700 animate-noiseContend">
+              {noice.message || "Algo salio mal."}
             </p>
             <div className="w-2/3 flex flex-col items-center gap-y-2">
               <Button
@@ -74,12 +74,15 @@ export function Noice({ noice }: NoiceProps) {
                   window.location.reload();
                 }}
                 variant={"outline"}
-                className="text-black px-4 py-2 rounded-lg w-full min-w-min"
+                className="text-black animate-noiseContend px-4 py-2 rounded-lg w-full min-w-min"
               >
                 Volver a intentar
               </Button>
               <a className="w-full" href="/">
-                <Button variant={"destructive"} className="text-white bg-red-700 px-4 py-2 rounded-lg w-full">
+                <Button
+                  variant={"destructive"}
+                  className="animate-noiseContend text-white bg-red-700 px-4 py-2 rounded-lg w-full"
+                >
                   Ir al inicio
                 </Button>
               </a>
@@ -120,7 +123,7 @@ export function Noice({ noice }: NoiceProps) {
                 />
               </div>
             </div>
-            <p className="flex flex-col items-center text-sm font-medium text-primary-foreground gap-y-4">
+            <p className="flex flex-col items-center text-sm font-medium text-primary-foreground gap-y-4 animate-noiseContend">
               {noice.message || "Todo salio bien."}
             </p>
           </div>

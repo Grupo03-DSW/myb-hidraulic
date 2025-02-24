@@ -73,17 +73,20 @@ export function LoadingTyping({
   ]);
 
   return (
-    <div className="flex items-center gap-1">
-      <p
-        className={`${sizeClasses[size].text} text-center font-medium ${color}`}
+    <div className="relative flex flex-col items-center gap-1">
+      <div
+        className={`${sizeClasses[size].text} p-2 flex flex-col items-center justify-center text-center font-medium ${color}`}
       >
-        {displayText}
-        {showCursor && (
-          <span className="inline-block w-[2px] h-[1.2em] bg-current align-middle animate-pulse">
-            |
-          </span>
-        )}
-      </p>
+        <span className="opacity-0">{text}</span>
+        <div className="absolute top-0">
+          {displayText}
+          {showCursor && (
+            <span className="inline-block w-[2px] h-[1.2em] bg-current align-middle animate-pulse">
+              |
+            </span>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
