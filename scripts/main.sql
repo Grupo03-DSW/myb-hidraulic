@@ -10,7 +10,6 @@ create type info_parametro_proyecto as
     valores_minimo numeric(10, 2)[]
 );
 
-alter type info_parametro_proyecto owner to jose_sernaque;
 
 create type info_repuesto_proyecto as
 (
@@ -22,7 +21,6 @@ create type info_repuesto_proyecto as
     cantidades    integer[]
 );
 
-alter type info_repuesto_proyecto owner to jose_sernaque;
 
 create table cliente
 (
@@ -35,8 +33,6 @@ create table cliente
     correo     varchar(255)
 );
 
-alter table cliente
-    owner to jose_sernaque;
 
 create table repuesto
 (
@@ -51,8 +47,6 @@ create table repuesto
     stock_requerido  integer default 0
 );
 
-alter table repuesto
-    owner to jose_sernaque;
 
 create table tipo_prueba
 (
@@ -61,8 +55,6 @@ create table tipo_prueba
     nombre         varchar(255) not null
 );
 
-alter table tipo_prueba
-    owner to jose_sernaque;
 
 create table parametro
 (
@@ -74,9 +66,6 @@ create table parametro
     nombre         varchar(255) not null,
     primary key (id_parametro, id_tipo_prueba)
 );
-
-alter table parametro
-    owner to jose_sernaque;
 
 create table empleado
 (
@@ -96,8 +85,6 @@ create table empleado
     link_img            varchar(255)
 );
 
-alter table empleado
-    owner to jose_sernaque;
 
 create table etapa
 (
@@ -106,8 +93,6 @@ create table etapa
     nombre   varchar(255) not null
 );
 
-alter table etapa
-    owner to jose_sernaque;
 
 create table costos
 (
@@ -118,8 +103,6 @@ create table costos
     costo_total     numeric(10, 2) not null
 );
 
-alter table costos
-    owner to jose_sernaque;
 
 create table proyecto
 (
@@ -146,8 +129,6 @@ create table proyecto
     fechafin        date
 );
 
-alter table proyecto
-    owner to jose_sernaque;
 
 create table proyecto_especificaciones_pruebas
 (
@@ -166,8 +147,6 @@ create table proyecto_especificaciones_pruebas
             on delete cascade
 );
 
-alter table proyecto_especificaciones_pruebas
-    owner to jose_sernaque;
 
 create table proyecto_repuestos_cantidad
 (
@@ -181,8 +160,6 @@ create table proyecto_repuestos_cantidad
     primary key (id_proyecto, id_repuesto)
 );
 
-alter table proyecto_repuestos_cantidad
-    owner to jose_sernaque;
 
 create table proyecto_etapa_empleado
 (
@@ -195,8 +172,6 @@ create table proyecto_etapa_empleado
     primary key (id_proyecto, id_etapa, id_tecnico)
 );
 
-alter table proyecto_etapa_empleado
-    owner to jose_sernaque;
 
 create table resultado_prueba
 (
@@ -207,8 +182,6 @@ create table resultado_prueba
     fecha               date    not null
 );
 
-alter table resultado_prueba
-    owner to jose_sernaque;
 
 create table prueba_parametro_resultado
 (
@@ -225,8 +198,6 @@ create table prueba_parametro_resultado
         on delete cascade
 );
 
-alter table prueba_parametro_resultado
-    owner to jose_sernaque;
 
 create table feedback
 (
@@ -242,8 +213,6 @@ create table feedback
     comentario                     text
 );
 
-alter table feedback
-    owner to jose_sernaque;
 
 create table proyecto_etapas_cambio
 (
@@ -257,8 +226,6 @@ create table proyecto_etapas_cambio
     fecha_fin                 date
 );
 
-alter table proyecto_etapas_cambio
-    owner to jose_sernaque;
 
 create function paobtenerpruebaconparametros()
     returns TABLE(id_tipo_prueba integer, nombre_prueba character varying, id_parametro integer, nombre_parametro character varying, unidades character varying)
@@ -277,7 +244,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerpruebaconparametros() owner to jose_sernaque;
 
 create procedure painsertarproyecto(IN p_titulo_proyecto character varying, IN p_descripcion_proyecto text, IN p_fecha_inicio_proyecto date, IN p_fecha_fin_proyecto date, IN p_id_cliente integer, IN p_id_supervisor integer, IN p_id_jefe integer, IN p_costo_mano_obra numeric, IN p_ids_repuestos integer[], IN p_cantidades_repuestos integer[], IN p_ids_parametros integer[], IN p_valores_maximos numeric[], IN p_valores_minimos numeric[])
     language plpgsql
@@ -359,7 +325,6 @@ BEGIN
 END;
 $$;
 
-alter procedure painsertarproyecto(varchar, text, date, date, integer, integer, integer, numeric, integer[], integer[], integer[], numeric[], numeric[]) owner to jose_sernaque;
 
 create procedure paregistrarrepuesto(IN p_nombre_repuesto character varying, IN p_precio_repuesto numeric, IN p_descripcion_repuesto text, IN p_link_img character varying, IN p_stock_actual integer)
     language plpgsql
@@ -374,7 +339,6 @@ BEGIN
 END;
 $$;
 
-alter procedure paregistrarrepuesto(varchar, numeric, text, varchar, integer) owner to jose_sernaque;
 
 create function paobtenerproyectos()
     returns TABLE(id_proyecto integer, id_cliente integer, id_supervisor integer, id_jefe integer, id_etapa_actual integer, costo_total numeric, costo_mano_obra numeric, costo_repuestos numeric, titulo character varying, descripcion text, fecha_inicio date, fecha_fin date, info_parametros info_parametro_proyecto, info_repuestos info_repuesto_proyecto)
@@ -437,7 +401,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerproyectos() owner to jose_sernaque;
 
 create procedure pacrearparametro(IN p_nombre_parametro character varying, IN p_unidades character varying, IN p_id_tipo_prueba integer)
     language plpgsql
@@ -449,7 +412,6 @@ BEGIN
 END;
 $$;
 
-alter procedure pacrearparametro(varchar, varchar, integer) owner to jose_sernaque;
 
 create function pacrearpruebaparametros(p_nombre_prueba character varying, p_nombres_parametros character varying[], p_unidades_parametros character varying[]) returns integer
     language plpgsql
@@ -468,7 +430,6 @@ BEGIN
 END;
 $$;
 
-alter function pacrearpruebaparametros(varchar, character varying[], character varying[]) owner to jose_sernaque;
 
 create function paobtenerrepuestosrequeridos()
     returns TABLE(id_repuesto integer, nombre character varying, descripcion text, precio numeric, link_img character varying, stock_disponible integer, stock_asignado integer, stock_requerido integer)
@@ -490,7 +451,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerrepuestosrequeridos() owner to jose_sernaque;
 
 create procedure paactualizarstock(IN p_id_repuesto integer, IN p_stock_adquirido integer)
     language plpgsql
@@ -504,7 +464,6 @@ BEGIN
 END;
 $$;
 
-alter procedure paactualizarstock(integer, integer) owner to jose_sernaque;
 
 create function paobtenerrepuestosporproyecto(p_id_proyecto integer)
     returns TABLE(id_repuesto integer, nombre character varying, descripcion text, precio numeric, link_img character varying, stock_disponible integer, stock_asignado integer, stock_requerido integer, cantidad integer)
@@ -528,7 +487,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerrepuestosporproyecto(integer) owner to jose_sernaque;
 
 create procedure paagregarrepuestossolicitados(IN p_ids_repuestos integer[], IN p_cantidades integer[])
     language plpgsql
@@ -554,7 +512,6 @@ BEGIN
 END;
 $$;
 
-alter procedure paagregarrepuestossolicitados(integer[], integer[]) owner to jose_sernaque;
 
 create function paobtenerrepuestos()
     returns TABLE(id_repuesto integer, nombre character varying, descripcion text, precio numeric, link_img character varying, stock_actual integer, stock_requerido integer)
@@ -573,7 +530,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerrepuestos() owner to jose_sernaque;
 
 create procedure paasignarrepuestosaproyecto(IN p_id_proyecto integer)
     language plpgsql
@@ -596,7 +552,6 @@ BEGIN
 END;
 $$;
 
-alter procedure paasignarrepuestosaproyecto(integer) owner to jose_sernaque;
 
 create function paobtenerproyectoporjefe(p_id_jefe integer)
     returns TABLE(id_proyecto integer, titulo character varying, descripcion text, fecha_inicio date, fecha_fin date, id_cliente integer, id_supervisor integer, id_jefe integer, id_etapa_actual integer, ids_empleados_actuales integer[])
@@ -623,7 +578,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerproyectoporjefe(integer) owner to jose_sernaque;
 
 create function paobtenerdatosproyectoporid(p_id_proyecto integer)
     returns TABLE(id_proyecto integer, titulo character varying, descripcion text, fecha_inicio date, fecha_fin date, costo_mano_obra numeric, costo_repuestos numeric, costo_total numeric, id_cliente integer, id_supervisor integer, id_jefe integer, id_etapa_actual integer, info_repuestos info_repuesto_proyecto, info_parametros info_parametro_proyecto, ids_empleados_actuales integer[])
@@ -683,7 +637,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerdatosproyectoporid(integer) owner to jose_sernaque;
 
 create function paobteneretapaporid(p_id_etapa integer)
     returns TABLE(id_etapa integer, nombre_etapa character varying)
@@ -699,7 +652,6 @@ BEGIN
 END;
 $$;
 
-alter function paobteneretapaporid(integer) owner to jose_sernaque;
 
 create function paobtenerrepuestosfaltantes(p_id_jefe integer)
     returns TABLE(ids_repuestos integer[], cantidades integer[])
@@ -758,7 +710,6 @@ begin
 end;
 $$;
 
-alter function paobtenerrepuestosfaltantes(integer) owner to jose_sernaque;
 
 create function paobtenerrepuestosporids(p_ids_repuesto integer[])
     returns TABLE(id_repuesto integer, nombre character varying, descripcion text, precio numeric, link_img character varying, stock_disponible integer, stock_asignado integer, stock_requerido integer)
@@ -781,7 +732,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerrepuestosporids(integer[]) owner to jose_sernaque;
 
 create function paregistrarresultados(p_registro_json json) returns integer
     language plpgsql
@@ -828,7 +778,6 @@ $$;
 
 comment on function paregistrarresultados(json) is 'Registra los resultados de una prueba';
 
-alter function paregistrarresultados(json) owner to jose_sernaque;
 
 create function paobtenerproyectoportecnico(p_id_empleado integer) returns json
     language plpgsql
@@ -870,7 +819,6 @@ $$;
 
 comment on function paobtenerproyectoportecnico(integer) is 'Obtiene los proyectos por tecnico';
 
-alter function paobtenerproyectoportecnico(integer) owner to jose_sernaque;
 
 create function paxregistrarcliente(cliente_json json) returns integer
     language plpgsql
@@ -900,7 +848,6 @@ $$;
 
 comment on function paxregistrarcliente(json) is 'Registra un cliente en la base de datos';
 
-alter function paxregistrarcliente(json) owner to jose_sernaque;
 
 create function paxregistrarempleado(empleado_json json) returns integer
     language plpgsql
@@ -936,7 +883,6 @@ $$;
 
 comment on function paxregistrarempleado(json) is 'Registra un empleado en la base de datos';
 
-alter function paxregistrarempleado(json) owner to jose_sernaque;
 
 create function paxobtenerclientes() returns json
     language plpgsql
@@ -962,7 +908,6 @@ $$;
 
 comment on function paxobtenerclientes() is 'Obtiene la lista de clientes';
 
-alter function paxobtenerclientes() owner to jose_sernaque;
 
 create function paxobtenerpruebasconparametros() returns json
     language plpgsql
@@ -1003,7 +948,6 @@ $$;
 
 comment on function paxobtenerpruebasconparametros() is 'Obtiene la lista de pruebas con sus parametros';
 
-alter function paxobtenerpruebasconparametros() owner to jose_sernaque;
 
 create function paxinsertarproyecto(proyecto_json json) returns integer
     language plpgsql
@@ -1093,7 +1037,6 @@ $$;
 
 comment on function paxinsertarproyecto(json) is 'Registra un proyecto en la base de datos';
 
-alter function paxinsertarproyecto(json) owner to jose_sernaque;
 
 create function paxregistrarrepuesto(repuesto_json json) returns integer
     language plpgsql
@@ -1118,7 +1061,6 @@ $$;
 
 comment on function paxregistrarrepuesto(json) is 'Registra un repuesto en la base de datos';
 
-alter function paxregistrarrepuesto(json) owner to jose_sernaque;
 
 create function paxobtenerrepuestos() returns json
     language plpgsql
@@ -1144,7 +1086,6 @@ $$;
 
 comment on function paxobtenerrepuestos() is 'Obtiene la lista de repuestos';
 
-alter function paxobtenerrepuestos() owner to jose_sernaque;
 
 create function paxobtenerproyectos() returns json
     language plpgsql
@@ -1162,7 +1103,6 @@ $$;
 
 comment on function paxobtenerproyectos() is 'Obtiene la lista de proyectos';
 
-alter function paxobtenerproyectos() owner to jose_sernaque;
 
 create function paobtenerproyectosporid(p_id_proyecto integer) returns json
     language plpgsql
@@ -1397,7 +1337,6 @@ $$;
 
 comment on function paobtenerproyectosporid(integer) is 'Obtiene los proyectos por id';
 
-alter function paobtenerproyectosporid(integer) owner to jose_sernaque;
 
 create function pacreartipoprueba(nombre_prueba character varying) returns integer
     language plpgsql
@@ -1415,7 +1354,6 @@ $$;
 
 comment on function pacreartipoprueba(varchar) is 'Crea un tipo de prueba';
 
-alter function pacreartipoprueba(varchar) owner to jose_sernaque;
 
 create function paxcrearparametro(parametro_json json) returns integer
     language plpgsql
@@ -1435,7 +1373,6 @@ $$;
 
 comment on function paxcrearparametro(json) is 'Crea un parametro';
 
-alter function paxcrearparametro(json) owner to jose_sernaque;
 
 create function paxcrearpruebaparametros(prueba_parametros_json json) returns integer
     language plpgsql
@@ -1465,7 +1402,6 @@ $$;
 
 comment on function paxcrearpruebaparametros(json) is 'Crea un tipo de prueba junto a sus parametros';
 
-alter function paxcrearpruebaparametros(json) owner to jose_sernaque;
 
 create function paxobtenerempleadosporrol(rol_empleado character varying) returns json
     language plpgsql
@@ -1494,7 +1430,6 @@ $$;
 
 comment on function paxobtenerempleadosporrol(varchar) is 'Obtiene la lista de empleados por rol';
 
-alter function paxobtenerempleadosporrol(varchar) owner to jose_sernaque;
 
 create function paxobtenerrepuestosrequeridos() returns json
     language plpgsql
@@ -1521,7 +1456,6 @@ $$;
 
 comment on function paxobtenerrepuestosrequeridos() is 'Obtiene la lista de repuestos requeridos';
 
-alter function paxobtenerrepuestosrequeridos() owner to jose_sernaque;
 
 create function paxactualizarstock(repuesto_json json) returns integer
     language plpgsql
@@ -1541,7 +1475,6 @@ $$;
 
 comment on function paxactualizarstock(json) is 'Actualiza el stock de un repuesto';
 
-alter function paxactualizarstock(json) owner to jose_sernaque;
 
 create function paxobtenerclientesporids(ids_clientes json) returns json
     language plpgsql
@@ -1573,7 +1506,6 @@ $$;
 
 comment on function paxobtenerclientesporids(json) is 'Obtiene los clientes por ids';
 
-alter function paxobtenerclientesporids(json) owner to jose_sernaque;
 
 create function paxobtenerempleadosporids(ids_empleados json) returns json
     language plpgsql
@@ -1602,7 +1534,6 @@ $$;
 
 comment on function paxobtenerempleadosporids(json) is 'Obtiene los empleados por ids';
 
-alter function paxobtenerempleadosporids(json) owner to jose_sernaque;
 
 create function paxobtenerrepuestosporids(ids_repuestos json) returns json
     language plpgsql
@@ -1629,7 +1560,6 @@ $$;
 
 comment on function paxobtenerrepuestosporids(json) is 'Obtiene los repuestos por ids';
 
-alter function paxobtenerrepuestosporids(json) owner to jose_sernaque;
 
 create function paxobtenerrepuestosporproyecto(id_proyecto_r integer) returns json
     language plpgsql
@@ -1658,7 +1588,6 @@ $$;
 
 comment on function paxobtenerrepuestosporproyecto(integer) is 'Obtiene los repuestos por proyecto';
 
-alter function paxobtenerrepuestosporproyecto(integer) owner to jose_sernaque;
 
 create function paxagregarrepuestosrequeridos(repuestos_requeridos json) returns void
     language plpgsql
@@ -1685,7 +1614,6 @@ $$;
 
 comment on function paxagregarrepuestosrequeridos(json) is 'Agrega repuestos requeridos';
 
-alter function paxagregarrepuestosrequeridos(json) owner to jose_sernaque;
 
 create function paxasignarrepuestosaproyecto(repuestos_asignados json) returns void
     language plpgsql
@@ -1714,7 +1642,6 @@ $$;
 
 comment on function paxasignarrepuestosaproyecto(json) is 'Asigna repuestos a un proyecto';
 
-alter function paxasignarrepuestosaproyecto(json) owner to jose_sernaque;
 
 create function paxobtenerproyectoporjefe(id_jefe_p integer) returns json
     language plpgsql
@@ -1730,7 +1657,6 @@ $$;
 
 comment on function paxobtenerproyectoporjefe(integer) is 'Obtiene los proyectos por jefe';
 
-alter function paxobtenerproyectoporjefe(integer) owner to jose_sernaque;
 
 create function paxobteneretapaporid(id_etapa_p integer) returns json
     language plpgsql
@@ -1752,7 +1678,6 @@ $$;
 
 comment on function paxobteneretapaporid(integer) is 'Obtiene la etapa por id';
 
-alter function paxobteneretapaporid(integer) owner to jose_sernaque;
 
 create function paxobtenerrepuestosfaltantesporjefe(id_jefe_p integer) returns json
     language plpgsql
@@ -1784,7 +1709,6 @@ $$;
 
 comment on function paxobtenerrepuestosfaltantesporjefe(integer) is 'Obtiene los repuestos faltantes de los proyectos de un jefe';
 
-alter function paxobtenerrepuestosfaltantesporjefe(integer) owner to jose_sernaque;
 
 create function paobtenertecnicosdisponibles() returns json
     language plpgsql
@@ -1837,7 +1761,6 @@ $$;
 
 comment on function paobtenertecnicosdisponibles() is 'Obtiene los técnicos disponibles';
 
-alter function paobtenertecnicosdisponibles() owner to jose_sernaque;
 
 create function paasignarempleadosaproyecto(p_idproyecto integer, p_idempleados integer[], p_fechaasignacion date) returns void
     language plpgsql
@@ -1893,7 +1816,6 @@ $$;
 
 comment on function paasignarempleadosaproyecto(integer, integer[], date) is 'Asigna empleados a un proyecto';
 
-alter function paasignarempleadosaproyecto(integer, integer[], date) owner to jose_sernaque;
 
 create function pacambiaretapaproyecto(p_id_proyecto integer, p_id_etapa integer, p_fecha_inicio date) returns void
     language plpgsql
@@ -1921,7 +1843,6 @@ $$;
 
 comment on function pacambiaretapaproyecto(integer, integer, date) is 'Cambia la etapa de un proyecto';
 
-alter function pacambiaretapaproyecto(integer, integer, date) owner to jose_sernaque;
 
 create function paregistrarfeedback(p_feedback_json json) returns integer
     language plpgsql
@@ -1969,7 +1890,6 @@ end;
 
 $$;
 
-alter function paregistrarfeedback(json) owner to jose_sernaque;
 
 create function paobtenerempleadosporids(p_ids_empleado integer[])
     returns TABLE(id_empleado integer, password character varying, nombre character varying, apellido character varying, correo character varying, telefono character varying, direccion character varying, tipo_documento character varying, documento_identidad character varying, rol character varying, link_img character varying)
@@ -1995,7 +1915,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerempleadosporids(integer[]) owner to jose_sernaque;
 
 create function paobtenerempleadosporrol(p_rol character varying)
     returns TABLE(id_empleado integer, password character varying, nombre character varying, apellido character varying, correo character varying, telefono character varying, direccion character varying, tipo_documento character varying, documento_identidad character varying, rol character varying, link_img character varying)
@@ -2020,7 +1939,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerempleadosporrol(varchar) owner to jose_sernaque;
 
 create procedure pacrearcliente(IN p_nombre character varying, IN p_ruc character varying, IN p_direccion character varying, IN p_telefono character varying, IN p_correo character varying)
     language plpgsql
@@ -2040,7 +1958,6 @@ BEGIN
 END;
 $$;
 
-alter procedure pacrearcliente(varchar, varchar, varchar, varchar, varchar) owner to jose_sernaque;
 
 create function paobtenerclientes()
     returns TABLE(id_cliente integer, nombre character varying, ruc character varying, direccion character varying, telefono character varying, correo character varying)
@@ -2052,7 +1969,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerclientes() owner to jose_sernaque;
 
 create function paobtenerclientesporids(p_ids_cliente integer[])
     returns TABLE(id_cliente integer, nombre character varying, ruc character varying, direccion character varying, telefono character varying, correo character varying)
@@ -2073,7 +1989,6 @@ BEGIN
 END;
 $$;
 
-alter function paobtenerclientesporids(integer[]) owner to jose_sernaque;
 
 create function paxobtenerproyectoporsupervisor(id_supervisor_p integer) returns json
     language plpgsql
@@ -2087,7 +2002,6 @@ begin
 end;
 $$;
 
-alter function paxobtenerproyectoporsupervisor(integer) owner to jose_sernaque;
 
 create function paobtenerhistorialproyecto(p_id_proyecto integer) returns json
     language plpgsql
@@ -2161,7 +2075,6 @@ $$;
 
 comment on function paobtenerhistorialproyecto(integer) is 'Obtiene el historial del proyecto por ID, incluyendo asignaciones de empleados y cambios de etapas';
 
-alter function paobtenerhistorialproyecto(integer) owner to jose_sernaque;
 
 create function pavalidarcorreo(p_correo character varying) returns json
     language plpgsql
@@ -2199,5 +2112,4 @@ $$;
 
 comment on function pavalidarcorreo(varchar) is 'Obtiene la información del empleado por correo';
 
-alter function pavalidarcorreo(varchar) owner to jose_sernaque;
 

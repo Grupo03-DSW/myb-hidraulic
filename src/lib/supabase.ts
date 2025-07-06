@@ -33,7 +33,7 @@ export const uploadImage = async (
   console.log("Buckets disponibles:", buckets);
 
   const { error } = await supabase.storage
-    .from("myb_hidraulic")
+    .from("myb-bucket")
     .upload(`${filePath}.png`, blob, {
       contentType,
       cacheControl: "3600",
